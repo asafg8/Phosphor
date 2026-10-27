@@ -5,6 +5,7 @@ package build
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -43,7 +44,9 @@ func Run(x *rt.Ctx) int {
 	start := time.Now()
 	if cleaned := SweepResidue(); len(cleaned) > 0 { // what killed builds left, before this one starts
 		x.Emit(c.EvInfo, "build", "residue-cleaned", map[string]any{"work_dirs": cleaned})
+		x.Say("cleaned up %d interrupted earlier build(s)", len(cleaned))
 	}
+	x.Say("PHP %s for %s (%s)", a.Target.Version+a.Target.Extra, a.RuntimeID, a.Base)
 	work := filepath.Join(rt.Root, "build", a.RuntimeID)
 	if err := os.MkdirAll(filepath.Dir(work), 0o700); err != nil {
 		return writeFailure(x, doc, c.Errf(c.EInternal, "step", "workdir"))
@@ -74,7 +77,10 @@ func Run(x *rt.Ctx) int {
 	// always: remove the recorded build-dep delta (unless kept), release the swapfile, write the log.
 	removed := len(j.added) == 0
 	if len(j.added) > 0 && !a.KeepBuildDeps {
-		if rerr := pkg.Remove(r, a.Host, j.added, j.configFilesBefore); rerr == nil {
+		end := x.Phase(fmt.Sprintf("removing the %d build dependencies it installed", len(j.added)))
+		rerr := pkg.Remove(r, a.Host, j.added, j.configFilesBefore)
+		end(rerr == nil)
+		if rerr == nil {
 			pkg.RemoveDirs(j.newDirs)
 			doc.DepsRemoved, removed = true, true
 		}
@@ -182,6 +188,7 @@ func (j *job) reusePrefix() *c.Error {
 		return e
 	}
 	j.doc.Cache, j.doc.Source = "hit", "cache"
+	j.x.Say("reusing the build already at %s", j.prefix)
 	return nil
 }
 
@@ -210,6 +217,7 @@ func PrefixLive(prefix string) bool {
 
 func (j *job) fromCacheOrBuild() *c.Error {
 	if j.a.Cache.Get != "" {
+		j.x.Say("unpacking the cached build of this shape")
 		e := j.fromCache()
 		if e == nil {
 			return nil
@@ -230,7 +238,9 @@ func (j *job) fromCacheOrBuild() *c.Error {
 	j.g = g
 	j.doc.Resource.SwapfileAdded = g.SwapfileAdded
 	route, floor := memFloor(j.a)
-	if have, short := memoryShortfall(g.ScopeMB, g.SwapfileAdded, floor); short {
+	have, short := memoryShortfall(g.ScopeMB, g.SwapfileAdded, floor)
+	j.x.Say("resources: %d CPUs, %d MB for the build (needs %d MB), make -j%d", g.CPUs, have, floor, g.Jobs)
+	if short {
 		cache := firstNonEmpty(string(j.doc.Cache), "none")
 		return c.Errf(c.ENoMemory, "route", route, "need_mb", floor, "have_mb", have, "scope_mb", g.ScopeMB,
 			"swapfile_added", g.SwapfileAdded, "shape_key", j.a.ShapeKey, "cache", cache,

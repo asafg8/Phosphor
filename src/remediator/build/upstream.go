@@ -1,6 +1,7 @@
 package build
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -54,7 +55,9 @@ func (j *job) upstream() *c.Error {
 	// 1. sources first: nothing is installed before every sha256/gpg check passed.
 	srcDir := filepath.Join(j.work, "sources")
 	_ = os.MkdirAll(srcDir, 0o755)
+	end := j.x.Phase(fmt.Sprintf("downloading and verifying %d sources (sha256, signatures)", countSources(a.Sources)))
 	paths, refs, err := fetchSources(j.x, j.r, a.Sources, srcDir)
+	end(err == nil)
 	if err != nil {
 		return err
 	}
@@ -76,7 +79,12 @@ func (j *job) upstream() *c.Error {
 	systemSSL := j.route.ID == "system" || j.route.ID == "B" || j.route.ID == "system-unpatched"
 	deps := pkg.Deps(pkg.FamilyOf(a.Host), eff, systemSSL)
 	j.depsRan = true
+	end = j.x.Phase(fmt.Sprintf("installing build dependencies (%d requested)", len(deps)))
 	res, derr := pkg.Install(j.r, a.Host, deps, j.work)
+	end(derr == nil)
+	if derr == nil {
+		j.x.Say("%d packages added; they are removed again when the build ends", len(res.Added))
+	}
 	j.added = res.Added
 	j.configFilesBefore = res.ConfigFilesBefore
 	j.newDirs = res.NewDirs
@@ -91,6 +99,7 @@ func (j *job) upstream() *c.Error {
 	}
 
 	// 5. unpack + patch + version line.
+	j.x.Say("unpacking the PHP source and applying the patches")
 	tree := filepath.Join(j.work, "src")
 	_ = os.MkdirAll(tree, 0o755)
 	if _, code := j.r.RunIn(tree, 10*time.Minute, nil, "tar", "-xJf", paths["php-src"], "--strip-components=1"); code != 0 {
@@ -118,7 +127,9 @@ func (j *job) upstream() *c.Error {
 	// 6. private OpenSSL for route A3 (shared, rpath) / A (static, lab).
 	var env []string
 	if j.route.ID == "A3" || j.route.ID == "A" {
+		end := j.x.Phase("building the private OpenSSL 1.1.1w")
 		e, oerr := buildPrivateOpenSSL(j.r, g, paths["openssl"], j.work, j.prefix, j.route.ID == "A3")
+		end(oerr == nil)
 		if oerr != nil {
 			return oerr
 		}
@@ -126,12 +137,17 @@ func (j *job) upstream() *c.Error {
 	}
 
 	// 7. configure + make.
+	end = j.x.Phase(fmt.Sprintf("configure (%d flags)", len(eff)))
 	out, code := j.r.Heavy(tree, 30*time.Minute, env, "./configure", eff...)
+	end(code == 0)
 	if code != 0 {
 		return c.Errf(c.EBuildFailed, "step", "configure")
 	}
 	j.doc.Configure.Dropped = WithUnrecognized(j.doc.Configure.Dropped, eff, UnrecognizedOptions(out))
-	if out, code := j.r.Heavy(tree, 4*time.Hour, env, "make", "-j"+strconv.Itoa(g.Jobs)); code != 0 {
+	end = j.x.Phase(fmt.Sprintf("compiling PHP (make -j%d)", g.Jobs))
+	out, code = j.r.Heavy(tree, 4*time.Hour, env, "make", "-j"+strconv.Itoa(g.Jobs))
+	end(code == 0)
+	if code != 0 {
 		return heavyFailed("make", out)
 	}
 
@@ -144,11 +160,19 @@ func (j *job) upstream() *c.Error {
 	if j.route.ID != "A3" && j.route.ID != "A" {
 		sslMajor = opensslMajor(opensslVersionFor(j.route, a))
 	}
-	if e := j.smoke(tree, filepath.Join(tree, "sapi", "cli", "php"), cgi, ExpectedFailKeys(minor, sslMajor)); e != nil {
+	end = j.x.Phase("running PHP's own smoke tests")
+	e = j.smoke(tree, filepath.Join(tree, "sapi", "cli", "php"), cgi, ExpectedFailKeys(minor, sslMajor))
+	end(e == nil)
+	if sm := j.doc.Smoke; sm.Ran {
+		j.x.Say("smoke: %d passed, %d skipped, %d failed (%d known-flaky or stock-PHP failures ignored)", sm.Passed,
+			sm.Skipped, len(sm.FailedTests), len(sm.FlakyIgnored)+len(sm.ExpectedFailIgnored))
+	}
+	if e != nil {
 		return e
 	}
 
 	// 9. install into the prefix without apxs touching httpd.conf, plus libphp for mod_php.
+	j.x.Say("installing into %s (the live PHP is not touched)", j.prefix)
 	if e := j.install(tree, env); e != nil {
 		return e
 	}
@@ -171,6 +195,9 @@ func (j *job) upstream() *c.Error {
 			return err
 		}
 		return fetchURL(p.URL, dst, p.SHA256)
+	}
+	if n := len(a.Runtime.ThirdPartyExts); n > 0 {
+		j.x.Say("rebuilding %d third-party extension(s) for the new PHP", n)
 	}
 	exts, reasons := thirdPartyExts(j.r, g, a.Runtime, a.PECL, fetch, j.work, j.prefix, extDir)
 	j.doc.Exts = exts
@@ -344,4 +371,15 @@ func (j *job) extensionDir() (string, *c.Error) {
 	}
 	_ = os.MkdirAll(dir, 0o755)
 	return dir, nil
+}
+
+// countSources is the number of files fetchSources downloads (signatures and keyrings verify them).
+func countSources(srcs []c.BuildSource) int {
+	n := 0
+	for _, s := range srcs {
+		if s.Kind != "signature" && s.Kind != "keyring" {
+			n++
+		}
+	}
+	return n
 }
