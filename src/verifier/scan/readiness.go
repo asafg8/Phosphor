@@ -67,20 +67,18 @@ func RunReadiness(x *rt.Ctx) int {
 		_ = json.Unmarshal(b, &meta)
 	}
 	doc.Tool = c.ScanTools{PHP: meta["php"], PHPCS: meta["phpcs"], PHPCompatRef: meta["phpcompat_ref"], PHPCSUtils: meta["phpcsutils"]}
-	limits, wrap := limiter(x.ArgBool("lab_no_systemd_run"))
-	quota := 0.0
-	if limits.Via == "systemd-run" {
-		quota = 0.5 // our own CPUQuota=50% scope
-	}
-	par, memLimit := workers(quota)
+	cpus := usableCPUs()
+	par, memLimit := workers(cpus)
+	limits, wrap := limiter(x.ArgBool("lab_no_systemd_run"), cpuQuota(cpus, par))
 	doc.Limits = &limits
 	x.Step("readiness", map[string]any{"limits": limits, "roots": len(roots), "parallel": par, "memory_limit": memLimit,
 		"budget_s": int(budget.Seconds()), "first_party_only": firstOnly})
 
 	work, rootErr := collectWork(roots)
 	tv := testVersion(doc.TargetVersion)
+	cache := cacheFile(x.Arg("scanbundle_sha256"), tv)
 	run := func(w *rootWork, files []string, timeout time.Duration) bool {
-		rep, err := phpcsFiles(dir, wrap, files, tv, par, memLimit, timeout)
+		rep, err := phpcsFiles(dir, wrap, files, tv, par, memLimit, cache, timeout)
 		if err != nil {
 			return false
 		}
@@ -265,18 +263,19 @@ func batches(files []string) [][]string {
 	return out
 }
 
-// workers sizes phpcs from the CPU we may really use, not the host: parallel = cpus/2, 1…4, where cpus is the
-// tightest of GOMAXPROCS, every cpu.max on our cgroup path up to the root (a systemd scope under a limited parent
-// shows "max" on its own level) and our own systemd-run CPUQuota; one total memory cap = min(1 GiB, 25% of
-// the available memory), split across the workers (each phpcs process gets cap/parallel).
-func workers(quota float64) (int, string) {
+// usableCPUs is the CPU we may really use, not the host: the tightest of GOMAXPROCS and every cpu.max on our cgroup
+// path up to the root (a systemd scope under a limited parent shows "max" on its own level).
+func usableCPUs() float64 {
 	cpus := float64(runtime.GOMAXPROCS(0))
 	if l := cgroupCPULimit(cgroupPaths()); l > 0 && l < cpus {
 		cpus = l
 	}
-	if quota > 0 && quota < cpus {
-		cpus = quota
-	}
+	return cpus
+}
+
+// workers sizes phpcs from the usable CPUs: parallel = cpus/2, 1…4; one total memory cap = min(1 GiB, 25% of the
+// available memory), split across the workers (each phpcs process gets cap/parallel).
+func workers(cpus float64) (int, string) {
 	par := min(max(int(cpus)/2, 1), 4)
 	capMB := 1024
 	if avail := memAvailableMB(); avail > 0 {
@@ -284,6 +283,26 @@ func workers(quota float64) (int, string) {
 	}
 	per := max(capMB/par, 128)
 	return par, strconv.Itoa(per) + "M"
+}
+
+// cpuQuota is the systemd CPUQuota (percent of one CPU) of the phpcs scope: one CPU per worker, never more than half
+// of what we may use (cpus×50%, the build's guardrail) and never under 50% (a 1-CPU host keeps half a CPU).
+func cpuQuota(cpus float64, par int) int {
+	return max(min(par*100, int(cpus*50)), 50)
+}
+
+// cacheFile is phpcs's result cache for this bundle and testVersion, kept under the state dir across runs: phpcs
+// reuses a file's result only while its content hash, the standard and the run config are unchanged, so a repeat
+// verify rescans only the files that changed. "" = no cache (no bundle sum, or the dir cannot be made).
+func cacheFile(bundleSum, tv string) string {
+	if len(bundleSum) < 12 {
+		return ""
+	}
+	d := filepath.Join(rt.Root, "state", "readiness-cache")
+	if os.MkdirAll(d, 0o700) != nil {
+		return ""
+	}
+	return filepath.Join(d, bundleSum[:12]+"-"+tv+".cache")
 }
 
 // memAvailableMB is the smaller of /proc/meminfo MemAvailable and the cgroup v2 headroom (memory.max − memory.current).
@@ -352,8 +371,9 @@ func cgroupCPULimit(dirs []string) float64 {
 	return best
 }
 
-// phpcsFiles runs one phpcs process over a file list (--file-list) and parses its JSON report.
-func phpcsFiles(dir string, wrap, files []string, tv string, par int, memLimit string, timeout time.Duration) (phpcsReport, error) {
+// phpcsFiles runs one phpcs process over a file list (--file-list), with the result cache when there is one, and
+// parses its JSON report.
+func phpcsFiles(dir string, wrap, files []string, tv string, par int, memLimit, cache string, timeout time.Duration) (phpcsReport, error) {
 	var rep phpcsReport
 	list, err := os.CreateTemp(dir, "files-*.txt")
 	if err != nil {
@@ -373,6 +393,9 @@ func phpcsFiles(dir string, wrap, files []string, tv string, par int, memLimit s
 		"--standard=PHPCompatibility", "--runtime-set", "testVersion", tv,
 		"--report=json", "-q", "--extensions="+strings.Join(inspect.PHPExtensions, ","), "--parallel="+strconv.Itoa(par),
 		"--file-list="+list.Name())
+	if cache != "" {
+		args = append(args, "--cache="+cache)
+	}
 	out, _, err := sys.RunFull(timeout, nil, args[0], args[1:]...)
 	// phpcs exits non-zero whenever it has findings, so the exit code alone says nothing; the report is the judge.
 	_, rep, ok := parseReport(out)

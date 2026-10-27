@@ -39,8 +39,11 @@ When the runtime has a migration target: 7.3 and older are checked against 7.4 a
 
 The scan bundle built into the binary (a static PHP, `phpcs.phar` and the PHPCompatibility standard, made by
 `make bundle`) is unpacked under `/opt/phosphor/readiness`. phpcs then runs with `--standard=PHPCompatibility
---runtime-set testVersion <target>` over batches of 200 files, inside CPU and memory limits (systemd-run, or
-nice/ionice). First-party code is always scanned completely. Third-party code (vendor, plugins) stops when its
+--runtime-set testVersion <target>` over batches of 200 files, with `cpus/2` workers (1…4), inside CPU and memory
+limits (a systemd-run scope with one CPU per worker, at most half the usable CPUs and at least 50%, or nice/ionice).
+phpcs keeps a result cache per bundle and testVersion under `/opt/phosphor/state/readiness-cache`: a file whose
+content is unchanged reuses its findings, so a repeat verify only rescans what changed. First-party code is always
+scanned completely. Third-party code (vendor, plugins) stops when its
 time budget runs out (`--budget`, default 600 s), and the result is then marked partial.
 
 Output: `readiness.json`, with a decision of clear, review or blocking.

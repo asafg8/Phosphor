@@ -28,3 +28,16 @@ func TestBUG058_ReadinessValidates(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+// phpcs gets one CPU per worker, capped at half the usable CPUs (the build's guardrail), and never under 50%.
+func TestReadinessCPUQuota(t *testing.T) {
+	for _, tc := range []struct {
+		cpus float64
+		want int
+	}{{1, 50}, {1.5, 75}, {2, 100}, {3, 100}, {4, 200}, {8, 400}, {16, 400}} {
+		par, _ := workers(tc.cpus)
+		if got := cpuQuota(tc.cpus, par); got != tc.want {
+			t.Errorf("%v CPUs (parallel %d): CPUQuota %d%%, want %d%%", tc.cpus, par, got, tc.want)
+		}
+	}
+}
