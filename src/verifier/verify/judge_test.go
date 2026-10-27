@@ -369,3 +369,76 @@ func TestJudgeCLIStays(t *testing.T) {
 		t.Errorf("next offers a build for a CLI that stays")
 	}
 }
+
+// A host running several PHPs: one readiness run per migration target over the code of the runtimes that have it;
+// a runtime without a target (8.2+) or without code roots gets none, and runtimes sharing a target share the run.
+func TestReadinessGroupsMixedHost(t *testing.T) {
+	root := func(p string) []c.CodeRoot { return []c.CodeRoot{{Path: p, Kind: "first-party"}} }
+	s := &state{fp: c.Fingerprint{Runtimes: []c.Runtime{
+		{ID: "moodle", SAPI: c.SAPIFpm, Version: "8.2.35", CodeRoots: root("/var/www/moodle")},
+		{ID: "intranet", SAPI: c.SAPIFpm, Version: "7.4.33", CodeRoots: root("/var/www/intranet")},
+		{ID: "shop", SAPI: c.SAPIFpm, Version: "5.6.40", CodeRoots: root("/var/www/legacy-shop")},
+		{ID: "cli56", SAPI: c.SAPICLI, Version: "5.6.40", CodeRoots: []c.CodeRoot{}},
+		{ID: "intranet-cli", SAPI: c.SAPICLI, Version: "7.4.33", CodeRoots: root("/var/www/intranet/cron")},
+	}}}
+	var got []string
+	for _, g := range s.readinessGroups() {
+		got = append(got, g.target+" "+strings.Join(g.ids, ",")+" "+g.roots[0].Path)
+	}
+	want := []string{"8.2- intranet,intranet-cli /var/www/intranet", "7.4- shop /var/www/legacy-shop"}
+	if !slices.Equal(got, want) {
+		t.Errorf("groups %q, want %q", got, want)
+	}
+}
+
+// A runtime is judged from its own code: findings, runtime-risk hits and feature use under other runtimes' roots
+// are not its evidence.
+func TestScopedToCodeRoots(t *testing.T) {
+	sc := &c.Scan{
+		Roots:       []c.ScanRoot{{Path: "/var/www/moodle"}, {Path: "/var/www/legacy-shop"}},
+		TopFindings: []c.Finding{{File: "/var/www/moodle/lib.php", Type: "ERROR", FirstParty: true}, {File: "/var/www/legacy-shop/includes/db.php", Line: 6, Type: "ERROR", FirstParty: true}},
+		RuntimeRisk: []c.RiskHit{{Rule: "dynamic-call", File: "/var/www/moodle/backup/x.php"}},
+		FeatureUse:  []c.ScanFeatureUse{{Setting: "simplexml", Verdict: "used", Evidence: []c.FeatureEvidence{{File: "/var/www/moodle/a.php"}}}},
+		Decision:    c.VerdictBlocking,
+	}
+	got := scoped(sc, []string{"/var/www/legacy-shop"})
+	if len(got.Roots) != 1 || len(got.TopFindings) != 1 || got.TopFindings[0].File != "/var/www/legacy-shop/includes/db.php" {
+		t.Errorf("roots %v findings %v", got.Roots, got.TopFindings)
+	}
+	if len(got.RuntimeRisk) != 0 {
+		t.Errorf("another runtime's risk hits kept: %v", got.RuntimeRisk)
+	}
+	if fu := got.FeatureUse[0]; fu.Verdict != "unused" || len(fu.Evidence) != 0 {
+		t.Errorf("feature use %+v, want unused for this runtime", fu)
+	}
+	if len(sc.TopFindings) != 2 || sc.FeatureUse[0].Verdict != "used" {
+		t.Error("scoped modified the shared scan")
+	}
+	if scoped(nil, []string{"/x"}) != nil {
+		t.Error("nil scan scoped to non-nil")
+	}
+
+	// the 5.6 runtime reads will-break from its own first-party errors, citing its readiness document
+	vr := judged(&c.VerifyRuntime{RuntimeID: "shop", PHPVersion: "5.6.40", MigrationTarget: "7.4", TargetVersion: "7.4",
+		Precedence: "P7", Action: c.ActNeedsCodeChange, CodeRoots: []string{"/var/www/legacy-shop"}},
+		Evidence{Scan: scoped(sc, []string{"/var/www/legacy-shop"}), Readiness: scoped(sc, []string{"/var/www/legacy-shop"}),
+			ReadinessDoc: "readiness-7.4/readiness.json"})
+	if vr.Verdict != c.VerifyWillBreak || !slices.Contains(vr.Documents, "readiness-7.4/readiness.json") {
+		t.Errorf("verdict %s reasons %v documents %v", vr.Verdict, vr.Reasons, vr.Documents)
+	}
+	for _, e := range vr.Evidence {
+		if strings.HasPrefix(e.File, "/var/www/moodle") {
+			t.Errorf("Moodle evidence on the shop runtime: %+v", e)
+		}
+	}
+}
+
+// A cross-minor runtime with no code roots (a CLI no cron or service uses) has nothing to scan: review, with no
+// readiness rerun to suggest.
+func TestNoCodeRootsCrossMinor(t *testing.T) {
+	vr := judged(&c.VerifyRuntime{RuntimeID: "cli56", PHPVersion: "5.6.40", MigrationTarget: "7.4", TargetVersion: "7.4",
+		Precedence: "P7", Action: c.ActNeedsMigration, CodeRoots: []string{}}, Evidence{Scan: &c.Scan{}, NoCodeRoots: true})
+	if vr.Verdict != c.VerifyReview || !has(vr, "no-code-roots") || has(vr, "readiness-not-run") || vr.Unblock != "none" {
+		t.Errorf("verdict %s reasons %v unblock %q", vr.Verdict, vr.Reasons, vr.Unblock)
+	}
+}

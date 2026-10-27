@@ -35,7 +35,7 @@ fi
 # The docker healthcheck (User-Agent phosphor-lab-health) must not write access-log lines: they would skew the watch's
 # request baseline. nginx: map + access_log if=; apache: SetEnvIf (kit conf) + CustomLog env=!phosphor_nolog.
 if [ -d /etc/nginx/conf.d ]; then
-  printf 'map $http_user_agent $phosphor_log {\n    "phosphor-lab-health" 0;\n    default 1;\n}\n' > /etc/nginx/conf.d/00-phosphor-lab-log.conf
+  printf 'map_hash_bucket_size 64;\nmap $http_user_agent $phosphor_log {\n    "phosphor-lab-health" 0;\n    default 1;\n}\n' > /etc/nginx/conf.d/00-phosphor-lab-log.conf
   sed -i 's#^\(\s*access_log\s\+/var/log/nginx/access.log\);#\1 combined;#; s#^\(\s*access_log\s\+/var/log/nginx/access.log\s\+[a-z]\+\);#\1 if=$phosphor_log;#' /etc/nginx/nginx.conf
 fi
 for f in /etc/apache2/sites-available/000-default.conf /etc/apache2/conf-available/other-vhosts-access-log.conf /etc/httpd/conf/httpd.conf; do

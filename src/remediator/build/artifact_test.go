@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	c "github.com/asafg8/Phosphor/src/contract"
@@ -216,6 +217,50 @@ func TestBUG093_BlockedStatus(t *testing.T) {
 		b, _ := os.ReadFile(filepath.Join(d, "build.json"))
 		if json.Unmarshal(b, &bd) != nil || string(bd.Status) != tc.status || bd.Error == nil || bd.Error.Code != tc.code {
 			t.Errorf("%s: status %q error %v", tc.code, bd.Status, bd.Error)
+		}
+	}
+}
+
+// Build reusing verify's prefix of this shape (or a cached artifact) still records the configure line: T-431
+// read an empty configure on d12 because only the compile path filled it.
+func TestBUG102_ReusedPrefixRecordsConfigure(t *testing.T) {
+	d := t.TempDir()
+	prefix := filepath.Join(d, "php", "8.2.35-abcdef12")
+	_ = os.MkdirAll(filepath.Join(prefix, "bin"), 0o755)
+	_ = os.WriteFile(filepath.Join(prefix, "bin", "php"), []byte("#!/bin/sh\nprintf 8.2.35\n"), 0o755)
+	r, err := newRunner(filepath.Join(d, "build.log"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer r.close()
+	x := &rt.Ctx{StateDir: t.TempDir(), M: &c.Manifest{}}
+	rtm := c.Runtime{SAPI: "fpm", Version: "8.2.32", Provenance: c.Provenance{Kind: "distro-pkg", Pkg: "php8.2-fpm"},
+		Modules: []string{"Core", "PDO", "pdo_pgsql"}, SharedExts: []c.SharedExt{{Name: "pdo"}, {Name: "pdo_pgsql"}}}
+	j := &job{x: x, r: r, prefix: prefix, doc: &c.Build{}, a: c.BuildArgs{Base: "upstream",
+		Target: c.BuildTarget{Version: "8.2.35"}, Runtime: rtm}}
+	if e := j.reusePrefix(); e != nil {
+		t.Fatal(e)
+	}
+	cf := j.doc.Configure
+	if j.doc.Cache != "hit" || cf.Source != "synthesized" || len(cf.Original) == 0 || cf.Original[0] != "--disable-all" ||
+		!HasFlag(cf.Effective, "--disable-all") {
+		t.Fatalf("cache %q, configure %+v", j.doc.Cache, cf)
+	}
+}
+
+// The smoke runs with its own HOME: ext/openssl tests write $HOME/.rnd, which T-431 found left in /root
+// after rollback, and upload/session files left in /tmp.
+func TestBUG103_SmokeHomeIsolated(t *testing.T) {
+	d := filepath.Join(t.TempDir(), "empty-ini.d")
+	got := map[string]string{}
+	for _, e := range SmokeEnv(d) {
+		if k, v, ok := strings.Cut(e, "="); ok {
+			got[k] = v
+		}
+	}
+	for _, k := range []string{"HOME", "TMPDIR"} {
+		if v := got[k]; v == "" || !strings.HasPrefix(v, filepath.Dir(d)+"/") || !sys.IsDir(v) {
+			t.Errorf("smoke %s %q is not a directory under the build's work dir", k, v)
 		}
 	}
 }

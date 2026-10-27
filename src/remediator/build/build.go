@@ -178,6 +178,8 @@ func (j *job) reusePrefix() *c.Error {
 		}
 	} else if e := j.checkVersion(); e != nil {
 		return e
+	} else if _, e := j.recordConfigure(minorOf(j.a.Target.Version)); e != nil {
+		return e
 	}
 	j.doc.Cache, j.doc.Source = "hit", "cache"
 	return nil
@@ -264,6 +266,9 @@ func (j *job) fromCache() *c.Error {
 	j.doc.Artifact = &c.Artifact{Key: j.a.Cache.Get, SHA256: j.a.Cache.SHA256, Bytes: sizeOf(st)}
 	if j.a.Base == "distro-source" {
 		return j.checkDebsVersion()
+	}
+	if _, e := j.recordConfigure(minorOf(j.a.Target.Version)); e != nil {
+		return e
 	}
 	return j.checkVersion()
 }

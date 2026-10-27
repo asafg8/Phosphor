@@ -66,7 +66,8 @@ type VerifyRuntime struct {
 	//     E_UNSUPPORTED uses its data.reason as the reason.
 	//   review: restart-required, pkg-held (the fixed package is in the repo but the installed one is held), cli-stays
 	//     (the swap leaves the CLI binary alone),
-	//     readiness-not-run, readiness-review, readiness-blocking-third-party,
+	//     readiness-not-run, no-code-roots (a cross-minor runtime no known code runs on), readiness-review,
+	//     readiness-blocking-third-party,
 	//     readiness-partial:<n>-files-not-scanned, root-unreadable, scan-not-run, ini-changed, ext-missing-unused:<ext>,
 	//     config-test-warning:<id>, lint-errors (same-minor), known-regression, preflight:<check-id>, openssl-mixed (the
 	//     new build loads a private and a system libssl where the original ran one).
@@ -82,7 +83,8 @@ type VerifyRuntime struct {
 	// Evidence are the rows behind the verdict: one per check outcome that matters.
 	Evidence []VerifyCheck `json:"evidence"`
 	// Documents are the step documents (relative to DIR) that hold the full evidence, e.g. preflight.json; a host with
-	// both a same-minor build and a P2 package target also has p2/preflight.json and p2/pkg-fetch.json.
+	// both a same-minor build and a P2 package target also has p2/preflight.json and p2/pkg-fetch.json; a host whose
+	// runtimes have different migration targets has readiness-<target>/readiness.json per target.
 	Documents []string `json:"documents"`
 	// VerifyHash binds the verdict to runtime + target + the plan.json row + evidence; build and swap need a current
 	// one.

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -499,9 +500,11 @@ func (b *builder) cgi() {
 	}
 }
 
-// cli records the php CLI binaries on PATH: cron/shebang users are invisible until they run.
+// cli records the php CLI binaries on PATH: cron/shebang users are invisible until they run. A consumer's code root
+// goes to the CLI it runs on (its resolved interpreter); one whose interpreter cannot be resolved goes to every CLI.
+// Each consumer's RuntimeID is set to that CLI.
 func (b *builder) cli(cons []c.Consumer) {
-	roots, via := consumerRoots(cons)
+	roots, via, interp := consumerRoots(cons)
 	// PATH CLIs plus the CLI of each custom SAPI's install prefix (<prefix>/bin/php, not on PATH: j)
 	for _, cand := range uniq(append([]string{"/usr/bin/php", "/usr/local/bin/php"}, b.prefixCLIs...)) {
 		if !sys.Exists(cand) {
@@ -514,7 +517,14 @@ func (b *builder) cli(cons []c.Consumer) {
 		pi, _ := interrogate(r.Binary, nil)
 		b.fill(r, pi, "", "")
 		for _, root := range roots {
-			r.CodeRoots = append(r.CodeRoots, analyzeRoot(root, via[root])...)
+			if bins := interp[root]; len(bins) == 0 || slices.Contains(bins, r.Binary) {
+				r.CodeRoots = append(r.CodeRoots, analyzeRoot(root, via[root])...)
+			}
+		}
+		for i := range cons {
+			if consumerInterp(cons[i]) == r.Binary {
+				cons[i].RuntimeID = r.ID
+			}
 		}
 		// long-running CLI workers
 		for _, p := range b.procs {
@@ -526,30 +536,37 @@ func (b *builder) cli(cons []c.Consumer) {
 }
 
 // consumerRoots are the code roots of the hidden PHP users: shebang scripts and the directories of the scripts that
-// cron/systemd/supervisord run.
-func consumerRoots(cons []c.Consumer) ([]string, map[string]c.CodeRootVia) {
+// cron/systemd/supervisord run, how each is run, and the php binaries that run it (none when unresolved).
+func consumerRoots(cons []c.Consumer) ([]string, map[string]c.CodeRootVia, map[string][]string) {
 	var roots []string
 	via := map[string]c.CodeRootVia{}
+	interp := map[string][]string{}
 	for _, cn := range cons {
+		root := ""
 		switch cn.Kind {
 		case "shebang":
 			// phar archives are tools, not application code
 			if rp, _ := filepath.EvalSymlinks(cn.Path); strings.HasSuffix(rp, ".phar") || strings.HasSuffix(cn.Path, ".phar") {
 				continue
 			}
-			roots = append(roots, cn.Path)
-			via[cn.Path] = "cli"
+			root = cn.Path
+			via[root] = "cli"
 		default:
-			if s := consumerScript(cn.Cmd); s != "" {
-				d := filepath.Dir(s)
-				roots = append(roots, d)
-				if cn.Kind == "cron" {
-					via[d] = "cron"
-				} else if _, ok := via[d]; !ok {
-					via[d] = "cli"
-				}
+			s := consumerScript(cn.Cmd)
+			if s == "" {
+				continue
+			}
+			root = filepath.Dir(s)
+			if cn.Kind == "cron" {
+				via[root] = "cron"
+			} else if _, ok := via[root]; !ok {
+				via[root] = "cli"
 			}
 		}
+		roots = append(roots, root)
+		if bin := consumerInterp(cn); bin != "" && !slices.Contains(interp[root], bin) {
+			interp[root] = append(interp[root], bin)
+		}
 	}
-	return uniq(roots), via
+	return uniq(roots), via, interp
 }

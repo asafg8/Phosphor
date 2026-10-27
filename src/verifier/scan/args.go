@@ -2,6 +2,7 @@ package scan
 
 import (
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 
@@ -32,10 +33,16 @@ func Slug(p string) string {
 }
 
 // Roots are the asset's code roots minus nested third-party entries (they are classified inside their parent).
-func Roots(fp *c.Fingerprint) []Root {
+func Roots(fp *c.Fingerprint) []Root { return RootsOf(fp, nil) }
+
+// RootsOf are the code roots of the runtimes in ids (every runtime when ids is nil), as Roots.
+func RootsOf(fp *c.Fingerprint, ids []string) []Root {
 	var out []Root
 	seen := map[string]bool{}
 	for _, rt := range fp.Runtimes {
+		if ids != nil && !slices.Contains(ids, rt.ID) {
+			continue
+		}
 		for _, cr := range rt.CodeRoots {
 			if seen[cr.Path] {
 				continue

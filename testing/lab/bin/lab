@@ -419,7 +419,7 @@ provision_d12() {
   docker cp testing/lab/docker/kit/kit.php "$c:/usr/local/lib/phosphor-lab-kit/kit.php" >/dev/null
   docker cp testing/lab/docker/kit/faults.php "$c:/usr/local/lib/phosphor-lab-kit/faults.php" >/dev/null
   docker cp testing/lab/variants/phpfpm/app/. "$c:/var/www/html/" >/dev/null
-  printf 'map $http_user_agent $phosphor_log {\n    "phosphor-lab-health" 0;\n    default 1;\n}\n' | docker exec -i "$c" sh -c 'cat > /etc/nginx/conf.d/00-phosphor-lab-log.conf'
+  printf 'map_hash_bucket_size 64;\nmap $http_user_agent $phosphor_log {\n    "phosphor-lab-health" 0;\n    default 1;\n}\n' | docker exec -i "$c" sh -c 'cat > /etc/nginx/conf.d/00-phosphor-lab-log.conf'
   sed 's#unix:/run/php-fpm.sock#unix:/run/php/php8.2-fpm.sock#g; s#custom php-fpm#Debian php8.2-fpm#; s#access.log combined;#access.log combined if=$phosphor_log;#' testing/lab/variants/phpfpm/nginx-site.conf \
     | docker exec -i "$c" sh -c 'cat > /etc/nginx/sites-available/default'
   docker exec "$c" sh -c "set -e; echo 80232 > /etc/phosphor-lab/base-version-id; rm -f /var/www/html/index.html; chown -R www-data:www-data /var/www/html

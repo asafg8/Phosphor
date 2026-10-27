@@ -64,30 +64,11 @@ func (j *job) upstream() *c.Error {
 
 	// 3. configure replay (from the fingerprint's line; needs no source tree), or for a package that strips it, the
 	// line synthesized from what the package serves (modules, ini paths, SAPI).
-	orig, synthExtra, e := j.configureLine(minor)
+	eff, e := j.recordConfigure(minor)
 	if e != nil {
 		return e
 	}
-	strip := append([]string{}, a.Lab.StripConfigure...)
-	for _, ext := range a.Lab.DropExt {
-		strip = append(strip, "--enable-"+ext, "--with-"+ext)
-	}
-	origDisablesCGI := HasFlag(orig, "--disable-cgi")
-	ro := RewriteOpts{Prefix: j.prefix, Strip: strip, KeepCGI: true}
-	if j.route.ID == "A3" || j.route.ID == "A" {
-		ossl := filepath.Join(j.prefix, "openssl")
-		ro.Replace = []string{"PKG_CONFIG_PATH", "LDFLAGS"}
-		ro.Extra = []string{"PKG_CONFIG_PATH=" + ossl + "/lib/pkgconfig"}
-		if j.route.ID == "A3" {
-			ro.Extra = append(ro.Extra, "LDFLAGS=-Wl,-rpath,"+ossl+"/lib")
-		}
-	}
-	ro.Extra = append(ro.Extra, synthExtra...)
-	eff, dropped := RewriteConfigure(orig, ro)
-	j.doc.Configure = c.ConfigureInfo{Original: orig, Effective: eff, Dropped: dropped, Source: "verbatim"}
-	if j.synthesized {
-		j.doc.Configure.Source = "synthesized" // rebuilt from what the package serves, visible in review
-	}
+	origDisablesCGI := HasFlag(j.doc.Configure.Original, "--disable-cgi")
 
 	// 4. guardrails, then deps (recorded delta, EOL archive fallback). Sources are already verified;
 	// patch/xz are build deps too, so unpacking and patching come after this.
@@ -204,6 +185,37 @@ func (j *job) upstream() *c.Error {
 	return j.checkVersion()
 }
 
+// recordConfigure sets build.json's configure (original, effective, dropped, source) and returns the effective line.
+// A reused prefix or cached artifact of this shape records it too: the shape key covers the configure, so
+// it is the line the reused binary was built with, and review needs it (synthesized lines).
+func (j *job) recordConfigure(minor string) ([]string, *c.Error) {
+	a := j.a
+	orig, synthExtra, e := j.configureLine(minor)
+	if e != nil {
+		return nil, e
+	}
+	strip := append([]string{}, a.Lab.StripConfigure...)
+	for _, ext := range a.Lab.DropExt {
+		strip = append(strip, "--enable-"+ext, "--with-"+ext)
+	}
+	ro := RewriteOpts{Prefix: j.prefix, Strip: strip, KeepCGI: true}
+	if j.route.ID == "A3" || j.route.ID == "A" {
+		ossl := filepath.Join(j.prefix, "openssl")
+		ro.Replace = []string{"PKG_CONFIG_PATH", "LDFLAGS"}
+		ro.Extra = []string{"PKG_CONFIG_PATH=" + ossl + "/lib/pkgconfig"}
+		if j.route.ID == "A3" {
+			ro.Extra = append(ro.Extra, "LDFLAGS=-Wl,-rpath,"+ossl+"/lib")
+		}
+	}
+	ro.Extra = append(ro.Extra, synthExtra...)
+	eff, dropped := RewriteConfigure(orig, ro)
+	j.doc.Configure = c.ConfigureInfo{Original: orig, Effective: eff, Dropped: dropped, Source: "verbatim"}
+	if j.synthesized {
+		j.doc.Configure.Source = "synthesized" // rebuilt from what the package serves, visible in review
+	}
+	return eff, nil
+}
+
 // configureLine is the original configure line split into arguments, or for a packaged runtime that carries none,
 // the synthesized one plus the install-location flags it must keep.
 func (j *job) configureLine(minor string) (orig, extra []string, e *c.Error) {
@@ -242,7 +254,12 @@ func opensslVersionFor(r Route, a c.BuildArgs) string {
 // is pointed at an empty directory (an empty PHP_INI_SCAN_DIR does not survive run-tests' environment).
 func SmokeEnv(emptyDir string) []string {
 	_ = os.MkdirAll(emptyDir, 0o755)
-	return []string{"NO_INTERACTION=1", "REPORT_EXIT_STATUS=1", "PHP_INI_SCAN_DIR=" + emptyDir}
+	// run-tests leaves files in $HOME and the temp dir (OpenSSL's .rnd; upload, session and cli-server files under
+	// /tmp): both point into the work dir, which the build removes.
+	home, tmp := filepath.Join(filepath.Dir(emptyDir), "home"), filepath.Join(filepath.Dir(emptyDir), "tmp")
+	_ = os.MkdirAll(home, 0o700)
+	_ = os.MkdirAll(tmp, 0o1777)
+	return []string{"NO_INTERACTION=1", "REPORT_EXIT_STATUS=1", "PHP_INI_SCAN_DIR=" + emptyDir, "HOME=" + home, "TMPDIR=" + tmp}
 }
 
 // smoke runs the run-tests subset from tree against php (and cgi, when built: the rfc1867 tests) and

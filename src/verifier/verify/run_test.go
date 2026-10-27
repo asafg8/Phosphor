@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	c "github.com/asafg8/Phosphor/src/contract"
-	agentrt "github.com/asafg8/Phosphor/src/internal/stage/rt"
+	stagert "github.com/asafg8/Phosphor/src/internal/stage/rt"
 )
 
 type answers struct {
@@ -39,9 +39,9 @@ func in(t *testing.T) string {
 }
 
 func run(t *testing.T, o Options) (int, c.Verify, string) {
-	saved := agentrt.Root
-	agentrt.Root = t.TempDir()
-	defer func() { agentrt.Root = saved; agentrt.LocalDir = ""; os.Unsetenv("PHOSPHOR_LOCAL_DIR") }()
+	saved := stagert.Root
+	stagert.Root = t.TempDir()
+	defer func() { stagert.Root = saved; stagert.LocalDir = ""; os.Unsetenv("PHOSPHOR_LOCAL_DIR") }()
 	var out bytes.Buffer
 	if o.Out == "" {
 		o.Out = t.TempDir()
@@ -138,9 +138,9 @@ func TestRunConsentedBuildIsPreflighted(t *testing.T) {
 // A fresh verdict is current against plan.json as reloaded from disk (nil vs [] must not change the hash);
 // any change to the runtime's plan row makes it stale.
 func TestBUG071_CurrentAfterReload(t *testing.T) {
-	saved := agentrt.Root
-	agentrt.Root = t.TempDir()
-	defer func() { agentrt.Root = saved; agentrt.LocalDir = ""; os.Unsetenv("PHOSPHOR_LOCAL_DIR") }()
+	saved := stagert.Root
+	stagert.Root = t.TempDir()
+	defer func() { stagert.Root = saved; stagert.LocalDir = ""; os.Unsetenv("PHOSPHOR_LOCAL_DIR") }()
 	out := t.TempDir()
 	Run(Options{In: in(t), Out: out})
 	var p c.Plan
@@ -172,7 +172,21 @@ func TestBUG071_CurrentAfterReload(t *testing.T) {
 
 // verify.json names the plain target minor ("8.3"); the open-ended testVersion form ("8.3-") stays in scan.json.
 func TestMigrationTargetIsPlain(t *testing.T) {
-	_, v, _ := run(t, Options{In: in(t), Target: "8.3", NoReadiness: true})
+	// a runtime that serves code: its cross-minor move needs readiness (one with no code roots has nothing to scan)
+	dir, code := in(t), t.TempDir()
+	if err := os.WriteFile(filepath.Join(code, "index.php"), []byte("<?php echo 1;\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	var fp c.Fingerprint
+	if err := readJSON(filepath.Join(dir, "fingerprint.json"), &fp); err != nil {
+		t.Fatal(err)
+	}
+	fp.Runtimes[0].CodeRoots = []c.CodeRoot{{Path: code, Kind: "first-party"}}
+	b, _ := c.Marshal(fp)
+	if err := os.WriteFile(filepath.Join(dir, "fingerprint.json"), b, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	_, v, _ := run(t, Options{In: dir, Target: "8.3", NoReadiness: true})
 	if got := v.Runtimes[0].MigrationTarget; got != "8.3" {
 		t.Errorf("migration_target %q, want 8.3", got)
 	}
