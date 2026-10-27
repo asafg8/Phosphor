@@ -53,7 +53,7 @@ lab sh <fx> -- <cmd…>
 - **Fixture d12** (Debian 12; no image of its own, provisioned at `up`/`fixture-reset` from bookworm): Debian's
   packaged php8.2-fpm/cli 8.2.32-1~deb12u1 with bcmath curl gd intl mbstring pgsql+pdo_pgsql soap xml zip opcache (pdo shared,
   no sqlite) behind nginx. Default: the fixed 8.2.35-1~deb12u1 is the visible candidate. `HELD=1`: plus apt-mark hold.
-  `NOFIX=1`: 8.2.35* pinned away, no fixed candidate. 3 GB / 2 CPU (distro-build sizing). Batches b4, b4b.
+  `NOFIX=1`: 8.2.35* pinned away, no fixed candidate. 3 GB / 4 CPU (distro-build sizing; 2 CPU at `PHOSPHOR_LAB_MEM=8g`). Batches b4, b4b.
 - **CUSTOM74=1** (k2, mixed host): adds a second runtime next to ondrej php5.6 (P2): fixture (f)'s custom PHP 7.4.33
   (/usr/local + private shared OpenSSL 1.1.1w, copied from the f image, no rebuild) as `php74-fpm.service`, served at `/php74/`.
 - **HOSTILEAPT=1** (a, k2): host apt already trusts an unsigned source / allows insecure repos.

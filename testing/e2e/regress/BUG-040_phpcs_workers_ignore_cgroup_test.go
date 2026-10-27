@@ -24,8 +24,8 @@ func TestBUG040_PhpcsWorkersFollowCgroup(t *testing.T) {
 	b, err := exec.Command("docker", "inspect", "-f", "{{.HostConfig.NanoCpus}}", h.Container(fx)).Output()
 	nano, _ := strconv.Atoi(strings.TrimSpace(string(b)))
 	cpus := nano / 1e9
-	if err != nil || cpus < 1 || cpus > 3 {
-		t.Fatalf("precondition: (i) must be limited to 1–3 CPUs (lab build fixtures: 2), NanoCpus=%d err=%v", nano, err)
+	if err != nil || cpus < 1 || cpus > 7 {
+		t.Fatalf("precondition: (i) must be limited to 1–7 CPUs, below the clamp at 4 workers (lab build fixtures: 4), NanoCpus=%d err=%v", nano, err)
 	}
 	want := max(cpus/2, 1) // clamp(cgroup CPUs/2, 1, 4); the host has far more CPUs than the container
 	h.Find(t, fx)

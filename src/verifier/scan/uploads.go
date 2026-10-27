@@ -4,30 +4,38 @@ import (
 	"bufio"
 	"os"
 	"regexp"
+	"strings"
 
 	c "github.com/asafg8/Phosphor/src/contract"
 )
 
-// pattern is one feature-use grep rule (feature-use pack); kind is recorded as evidence.kind.
+// pattern is one feature-use grep rule (feature-use pack); kind is recorded as evidence.kind. lit is a substring
+// every match contains: a line without it skips the regexp (most lines of most files), which keeps the scan cheap.
 type pattern struct {
 	kind string
 	re   *regexp.Regexp
+	lit  string
+}
+
+// matches is re on l, tried only when l contains the pattern's literal.
+func (p pattern) matches(l string) bool {
+	return strings.Contains(l, p.lit) && p.re.MatchString(l)
 }
 
 var (
 	uploadsUsed = []pattern{
-		{"$_FILES", regexp.MustCompile(`\$_FILES\b`)},
-		{"move_uploaded_file", regexp.MustCompile(`\bmove_uploaded_file\s*\(`)},
-		{"is_uploaded_file", regexp.MustCompile(`\bis_uploaded_file\s*\(`)},
-		{"multipart-form", regexp.MustCompile(`(?i)multipart/form-data`)},
-		{"wp_handle_upload", regexp.MustCompile(`\b(wp_handle_upload|media_handle_upload)\s*\(`)},
+		{"$_FILES", regexp.MustCompile(`\$_FILES\b`), "$_FILES"},
+		{"move_uploaded_file", regexp.MustCompile(`\bmove_uploaded_file\s*\(`), "move_uploaded_file"},
+		{"is_uploaded_file", regexp.MustCompile(`\bis_uploaded_file\s*\(`), "is_uploaded_file"},
+		{"multipart-form", regexp.MustCompile(`(?i)multipart/form-data`), "/"}, // case-insensitive: only the slash is literal
+		{"wp_handle_upload", regexp.MustCompile(`\b(wp_handle_upload|media_handle_upload)\s*\(`), "_handle_upload"},
 	}
 	dynFiles = regexp.MustCompile(`\$\{\s*['"]_FI['"]\s*\.|\$GLOBALS\s*\[\s*\$|\$\$[A-Za-z_]`)
 	// session upload progress only: the ini names, or the default session key prefix as a string literal.
 	// Not APC_UPLOAD_PROGRESS / PECL uploadprogress / a `$upload_progress_key` variable (Drupal 7 core).
 	progressUsed = []pattern{
-		{"session.upload_progress", regexp.MustCompile(`session\.upload_progress`)},
-		{"upload_progress-key", regexp.MustCompile(`['"]upload_progress_`)},
+		{"session.upload_progress", regexp.MustCompile(`session\.upload_progress`), "session.upload_progress"},
+		{"upload_progress-key", regexp.MustCompile(`['"]upload_progress_`), "upload_progress_"},
 	}
 )
 
@@ -93,7 +101,7 @@ func ClassifyFile(path string, uploads, progress *Feature) {
 		fl := c.FileLine{File: path, Line: n}
 		if k := match(uploadsUsed, l); k != "" {
 			uploads.add(&uploads.Used, fl, k)
-		} else if dynFiles.MatchString(l) {
+		} else if strings.Contains(l, "$") && dynFiles.MatchString(l) {
 			uploads.add(&uploads.Unknown, fl, "dynamic")
 		}
 		if progress != nil {
@@ -127,7 +135,7 @@ func eachLine(path string, fn func(n int, l string)) bool {
 
 func match(ps []pattern, l string) string {
 	for _, p := range ps {
-		if p.re.MatchString(l) {
+		if p.matches(l) {
 			return p.kind
 		}
 	}
@@ -142,11 +150,11 @@ var extraFeatures = []struct {
 }{
 	// code paths exposed to the simplexml regression (php-src#24488)
 	{"simplexml", []pattern{
-		{"simplexml_load", regexp.MustCompile(`\bsimplexml_(load_string|load_file|import_dom)\s*\(`)},
-		{"SimpleXMLElement", regexp.MustCompile(`\bnew\s+\\?SimpleXMLElement\b`)},
+		{"simplexml_load", regexp.MustCompile(`\bsimplexml_(load_string|load_file|import_dom)\s*\(`), "simplexml_"},
+		{"SimpleXMLElement", regexp.MustCompile(`\bnew\s+\\?SimpleXMLElement\b`), "SimpleXMLElement"},
 	}},
 	// shutdown handlers (OOM / fatal-error reporting runs there)
-	{"shutdown-handler", []pattern{{"register_shutdown_function", regexp.MustCompile(`\bregister_shutdown_function\s*\(`)}}},
+	{"shutdown-handler", []pattern{{"register_shutdown_function", regexp.MustCompile(`\bregister_shutdown_function\s*\(`), "register_shutdown_function"}}},
 }
 
 // classifyExtra adds a file's evidence for every extra feature.

@@ -55,7 +55,7 @@ write_env() {
   local vm build dbuild bcpu svc n infra cpus maxvm
   case "$mem" in
     8g) vm=768m; n=512m; build=1536m; dbuild=1536m; bcpu=2.0; svc=384m; infra=128m; cpus=1.0; maxvm=4 ;;
-    24g) vm=1g; n=1g; build=2g; dbuild=3g; bcpu=2.0; svc=512m; infra=256m; cpus=1.0; maxvm=8 ;;
+    24g) vm=1g; n=1g; build=2g; dbuild=3g; bcpu=4.0; svc=512m; infra=256m; cpus=2.0; maxvm=8 ;;
     *) die "PHOSPHOR_LAB_MEM must be 8g or 24g" ;;
   esac
   {

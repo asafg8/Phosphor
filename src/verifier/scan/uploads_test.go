@@ -83,3 +83,32 @@ func TestUploadProgress(t *testing.T) {
 		t.Errorf("use %+v", u)
 	}
 }
+
+// Each rule's literal prefilter is exact: on lines that match (and near-misses), the guarded match agrees with the
+// regexp alone, so skipping the regexp on lines without the literal never drops evidence.
+func TestScanLiteralPrefilter(t *testing.T) {
+	lines := []string{
+		`if (!empty($_FILES['f'])) {}`, `move_uploaded_file ($tmp, $dst);`, `is_uploaded_file($f)`,
+		`<form enctype="MULTIPART/Form-Data">`, `wp_handle_upload($file)`, `media_handle_upload ( 'x', 0 )`,
+		`ini_get('session.upload_progress.enabled')`, `$k = "upload_progress_" . $name;`,
+		`simplexml_load_string($xml)`, `$x = new \SimpleXMLElement($s);`, `register_shutdown_function([$this, 'end']);`,
+		`if (ini_get('register_globals')) {}`, `get_magic_quotes_gpc()`, `$fn ($a);`, `$cb();`,
+		`create_function('$a', 'return 1;')`, `extract( $_POST );`, `preg_replace('/x/e', $r, $s)`,
+		`echo 1;`, `$x = 1;`, `// multipart`, `files()`, `(`,
+	}
+	var all []pattern
+	all = append(append(all, uploadsUsed...), progressUsed...)
+	for _, e := range extraFeatures {
+		all = append(all, e.pats...)
+	}
+	for _, r := range riskRules {
+		all = append(all, pattern{r.rule, r.re, r.lit})
+	}
+	for _, l := range lines {
+		for _, p := range all {
+			if p.re.MatchString(l) != p.matches(l) {
+				t.Errorf("%s: prefilter disagrees with the regexp on %q", p.kind, l)
+			}
+		}
+	}
+}

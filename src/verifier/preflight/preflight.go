@@ -7,10 +7,12 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"slices"
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -423,20 +425,44 @@ func lint(cli string, roots []c.CodeRoot) (int, []c.LintError, int) {
 		capped = len(files) - lintCap
 		files = files[:lintCap]
 	}
+	// one php per file (before 8.3, `php -l` reads only its first file), on half the CPUs we may use (1…4)
+	res := make([]*c.LintError, len(files))
+	next := make(chan int)
+	var wg sync.WaitGroup
+	for range min(max(runtime.GOMAXPROCS(0)/2, 1), 4) {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for i := range next {
+				res[i] = lintFile(cli, files[i])
+			}
+		}()
+	}
+	for i := range files {
+		next <- i
+	}
+	close(next)
+	wg.Wait()
 	errs := []c.LintError{}
-	for _, f := range files {
-		out, code := sys.Combined(20*time.Second, nil, cli, "-n", "-l", f)
-		if code == 0 {
-			continue
-		}
-		if m := lintErrRE.FindStringSubmatch(out); m != nil {
-			n, _ := strconv.Atoi(m[3])
-			errs = append(errs, c.LintError{File: m[2], Line: n, Msg: strings.TrimSpace(m[1])})
-		} else {
-			errs = append(errs, c.LintError{File: f, Msg: tail(out)})
+	for _, e := range res {
+		if e != nil {
+			errs = append(errs, *e)
 		}
 	}
 	return len(files), errs, capped
+}
+
+// lintFile is `php -l` of one file: nil when it passes.
+func lintFile(cli, f string) *c.LintError {
+	out, code := sys.Combined(20*time.Second, nil, cli, "-n", "-l", f)
+	if code == 0 {
+		return nil
+	}
+	if m := lintErrRE.FindStringSubmatch(out); m != nil {
+		n, _ := strconv.Atoi(m[3])
+		return &c.LintError{File: m[2], Line: n, Msg: strings.TrimSpace(m[1])}
+	}
+	return &c.LintError{File: f, Msg: tail(out)}
 }
 
 var fpmConfRE = regexp.MustCompile(`(?:--fpm-config|-y)[ =]+(\S+)`)

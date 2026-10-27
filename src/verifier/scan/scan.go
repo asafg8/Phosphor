@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -197,9 +198,9 @@ type phpcsFile struct {
 	} `json:"messages"`
 }
 
-// limiter decides how phpcs is confined: systemd-run scope (CPUQuota 50%, MemoryMax 1G) when systemd is PID 1,
+// limiter decides how phpcs is confined: a systemd-run scope (CPUQuota quota%, MemoryMax 1G) when systemd is PID 1,
 // else nice/ionice.
-func limiter(noSystemd bool) (c.ResourceLimits, []string) {
+func limiter(noSystemd bool, quota int) (c.ResourceLimits, []string) {
 	nice := []string{}
 	if p := sys.Which("nice"); p != "" {
 		nice = append(nice, p, "-n", "19")
@@ -209,9 +210,10 @@ func limiter(noSystemd bool) (c.ResourceLimits, []string) {
 	}
 	comm := strings.TrimSpace(sys.ReadString("/proc/1/comm"))
 	if sr := sys.Which("systemd-run"); !noSystemd && comm == "systemd" && sr != "" {
-		scope := []string{"--scope", "--quiet", "-p", "CPUQuota=50%", "-p", "MemoryMax=1G"}
+		q := strconv.Itoa(quota) + "%"
+		scope := []string{"--scope", "--quiet", "-p", "CPUQuota=" + q, "-p", "MemoryMax=1G"}
 		if _, code := sys.Combined(15*time.Second, nil, "systemd-run", append(scope, "true")...); code == 0 {
-			return c.ResourceLimits{CPUQuota: "50%", MemoryMax: "1G", Nice: 19, IONice: "idle", Via: "systemd-run"},
+			return c.ResourceLimits{CPUQuota: q, MemoryMax: "1G", Nice: 19, IONice: "idle", Via: "systemd-run"},
 				append(append([]string{sr}, scope...), nice...)
 		}
 	}

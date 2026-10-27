@@ -3,9 +3,11 @@
 package local
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -88,7 +90,15 @@ func TestT303_ThirdPartyOnlyReview(t *testing.T) {
 	h.JQ(t, "a", R, `.target_version=="8.2-" and .decision=="review" and .counts.first_party.errors==0 and .blocking_reasons==[]`)
 	h.JQ(t, "a", "plan.json", `[.runtimes[].precedence]|unique==["P4"]`)
 	h.JQ(t, "a", "scan.json", `.uses_uploads==true and (.uploads_evidence|any(.file|endswith("wp-admin/includes/file.php"))) and (.uploads_evidence|any(.file|endswith("phosphor-app/upload.php")))`)
-	h.JQ(t, "a", R, `.limits=={"cpu_quota":"50%","memory_max":"1G","nice":19,"ionice":"idle","via":"systemd-run"}`)
+	// CPUQuota: one CPU per phpcs worker (clamp(CPUs/2, 1, 4)), at most CPUs×50%, at least 50%
+	b, err := exec.Command("docker", "inspect", "-f", "{{.HostConfig.NanoCpus}}", h.Container("a")).Output()
+	nano, _ := strconv.Atoi(strings.TrimSpace(string(b)))
+	cpus := nano / 1e9
+	if err != nil || cpus < 1 {
+		t.Fatalf("precondition: (a) must have a CPU limit, NanoCpus=%d err=%v", nano, err)
+	}
+	quota := max(min(min(max(cpus/2, 1), 4)*100, cpus*50), 50)
+	h.JQ(t, "a", R, fmt.Sprintf(`.limits=={"cpu_quota":"%d%%","memory_max":"1G","nice":19,"ionice":"idle","via":"systemd-run"}`, quota))
 }
 
 // No upload use on (j).
