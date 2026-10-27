@@ -1,6 +1,7 @@
 package build
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -36,6 +37,7 @@ func (j *job) distroSource() *c.Error {
 	_ = os.MkdirAll(keyDir, 0o700)
 
 	// 1. pinned archive keys + patch candidates, sha256-verified before anything else.
+	j.x.Say("verifying the pinned archive keys and patches")
 	keyPaths, krefs, kerr := fetchSources(j.x, j.r, keysAsSources(a.DistroKeys), keyDir)
 	if kerr != nil {
 		return c.Errf(c.ESourceUnverified, "step", "keyring", "detail", kerr.Data)
@@ -63,6 +65,7 @@ func (j *job) distroSource() *c.Error {
 	}
 
 	// 2. download the source package through the pinned archive chain only (no host keyring, no host sources).
+	j.x.Say("downloading the distro source package (pinned archives only)")
 	var list strings.Builder
 	for _, s := range archives {
 		kp := keyPaths[s.Keyring]
@@ -184,7 +187,10 @@ func (j *job) distroSource() *c.Error {
 		return e
 	}
 	benv := []string{"DEB_BUILD_OPTIONS=nocheck parallel=" + strconv.Itoa(g.Jobs)}
-	if out, code := j.r.Heavy(tree, 6*time.Hour, benv, "dpkg-buildpackage", "-b", "-uc", "-us"); code != 0 {
+	end := j.x.Phase(fmt.Sprintf("building the patched packages (dpkg-buildpackage, %d jobs)", g.Jobs))
+	out, code = j.r.Heavy(tree, 6*time.Hour, benv, "dpkg-buildpackage", "-b", "-uc", "-us")
+	end(code == 0)
+	if code != 0 {
 		return heavyFailed("dpkg-buildpackage", out)
 	}
 	debs := globAll(filepath.Join(srcDir, "*_"+strings.TrimPrefix(newVer, epochOf(newVer))+"_*.deb"))
@@ -226,13 +232,21 @@ func (j *job) distroSource() *c.Error {
 		return c.Errf(c.ETelemetryInBuild, "step", "denylist", "hits", hits)
 	}
 	j.doc.VersionString = newVer
-	return j.smoke(tree, cli, cgi, ExpectedFailKeys("7.4", opensslMajor(a.Host.OpenSSLSystem), a.Host.OSID))
+	end = j.x.Phase("running PHP's own smoke tests")
+	e := j.smoke(tree, cli, cgi, ExpectedFailKeys("7.4", opensslMajor(a.Host.OpenSSLSystem), a.Host.OSID))
+	end(e == nil)
+	return e
 }
 
 // installDeps runs an install and records its delta for removal at the end, whatever happens next.
 func (j *job) installDeps(f func() (pkg.Result, *c.Error)) *c.Error {
 	j.depsRan = true
+	end := j.x.Phase("installing build dependencies")
 	res, err := f()
+	end(err == nil)
+	if err == nil && len(res.Added) > 0 {
+		j.x.Say("%d packages added; they are removed again when the build ends", len(res.Added))
+	}
 	j.added = append(j.added, res.Added...)
 	j.configFilesBefore = append(j.configFilesBefore, res.ConfigFilesBefore...)
 	j.newDirs = append(j.newDirs, res.NewDirs...)

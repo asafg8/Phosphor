@@ -30,6 +30,23 @@ var downloads = &http.Client{Timeout: 30 * time.Minute}
 // LocalDir is the out directory of the current command: every document and events.ndjson are written there.
 var LocalDir string
 
+// Progress receives the operator's progress lines (the CLI's progress stream: stdout in text mode, stderr with
+// --json); nil keeps a stage silent, as in the detached watch.
+var Progress io.Writer
+
+// Heartbeat is how often a long Phase reports that it is still running.
+var Heartbeat = time.Minute
+
+var progressMu sync.Mutex
+
+func say(sub, format string, a ...any) {
+	progressMu.Lock()
+	defer progressMu.Unlock()
+	if Progress != nil {
+		fmt.Fprintf(Progress, "  "+sub+": "+format+"\n", a...)
+	}
+}
+
 type Ctx struct {
 	M        *c.Manifest
 	StateDir string
@@ -233,4 +250,50 @@ func (x *Ctx) Fetch(name, dst, wantSHA string) (string, error) {
 		return sum, c.Errf(c.ESourceIntegrity, "name", name, "want", wantSHA, "got", sum)
 	}
 	return sum, os.Rename(tmp, dst)
+}
+
+// Say writes one progress line for the operator: "  <stage>: <text>".
+func (x *Ctx) Say(format string, a ...any) { say(x.M.Sub, format, a...) }
+
+// Phase announces a long step, reports every Heartbeat that it is still running, and returns the func that ends it
+// with its outcome and duration ("compiling PHP: done in 9m12s", "… failed after 40s").
+func (x *Ctx) Phase(what string) (end func(ok bool)) {
+	start := time.Now()
+	say(x.M.Sub, "%s…", what)
+	stop, every := make(chan struct{}), Heartbeat
+	go func() {
+		t := time.NewTicker(every)
+		defer t.Stop()
+		for {
+			select {
+			case <-stop:
+				return
+			case <-t.C:
+				say(x.M.Sub, "%s… %s", what, Elapsed(time.Since(start)))
+			}
+		}
+	}()
+	var once sync.Once
+	return func(ok bool) {
+		once.Do(func() {
+			close(stop)
+			if ok {
+				say(x.M.Sub, "%s: done in %s", what, Elapsed(time.Since(start)))
+			} else {
+				say(x.M.Sub, "%s: failed after %s", what, Elapsed(time.Since(start)))
+			}
+		})
+	}
+}
+
+// Elapsed is a duration as an operator reads it: 42s, 3m05s, 1h02m.
+func Elapsed(d time.Duration) string {
+	d = d.Round(time.Second)
+	switch {
+	case d < time.Minute:
+		return fmt.Sprintf("%ds", int(d.Seconds()))
+	case d < time.Hour:
+		return fmt.Sprintf("%dm%02ds", int(d.Minutes()), int(d.Seconds())%60)
+	}
+	return fmt.Sprintf("%dh%02dm", int(d.Hours()), int(d.Minutes())%60)
 }
