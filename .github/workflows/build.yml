@@ -1,0 +1,43 @@
+# build: lint + unit tests, then `make build` (bin/phosphor-linux-{amd64,arm64}), uploaded as an artifact.
+# The e2e suite needs the docker lab (testing/lab) and hours of runtime, so it stays a local `make e2e-local`.
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # `git describe --tags` in the Makefile stamps the version
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        run: make build
+
+      - name: Check binaries
+        run: |
+          bin/phosphor version
+          file bin/phosphor-linux-amd64 bin/phosphor-linux-arm64 | tee /dev/stderr | grep -c 'statically linked' | grep -qx 2
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phosphor-${{ github.sha }}
+          path: |
+            bin/phosphor-linux-amd64
+            bin/phosphor-linux-arm64
+          if-no-files-found: error
