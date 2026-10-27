@@ -1,0 +1,457 @@
+{
+  "$defs": {
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "E_NO_DISK",
+            "E_EXT_REBUILD",
+            "E_SOURCE_INTEGRITY",
+            "E_ARTIFACT_INTEGRITY",
+            "E_BUILD_FAILED",
+            "E_DEPS_INSTALL",
+            "E_PREFLIGHT",
+            "E_NOT_ELIGIBLE",
+            "E_LAB_FLAG",
+            "E_ROOT_UNREADABLE",
+            "E_MANIFEST",
+            "E_USAGE",
+            "E_SCAN_FAILED",
+            "E_SWAP_FAILED",
+            "E_SWAP_VERIFY",
+            "E_ROLLBACK_FAILED",
+            "E_TIMEOUT",
+            "E_UNSUPPORTED",
+            "E_INTERNAL",
+            "E_PATCH_APPLY",
+            "E_DRIFT",
+            "E_VERSION_PATCH",
+            "E_SMOKE",
+            "E_DEPS_UNAVAILABLE",
+            "E_SOURCE_UNVERIFIED",
+            "E_RESULT_MISSING",
+            "E_NO_MEMORY",
+            "E_TELEMETRY_IN_BUILD",
+            "E_VERDICT_REQUIRED",
+            "E_BUSY"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "type": "object"
+    },
+    "Op": {
+      "additionalProperties": false,
+      "properties": {
+        "after_sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "args": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "backup": {
+          "type": "string"
+        },
+        "before_sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "content": {
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "op": {
+          "enum": [
+            "write",
+            "symlink",
+            "dropin",
+            "divert",
+            "alternatives",
+            "pkg-hold",
+            "marker",
+            "ini",
+            "rename",
+            "remove",
+            "a2mod",
+            "exec"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "after_sha256",
+        "before_sha256",
+        "op",
+        "path"
+      ],
+      "type": "object"
+    },
+    "PkgBackup": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "pkg": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "pkg",
+        "sha256",
+        "version"
+      ],
+      "type": "object"
+    },
+    "Reload": {
+      "additionalProperties": false,
+      "properties": {
+        "cmd": {
+          "type": "string"
+        },
+        "exit": {
+          "type": "integer"
+        },
+        "ms": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "cmd",
+        "exit",
+        "ms"
+      ],
+      "type": "object"
+    },
+    "StepRuntime": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "same-minor-build",
+            "needs-code-change",
+            "needs-migration",
+            "report-only",
+            "distro-update",
+            "none"
+          ],
+          "type": "string"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "inspected",
+            "scanned",
+            "preflighted",
+            "swapped",
+            "rolled-back",
+            "blocked",
+            "needs-code-change",
+            "needs-migration",
+            "failed",
+            "report-only",
+            "held"
+          ],
+          "type": "string"
+        },
+        "verify": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/StepVerify"
+            }
+          ]
+        }
+      },
+      "required": [
+        "runtime_id"
+      ],
+      "type": "object"
+    },
+    "StepVerify": {
+      "additionalProperties": false,
+      "properties": {
+        "new_binary_live": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "new_binary_live"
+      ],
+      "type": "object"
+    },
+    "Swap": {
+      "additionalProperties": false,
+      "properties": {
+        "at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "backup": {
+          "items": {
+            "$ref": "#/$defs/PkgBackup"
+          },
+          "type": "array"
+        },
+        "changes": {
+          "items": {
+            "$ref": "#/$defs/Op"
+          },
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Error"
+            }
+          ]
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            }
+          ]
+        },
+        "held_packages": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "install_model": {
+          "enum": [
+            "prefix",
+            "package-replace"
+          ],
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "runtime"
+          ],
+          "type": "string"
+        },
+        "manual_undo": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "new": {
+          "$ref": "#/$defs/SwapSide"
+        },
+        "old": {
+          "$ref": "#/$defs/SwapSide"
+        },
+        "patch_id": {
+          "type": "string"
+        },
+        "phosphor_version": {
+          "type": "string"
+        },
+        "reload": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Reload"
+            }
+          ]
+        },
+        "rollback": {
+          "items": {
+            "$ref": "#/$defs/Op"
+          },
+          "type": "array"
+        },
+        "rollback_reason": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "segv",
+                "new-fatal",
+                "5xx-rate",
+                "proc-down",
+                "swap-reverted",
+                "swap-verify",
+                "httpd-test",
+                "aborted",
+                "body-fatal",
+                "probe-witness",
+                "known-regression",
+                "operator",
+                "worker-exit-rate"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "rolled_back_at": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            }
+          ]
+        },
+        "rolled_back_by": {
+          "type": "string"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "runtimes": {
+          "items": {
+            "$ref": "#/$defs/StepRuntime"
+          },
+          "type": "array"
+        },
+        "sapi": {
+          "enum": [
+            "fpm",
+            "mod_php",
+            "cgi",
+            "cli"
+          ],
+          "type": "string"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "failed",
+            "blocked"
+          ],
+          "type": "string"
+        },
+        "undo_cmd": {
+          "type": "string"
+        },
+        "verify": {
+          "$ref": "#/$defs/SwapVerify"
+        }
+      },
+      "required": [
+        "at",
+        "changes",
+        "held_packages",
+        "kind",
+        "manual_undo",
+        "new",
+        "old",
+        "phosphor_version",
+        "rollback",
+        "runtime_id",
+        "runtimes",
+        "sapi",
+        "schema",
+        "started_at",
+        "status",
+        "undo_cmd",
+        "verify"
+      ],
+      "type": "object"
+    },
+    "SwapSide": {
+      "additionalProperties": false,
+      "properties": {
+        "binary": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "binary",
+        "version"
+      ],
+      "type": "object"
+    },
+    "SwapVerify": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "new_binary_live": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "evidence",
+        "new_binary_live"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/swap.json",
+  "$ref": "#/$defs/Swap",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -1,0 +1,5 @@
+# Debian php7.4 baseline: tests that fail on the ORIGINAL Debian package too (not flaky, not our patch). Applied only to
+# base=distro-source builds on Debian. Evidence: data/research/smoke-baseline/RESULTS-2026-10-25-debian.txt
+# Debian patch 0011-session_save_path sets a default session.save_path=/var/lib/php/sessions; these tests expect "".
+ext/session/tests/bug74514.phpt
+ext/session/tests/bug74936.phpt

@@ -1,0 +1,67 @@
+
+=====================================================================
+PHP         : /opt/phosphor/build/local/rt-14bca8d00c2e4bf1/src/sapi/cli/php 
+PHP_SAPI    : cli
+PHP_VERSION : 8.2.35
+ZEND_VERSION: 4.2.35
+PHP_OS      : Linux - Linux phosphor-lab-h 6.12.76-linuxkit #1 SMP Sat Jul 11 11:18:11 UTC 2026 aarch64
+INI actual  : /opt/phosphor/build/local/rt-14bca8d00c2e4bf1/src
+More .INIs  :  
+---------------------------------------------------------------------
+PHP         : /opt/phosphor/build/local/rt-14bca8d00c2e4bf1/src/sapi/cgi/php-cgi 
+PHP_SAPI    : cgi-fcgi
+PHP_VERSION : 8.2.35
+ZEND_VERSION: 4.2.35
+PHP_OS      : Linux - Linux phosphor-lab-h 6.12.76-linuxkit #1 SMP Sat Jul 11 11:18:11 UTC 2026 aarch64
+INI actual  : /opt/phosphor/build/local/rt-14bca8d00c2e4bf1/src
+More .INIs  : 
+--------------------------------------------------------------------- 
+---------------------------------------------------------------------
+PHP         : /opt/phosphor/build/local/rt-14bca8d00c2e4bf1/src/sapi/phpdbg/phpdbg 
+PHP_SAPI    : phpdbg
+PHP_VERSION : 8.2.35
+ZEND_VERSION: 4.2.35
+PHP_OS      : Linux - Linux phosphor-lab-h 6.12.76-linuxkit #1 SMP Sat Jul 11 11:18:11 UTC 2026 aarch64
+INI actual  : /opt/phosphor/build/local/rt-14bca8d00c2e4bf1/src
+More .INIs  : 
+---------------------------------------------------------------------
+CWD         : /opt/phosphor/build/local/rt-14bca8d00c2e4bf1/src
+Extra dirs  : 
+VALGRIND    : Not used
+TEST 4764/4772 [ext/session/tests/session_status_disabled.phpt]
+PASS Test session_status() function : disabled [ext/session/tests/session_status_disabled.phpt] 
+TEST 4765/4772 [ext/session/tests/session_unset_basic.phpt]
+PASS Test session_unset() function : basic functionality [ext/session/tests/session_unset_basic.phpt] 
+TEST 4766/4772 [ext/session/tests/session_unset_variation1.phpt]
+PASS Test session_unset() function : variation [ext/session/tests/session_unset_variation1.phpt] 
+TEST 4767/4772 [ext/session/tests/session_write_close_basic.phpt]
+PASS Test session_write_close() function : basic functionality [ext/session/tests/session_write_close_basic.phpt] 
+TEST 4768/4772 [ext/session/tests/session_write_close_variation1.phpt]
+PASS Test session_write_close() function : variation [ext/session/tests/session_write_close_variation1.phpt] 
+TEST 4769/4772 [ext/session/tests/session_write_close_variation2.phpt]
+PASS Test session_write_close() function : variation [ext/session/tests/session_write_close_variation2.phpt] 
+TEST 4770/4772 [ext/session/tests/session_write_close_variation3.phpt]
+PASS Test session_start() function : variation [ext/session/tests/session_write_close_variation3.phpt] 
+TEST 4771/4772 [ext/session/tests/session_write_close_variation4.phpt]
+PASS Test session_write_close() function : variation [ext/session/tests/session_write_close_variation4.phpt] 
+TEST 4772/4772 [ext/session/tests/sessionhandler_open_001.phpt]
+PASS Testing repated SessionHandler::open() calls [ext/session/tests/sessionhandler_open_001.phpt] 
+=====================================================================
+Number of tests : 4772              4649
+Tests skipped   :  123 (  2.6%) --------
+Tests warned    :    0 (  0.0%) (  0.0%)
+Tests failed    :    0 (  0.0%) (  0.0%)
+Expected fail   :    2 (  0.0%) (  0.0%)
+Tests passed    : 4647 ( 97.4%) (100.0%)
+---------------------------------------------------------------------
+Time taken      :   27 seconds
+=====================================================================
+
+=====================================================================
+EXPECTED FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Interfaces don't set prototypes to their parent method [Zend/tests/interface_constructor_prototype_002.phpt]  XFAIL REASON: X::__constructor()'s prototype is set to B::__construct(). Y::__construct() then
+uses prototype to verify LSP, but misses A::__construct() which has a stricter
+signature.
+updateTimestamp never called when session data is empty [ext/session/tests/bug71162.phpt]  XFAIL REASON: Current session module is designed to write empty session always. In addition, current session module only supports SessionHandlerInterface only from PHP 7.0.
+=====================================================================

@@ -1,0 +1,124 @@
+{
+  "$defs": {
+    "Marker": {
+      "additionalProperties": false,
+      "properties": {
+        "changes": {
+          "items": {
+            "$ref": "#/$defs/Op"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "runtime"
+          ],
+          "type": "string"
+        },
+        "manual_undo": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "new_binary": {
+          "type": "string"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "undo_cmd": {
+          "type": "string"
+        },
+        "written_at": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "changes",
+        "kind",
+        "manual_undo",
+        "new_binary",
+        "schema",
+        "undo_cmd",
+        "written_at"
+      ],
+      "type": "object"
+    },
+    "Op": {
+      "additionalProperties": false,
+      "properties": {
+        "after_sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "args": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "backup": {
+          "type": "string"
+        },
+        "before_sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "content": {
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "op": {
+          "enum": [
+            "write",
+            "symlink",
+            "dropin",
+            "divert",
+            "alternatives",
+            "pkg-hold",
+            "marker",
+            "ini",
+            "rename",
+            "remove",
+            "a2mod",
+            "exec"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "after_sha256",
+        "before_sha256",
+        "op",
+        "path"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/marker.json",
+  "$ref": "#/$defs/Marker",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

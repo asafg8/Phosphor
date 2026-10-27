@@ -1,0 +1,5 @@
+d059c1b4ea0f9023a1e1c17f6eddee82e3c2e029c60dd0a08fc5466764b5eaa4  php74-cve-2026-109618-109619.diff
+c1e9fd78b7fc27cd9134e7682dbdaebff36e0ef83c57966f132b3a16813c4a4c  phosphor-version-7.4.33.diff
+f151af40d3a8353828a821347b663cb10e2e7b7b9cb23e0205d3da50815b5d4f  openssl3-compat/0048-Add-minimal-OpenSSL-3.0-patch.patch
+959b2568ece72fed114d641292e6d6771dcfe5729ff007adb538b657c72b79d1  openssl3-compat/0051-Fix-bug-79589-ssl3_read_n-unexpected-eof-while-readi.patch
+f299907678a90feef3d69d8686f666a45430fa2d556dc28f59f0ad52b7e1b382  rebased/0164-Avoid-state-corruption-via-bailout.patch

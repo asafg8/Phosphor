@@ -1,0 +1,806 @@
+{
+  "schema": "phosphor/readiness/v1",
+  "phosphor_version": "dev-4f657856",
+  "started_at": "2026-10-27T10:13:47.049660302Z",
+  "finished_at": "2026-10-27T10:14:45.813829135Z",
+  "status": "ok",
+  "runtime_id": "rt-466d61e2bb558221",
+  "target_version": "8.2-",
+  "tool": {
+    "php": "8.5.12",
+    "phpcs": "4.0.4",
+    "phpcompat_ref": "4b1ac835da9b71a6ac3bc70ff903638187f33674",
+    "phpcsutils": "1.2.3"
+  },
+  "roots": [
+    {
+      "path": "/var/www/wordpress",
+      "kind": "first-party",
+      "files": 1130,
+      "errors": 574,
+      "warnings": 140,
+      "duration_ms": 58547,
+      "raw_key": "raw/readiness-var-www-wordpress.json",
+      "truncated": false
+    },
+    {
+      "path": "/srv/acme/bin",
+      "kind": "first-party",
+      "files": 2,
+      "errors": 0,
+      "warnings": 0,
+      "duration_ms": 153,
+      "raw_key": "raw/readiness-srv-acme-bin.json",
+      "truncated": false
+    },
+    {
+      "path": "/usr/local/bin/acme-report",
+      "kind": "first-party",
+      "files": 0,
+      "errors": 0,
+      "warnings": 0,
+      "duration_ms": 0,
+      "raw_key": "raw/readiness-usr-local-bin-acme-report.json",
+      "truncated": false
+    }
+  ],
+  "counts": {
+    "first_party": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "third_party": {
+      "errors": 574,
+      "warnings": 140
+    }
+  },
+  "by_sniff": [
+    {
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "count": 557,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/pomo/po.php",
+        "line": 46
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionDeclarations.RemovedImplicitlyNullableParam.Deprecated",
+      "type": "WARNING",
+      "count": 39,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/Requests/src/Cookie.php",
+        "line": 474
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.curl_closeDeprecated",
+      "type": "WARNING",
+      "count": 11,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/SimplePie/File.php",
+        "line": 134
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.is_integerDeprecated",
+      "type": "WARNING",
+      "count": 11,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/functions.php",
+        "line": 4990
+      }
+    },
+    {
+      "source": "PHPCompatibility.Extensions.RemovedExtensions.mysql_DeprecatedRemoved",
+      "type": "ERROR",
+      "count": 9,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php",
+        "line": 1165
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.imagedestroyDeprecated",
+      "type": "WARNING",
+      "count": 9,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/class-wp-image-editor-gd.php",
+        "line": 27
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.xml_parser_freeDeprecated",
+      "type": "WARNING",
+      "count": 9,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/rss.php",
+        "line": 96
+      }
+    },
+    {
+      "source": "PHPCompatibility.LanguageConstructs.RemovedLanguageConstructs.t_backtickDeprecated",
+      "type": "WARNING",
+      "count": 8,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/ID3/getid3.lib.php",
+        "line": 1787
+      }
+    },
+    {
+      "source": "PHPCompatibility.ParameterValues.RemovedTriggerErrorLevel.Deprecated",
+      "type": "WARNING",
+      "count": 8,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/Text/Diff.php",
+        "line": 263
+      }
+    },
+    {
+      "source": "PHPCompatibility.IniDirectives.RemovedIniDirectives.mbstring_func_overloadDeprecatedRemoved",
+      "type": "WARNING",
+      "count": 6,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/pomo/streams.php",
+        "line": 24
+      }
+    },
+    {
+      "source": "PHPCompatibility.TypeCasts.RemovedTypeCasts.doubleDeprecated",
+      "type": "WARNING",
+      "count": 6,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/IXR/class-IXR-message.php",
+        "line": 181
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.utf8_encodeDeprecated",
+      "type": "WARNING",
+      "count": 4,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/ID3/getid3.lib.php",
+        "line": 875
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.xml_set_objectDeprecated",
+      "type": "WARNING",
+      "count": 4,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/rss.php",
+        "line": 76
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionDeclarations.RemovedReturnYieldInConstructDestruct.DeprecatedReturnWithValue",
+      "type": "WARNING",
+      "count": 3,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/rss.php",
+        "line": 66
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.libxml_disable_entity_loaderDeprecated",
+      "type": "WARNING",
+      "count": 3,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/ID3/getid3.lib.php",
+        "line": 740
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.spl_object_hashDeprecated",
+      "type": "WARNING",
+      "count": 3,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/plugin.php",
+        "line": 1003
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.openssl_pkey_freeDeprecated",
+      "type": "WARNING",
+      "count": 2,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/PHPMailer/PHPMailer.php",
+        "line": 4776
+      }
+    },
+    {
+      "source": "PHPCompatibility.TypeCasts.RemovedTypeCasts.integerDeprecated",
+      "type": "WARNING",
+      "count": 2,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/class-json.php",
+        "line": 665
+      }
+    },
+    {
+      "source": "PHPCompatibility.Constants.RemovedConstants.intl_idna_variant_2003DeprecatedRemoved",
+      "type": "ERROR",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/PHPMailer/PHPMailer.php",
+        "line": 1488
+      }
+    },
+    {
+      "source": "PHPCompatibility.Extensions.RemovedExtensions.eregDeprecatedRemoved",
+      "type": "ERROR",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-content/plugins/old-gallery/legacy.php",
+        "line": 8
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionDeclarations.RemovedCallingDestructAfterConstructorExit.Found",
+      "type": "ERROR",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/class-simplepie.php",
+        "line": 715
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.OptionalToRequiredFunctionParameters.stream_context_set_option_option_nameSoftRequired",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/Requests/src/Transport/Fsockopen.php",
+        "line": 147
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.OptionalToRequiredFunctionParameters.stream_context_set_option_valueSoftRequired",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/Requests/src/Transport/Fsockopen.php",
+        "line": 147
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.eregDeprecatedRemoved",
+      "type": "ERROR",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-content/plugins/old-gallery/legacy.php",
+        "line": 8
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.finfo_closeDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/functions.php",
+        "line": 3149
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.get_magic_quotes_gpcDeprecatedRemoved",
+      "type": "ERROR",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/ID3/getid3.php",
+        "line": 453
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.get_magic_quotes_runtimeDeprecatedRemoved",
+      "type": "ERROR",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/ID3/getid3.php",
+        "line": 446
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.imap_errorsRemoved",
+      "type": "ERROR",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/PHPMailer/PHPMailer.php",
+        "line": 1223
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.imap_rfc822_parse_adrlistRemoved",
+      "type": "ERROR",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/PHPMailer/PHPMailer.php",
+        "line": 1221
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.is_doubleDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/IXR/class-IXR-value.php",
+        "line": 50
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.is_longDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-admin/includes/class-ftp.php",
+        "line": 272
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.mysqli_pingDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/class-wpdb.php",
+        "line": 2122
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.socket_set_timeoutDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/class-snoopy.php",
+        "line": 847
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.strftimeDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/SimplePie/Item.php",
+        "line": 882
+      }
+    },
+    {
+      "source": "PHPCompatibility.FunctionUse.RemovedFunctions.utf8_decodeDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/ID3/getid3.lib.php",
+        "line": 947
+      }
+    },
+    {
+      "source": "PHPCompatibility.IniDirectives.RemovedIniDirectives.auto_detect_line_endingsDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/pomo/po.php",
+        "line": 24
+      }
+    },
+    {
+      "source": "PHPCompatibility.Keywords.ForbiddenNames.FunctionReadonlyFound",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/php-compat/readonly.php",
+        "line": 34
+      }
+    },
+    {
+      "source": "PHPCompatibility.TypeCasts.RemovedTypeCasts.booleanDeprecated",
+      "type": "WARNING",
+      "count": 1,
+      "first_party": 0,
+      "sample": {
+        "file": "/var/www/wordpress/wp-includes/IXR/class-IXR-message.php",
+        "line": 200
+      }
+    }
+  ],
+  "top_findings": [
+    {
+      "file": "/var/www/wordpress/wp-admin/admin-header.php",
+      "line": 243,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 134,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 616,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 1054,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 1353,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 1359,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 1679,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 2255,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 2281,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 3343,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 3400,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 4074,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 4082,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 4093,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 4098,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/bookmark.php",
+      "line": 196,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/bookmark.php",
+      "line": 197,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/bookmark.php",
+      "line": 204,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-automatic-upgrader-skin.php",
+      "line": 93,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-ftp.php",
+      "line": 497,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-pclzip.php",
+      "line": 1841,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-automatic-updater.php",
+      "line": 75,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-automatic-updater.php",
+      "line": 101,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-automatic-updater.php",
+      "line": 1450,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-automatic-updater.php",
+      "line": 1473,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-community-events.php",
+      "line": 263,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-debug-data.php",
+      "line": 824,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-filesystem-ssh2.php",
+      "line": 239,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-filesystem-ssh2.php",
+      "line": 307,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-list-table.php",
+      "line": 443,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-list-table.php",
+      "line": 458,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-media-list-table.php",
+      "line": 735,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php",
+      "line": 82,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php",
+      "line": 168,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php",
+      "line": 265,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-ms-sites-list-table.php",
+      "line": 655,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php",
+      "line": 40,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-ms-users-list-table.php",
+      "line": 484,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-terms-list-table.php",
+      "line": 112,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-terms-list-table.php",
+      "line": 123,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-terms-list-table.php",
+      "line": 127,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-wp-users-list-table.php",
+      "line": 86,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/file.php",
+      "line": 97,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/file.php",
+      "line": 604,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/file.php",
+      "line": 623,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/file.php",
+      "line": 1214,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/file.php",
+      "line": 2791,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/image.php",
+      "line": 719,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/image.php",
+      "line": 795,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/image.php",
+      "line": 801,
+      "source": "PHPCompatibility.ParameterValues.NewTrimCharactersDefault.NotSet",
+      "type": "ERROR",
+      "first_party": false
+    }
+  ],
+  "runtime_risk": [],
+  "uses_uploads": false,
+  "uploads_usage": "unknown",
+  "uploads_evidence": [],
+  "feature_use": [],
+  "readiness": "complete",
+  "decision": "review",
+  "blocking_reasons": [],
+  "limits": {
+    "cpu_quota": "50%",
+    "memory_max": "1G",
+    "nice": 19,
+    "ionice": "idle",
+    "via": "systemd-run"
+  }
+}

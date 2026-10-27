@@ -1,0 +1,250 @@
+{
+  "schema": "phosphor/watch/v1",
+  "phosphor_version": "dev-4f657856",
+  "started_at": "2026-10-27T10:14:47.121607219Z",
+  "finished_at": "2026-10-27T10:17:47.138652719Z",
+  "status": "ok",
+  "runtime_id": "rt-466d61e2bb558221",
+  "runtimes": [
+    {
+      "runtime_id": "rt-466d61e2bb558221"
+    }
+  ],
+  "kind": "runtime",
+  "signal": "sufficient",
+  "window_s": 180,
+  "probe_url": "http://127.0.0.1/_phosphor_lab/health",
+  "baseline": {
+    "from": "2026-10-27T10:07:03Z",
+    "to": "2026-10-27T10:14:47.01546301Z",
+    "requests": 2326,
+    "rpm": 301.4254859611231,
+    "rate_5xx": 0.0030094582975064487,
+    "signatures": [
+      {
+        "sig": "PHP Fatal error|Uncaught Error: Call to undefined function phosphor_lab_legacy_fatal_pre_existing()|/usr/local/lib/phosphor-lab-kit/kit.php",
+        "count": 7
+      }
+    ],
+    "sufficient": true,
+    "exits_pm": 0
+  },
+  "samples": [
+    {
+      "t": "2026-10-27T10:15:02.135311337Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:15:17.138567135Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:15:32.144193378Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:15:47.142924552Z",
+      "req": 76,
+      "s5xx": 1,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:16:02.148793503Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:16:17.13458501Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:16:32.137983962Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:16:47.154001594Z",
+      "req": 76,
+      "s5xx": 1,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:17:02.137365545Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:17:17.133738135Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:17:32.133367087Z",
+      "req": 75,
+      "s5xx": 0,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    },
+    {
+      "t": "2026-10-27T10:17:47.133724177Z",
+      "req": 76,
+      "s5xx": 1,
+      "new_sigs": 0,
+      "segv": 0,
+      "fpm_maxchildren": 0,
+      "proc_up": true,
+      "probe_status": 200,
+      "oom_kills": 0,
+      "worker_exits_137": 0,
+      "worker_exits": 0
+    }
+  ],
+  "triggers": [],
+  "decision": "pass",
+  "linger": false,
+  "probe_urls": [
+    "http://127.0.0.1/",
+    "http://127.0.0.1/?p=1",
+    "http://127.0.0.1/?p=2",
+    "http://127.0.0.1/about.php",
+    "http://127.0.0.1/phosphor-app/"
+  ],
+  "probe_rounds": [
+    {
+      "t": "2026-10-27T10:15:02.135311337Z",
+      "ok": true,
+      "failed": 0,
+      "answered_failures": 0,
+      "total": 5,
+      "counted": true
+    },
+    {
+      "t": "2026-10-27T10:15:32.144193378Z",
+      "ok": true,
+      "failed": 0,
+      "answered_failures": 0,
+      "total": 5,
+      "counted": true
+    },
+    {
+      "t": "2026-10-27T10:16:02.148793503Z",
+      "ok": true,
+      "failed": 0,
+      "answered_failures": 0,
+      "total": 5,
+      "counted": true
+    },
+    {
+      "t": "2026-10-27T10:16:32.137983962Z",
+      "ok": true,
+      "failed": 0,
+      "answered_failures": 0,
+      "total": 5,
+      "counted": true
+    },
+    {
+      "t": "2026-10-27T10:17:02.137365545Z",
+      "ok": true,
+      "failed": 0,
+      "answered_failures": 0,
+      "total": 5,
+      "counted": true
+    },
+    {
+      "t": "2026-10-27T10:17:32.133367087Z",
+      "ok": true,
+      "failed": 0,
+      "answered_failures": 0,
+      "total": 5,
+      "counted": true
+    }
+  ]
+}

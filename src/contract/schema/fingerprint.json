@@ -1,0 +1,1066 @@
+{
+  "$defs": {
+    "AccessLog": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "enum": [
+            "combined",
+            "common",
+            "json",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "format",
+        "path"
+      ],
+      "type": "object"
+    },
+    "BinaryFingerprint": {
+      "additionalProperties": false,
+      "properties": {
+        "markers": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "matched": {
+          "type": "boolean"
+        },
+        "method": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "markers",
+        "matched",
+        "method"
+      ],
+      "type": "object"
+    },
+    "CodeRoot": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "type": "integer"
+        },
+        "frameworks": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "first-party",
+            "third-party"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "php_files": {
+          "type": "integer"
+        },
+        "readable": {
+          "type": "boolean"
+        },
+        "third_party_paths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "via": {
+          "enum": [
+            "fpm-chdir",
+            "nginx-root",
+            "apache-docroot",
+            "cli",
+            "cron"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "bytes",
+        "frameworks",
+        "kind",
+        "path",
+        "php_files",
+        "readable",
+        "third_party_paths",
+        "via"
+      ],
+      "type": "object"
+    },
+    "Consumer": {
+      "additionalProperties": false,
+      "properties": {
+        "cmd": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "cron",
+            "systemd",
+            "supervisord",
+            "shebang"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "runtime_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "cmd",
+        "kind",
+        "path"
+      ],
+      "type": "object"
+    },
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "E_NO_DISK",
+            "E_EXT_REBUILD",
+            "E_SOURCE_INTEGRITY",
+            "E_ARTIFACT_INTEGRITY",
+            "E_BUILD_FAILED",
+            "E_DEPS_INSTALL",
+            "E_PREFLIGHT",
+            "E_NOT_ELIGIBLE",
+            "E_LAB_FLAG",
+            "E_ROOT_UNREADABLE",
+            "E_MANIFEST",
+            "E_USAGE",
+            "E_SCAN_FAILED",
+            "E_SWAP_FAILED",
+            "E_SWAP_VERIFY",
+            "E_ROLLBACK_FAILED",
+            "E_TIMEOUT",
+            "E_UNSUPPORTED",
+            "E_INTERNAL",
+            "E_PATCH_APPLY",
+            "E_DRIFT",
+            "E_VERSION_PATCH",
+            "E_SMOKE",
+            "E_DEPS_UNAVAILABLE",
+            "E_SOURCE_UNVERIFIED",
+            "E_RESULT_MISSING",
+            "E_NO_MEMORY",
+            "E_TELEMETRY_IN_BUILD",
+            "E_VERDICT_REQUIRED",
+            "E_BUSY"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "type": "object"
+    },
+    "Fingerprint": {
+      "additionalProperties": false,
+      "properties": {
+        "consumers": {
+          "items": {
+            "$ref": "#/$defs/Consumer"
+          },
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Error"
+            }
+          ]
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            }
+          ]
+        },
+        "host": {
+          "$ref": "#/$defs/HostFacts"
+        },
+        "marker": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Marker"
+            }
+          ]
+        },
+        "phosphor_version": {
+          "type": "string"
+        },
+        "runtimes": {
+          "items": {
+            "$ref": "#/$defs/Runtime"
+          },
+          "type": "array"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "failed",
+            "blocked"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "consumers",
+        "host",
+        "phosphor_version",
+        "runtimes",
+        "schema",
+        "started_at",
+        "status"
+      ],
+      "type": "object"
+    },
+    "HostFacts": {
+      "additionalProperties": false,
+      "properties": {
+        "arch": {
+          "type": "string"
+        },
+        "cpus": {
+          "type": "integer"
+        },
+        "disk_free_mb": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "glibc": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "in_container": {
+          "type": "boolean"
+        },
+        "init": {
+          "enum": [
+            "systemd",
+            "supervisord",
+            "sysv",
+            "none"
+          ],
+          "type": "string"
+        },
+        "kernel": {
+          "type": "string"
+        },
+        "load1": {
+          "type": "number"
+        },
+        "mem_mb": {
+          "type": "integer"
+        },
+        "openssl_system": {
+          "type": "string"
+        },
+        "os_id": {
+          "type": "string"
+        },
+        "os_like": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "os_version_id": {
+          "type": "string"
+        },
+        "pkg_mgr": {
+          "enum": [
+            "apt",
+            "dnf",
+            "yum",
+            "none"
+          ],
+          "type": "string"
+        },
+        "ubuntu_pro_attached": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "arch",
+        "cpus",
+        "disk_free_mb",
+        "glibc",
+        "hostname",
+        "in_container",
+        "init",
+        "kernel",
+        "load1",
+        "mem_mb",
+        "openssl_system",
+        "os_id",
+        "os_like",
+        "os_version_id",
+        "pkg_mgr",
+        "ubuntu_pro_attached"
+      ],
+      "type": "object"
+    },
+    "IniInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "config_file_path": {
+          "type": "string"
+        },
+        "config_file_scan_dir": {
+          "type": "string"
+        },
+        "loaded_file": {
+          "type": "string"
+        },
+        "scan_dir": {
+          "type": "string"
+        },
+        "scanned_files": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "sets_extension_dir": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "loaded_file",
+        "scan_dir",
+        "scanned_files",
+        "sets_extension_dir"
+      ],
+      "type": "object"
+    },
+    "Logs": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "items": {
+            "$ref": "#/$defs/AccessLog"
+          },
+          "type": "array"
+        },
+        "error_log_target": {
+          "type": "string"
+        },
+        "fpm_error": {
+          "type": "string"
+        },
+        "log_errors": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "php_error": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "slowlog": {
+          "type": "string"
+        },
+        "web_error": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "access",
+        "php_error",
+        "web_error"
+      ],
+      "type": "object"
+    },
+    "Marker": {
+      "additionalProperties": false,
+      "properties": {
+        "changes": {
+          "items": {
+            "$ref": "#/$defs/Op"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "runtime"
+          ],
+          "type": "string"
+        },
+        "manual_undo": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "new_binary": {
+          "type": "string"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "undo_cmd": {
+          "type": "string"
+        },
+        "written_at": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "changes",
+        "kind",
+        "manual_undo",
+        "new_binary",
+        "schema",
+        "undo_cmd",
+        "written_at"
+      ],
+      "type": "object"
+    },
+    "Op": {
+      "additionalProperties": false,
+      "properties": {
+        "after_sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "args": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "backup": {
+          "type": "string"
+        },
+        "before_sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "content": {
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "op": {
+          "enum": [
+            "write",
+            "symlink",
+            "dropin",
+            "divert",
+            "alternatives",
+            "pkg-hold",
+            "marker",
+            "ini",
+            "rename",
+            "remove",
+            "a2mod",
+            "exec"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "after_sha256",
+        "before_sha256",
+        "op",
+        "path"
+      ],
+      "type": "object"
+    },
+    "OpenSSLLinkage": {
+      "additionalProperties": false,
+      "properties": {
+        "curl_ssl": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "static_syms": {
+          "type": "boolean"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "static_syms",
+        "version"
+      ],
+      "type": "object"
+    },
+    "PHP2ShellEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "advisory_id": {
+          "type": "string"
+        },
+        "nevra": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "advisory_id",
+        "nevra"
+      ],
+      "type": "object"
+    },
+    "PHP2ShellInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "type": "string"
+        },
+        "evidence": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/PHP2ShellEvidence"
+            }
+          ]
+        },
+        "fingerprint": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/BinaryFingerprint"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "vulnerable",
+            "fixed-upstream",
+            "fixed-distro",
+            "fixed-phosphor",
+            "unknown"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "basis",
+        "status"
+      ],
+      "type": "object"
+    },
+    "PkgCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate": {
+          "type": "string"
+        },
+        "held": {
+          "type": "boolean"
+        },
+        "installed": {
+          "type": "string"
+        },
+        "pkg": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "cache",
+            "refreshed",
+            "timeout",
+            "unknown"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate",
+        "installed",
+        "pkg"
+      ],
+      "type": "object"
+    },
+    "ProcMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "deleted": {
+          "type": "boolean"
+        },
+        "object": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer"
+        },
+        "replaced": {
+          "type": "boolean"
+        },
+        "started_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "started_before_install": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "deleted",
+        "object",
+        "pid",
+        "replaced",
+        "started_at",
+        "started_before_install"
+      ],
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "distro-pkg",
+            "custom",
+            "bitnami",
+            "container",
+            "vendor"
+          ],
+          "type": "string"
+        },
+        "pkg": {
+          "type": "string"
+        },
+        "pkg_version": {
+          "type": "string"
+        },
+        "repo": {
+          "enum": [
+            "debian",
+            "ubuntu",
+            "ondrej",
+            "remi",
+            "amzn",
+            "amzn-extras",
+            "epel",
+            "docker-library",
+            "cpanel-ea",
+            "plesk",
+            "cloudlinux-alt",
+            "chainguard",
+            "elts",
+            "rhel",
+            "alma",
+            "rocky",
+            "unknown"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "type": "object"
+    },
+    "Runtime": {
+      "additionalProperties": false,
+      "properties": {
+        "binary": {
+          "type": "string"
+        },
+        "binary_sha256": {
+          "type": "string"
+        },
+        "cli_binary": {
+          "type": "string"
+        },
+        "code_roots": {
+          "items": {
+            "$ref": "#/$defs/CodeRoot"
+          },
+          "type": "array"
+        },
+        "configure_command": {
+          "type": "string"
+        },
+        "configure_source": {
+          "type": "string"
+        },
+        "debug": {
+          "type": "boolean"
+        },
+        "extension_dir": {
+          "type": "string"
+        },
+        "extra_version": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "ini": {
+          "$ref": "#/$defs/IniInfo"
+        },
+        "logs": {
+          "$ref": "#/$defs/Logs"
+        },
+        "modules": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "openssl_linkage": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/OpenSSLLinkage"
+            }
+          ]
+        },
+        "php2shell": {
+          "$ref": "#/$defs/PHP2ShellInfo"
+        },
+        "php_api": {
+          "type": "string"
+        },
+        "pkg_candidate": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/PkgCandidate"
+            }
+          ]
+        },
+        "pkg_installed_at": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            }
+          ]
+        },
+        "processes": {
+          "items": {
+            "$ref": "#/$defs/ProcMapping"
+          },
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "sapi": {
+          "enum": [
+            "fpm",
+            "mod_php",
+            "cgi",
+            "cli"
+          ],
+          "type": "string"
+        },
+        "service": {
+          "$ref": "#/$defs/ServiceInfo"
+        },
+        "shared_exts": {
+          "items": {
+            "$ref": "#/$defs/SharedExt"
+          },
+          "type": "array"
+        },
+        "static_modules": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "third_party_exts": {
+          "items": {
+            "$ref": "#/$defs/ThirdPartyExt"
+          },
+          "type": "array"
+        },
+        "vendor_telemetry": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "version_id": {
+          "type": "integer"
+        },
+        "zend_ext_api": {
+          "type": "string"
+        },
+        "zend_extensions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "zts": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "binary",
+        "binary_sha256",
+        "code_roots",
+        "configure_command",
+        "configure_source",
+        "debug",
+        "extension_dir",
+        "extra_version",
+        "id",
+        "ini",
+        "logs",
+        "modules",
+        "php2shell",
+        "php_api",
+        "provenance",
+        "sapi",
+        "service",
+        "shared_exts",
+        "static_modules",
+        "third_party_exts",
+        "version",
+        "version_id",
+        "zend_ext_api",
+        "zend_extensions",
+        "zts"
+      ],
+      "type": "object"
+    },
+    "ServiceInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "catch_workers_output": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "conf_files": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "exec_start": {
+          "type": "string"
+        },
+        "listen": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "manager": {
+          "enum": [
+            "systemd",
+            "supervisord",
+            "sysv",
+            "apache",
+            "docker",
+            "none"
+          ],
+          "type": "string"
+        },
+        "max_connections_per_child": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "pids": {
+          "items": {
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "program": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "unit_type": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "conf_files",
+        "listen",
+        "manager",
+        "pids",
+        "user"
+      ],
+      "type": "object"
+    },
+    "SharedExt": {
+      "additionalProperties": false,
+      "properties": {
+        "bundled": {
+          "type": "boolean"
+        },
+        "ini_file": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "so_path": {
+          "type": "string"
+        },
+        "zend": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "bundled",
+        "ini_file",
+        "name",
+        "so_path",
+        "zend"
+      ],
+      "type": "object"
+    },
+    "ThirdPartyExt": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "pkg": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "so_path": {
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "pecl",
+            "pkg",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "sha256",
+        "so_path",
+        "source",
+        "version"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/fingerprint.json",
+  "$ref": "#/$defs/Fingerprint",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

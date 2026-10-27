@@ -1,0 +1,11 @@
+--- a/configure
++++ b/configure
+@@ -3825,7 +3825,7 @@
+ 
+ 
+ ac_IFS=$IFS; IFS="."
+-set $(echo 7.4.33 | "${SED}" 's/\([0-9\.]*\)\(.*\)/\1\.\2/')
++set $(echo 7.4.33-phosphor1 | "${SED}" 's/\([0-9\.]*\)\(.*\)/\1\.\2/')
+ IFS=$ac_IFS
+ PHP_MAJOR_VERSION=$1
+ PHP_MINOR_VERSION=$2

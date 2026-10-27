@@ -1,0 +1,64 @@
+{
+  "kind": "runtime",
+  "runtime_id": "rt-466d61e2bb558221",
+  "doc_name": "swap.json",
+  "window_s": 180,
+  "sample_s": 15,
+  "probe_url": "http://127.0.0.1/_phosphor_lab/health",
+  "probe_ok_before": true,
+  "access": [
+    "/var/log/nginx/access.log"
+  ],
+  "error_logs": [
+    "/var/log/nginx/error.log",
+    "/usr/local/php74/var/log/php-fpm.log",
+    "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/var/log/php-fpm.log"
+  ],
+  "manager": "systemd",
+  "unit": "php74-fpm.service",
+  "program": "",
+  "proc_match": "",
+  "baseline": {
+    "from": "2026-10-27T10:07:03Z",
+    "to": "2026-10-27T10:14:47.01546301Z",
+    "requests": 2326,
+    "rpm": 301.4254859611231,
+    "rate_5xx": 0.0030094582975064487,
+    "signatures": [
+      {
+        "sig": "PHP Fatal error|Uncaught Error: Call to undefined function phosphor_lab_legacy_fatal_pre_existing()|/usr/local/lib/phosphor-lab-kit/kit.php",
+        "count": 7
+      }
+    ],
+    "sufficient": true,
+    "exits_pm": 0
+  },
+  "offsets": {
+    "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/var/log/php-fpm.log": {
+      "inode": 30349,
+      "offset": 500
+    },
+    "/usr/local/php74/var/log/php-fpm.log": {
+      "inode": 1212621,
+      "offset": 280
+    },
+    "/var/log/nginx/access.log": {
+      "inode": 1208362,
+      "offset": 238100
+    },
+    "/var/log/nginx/error.log": {
+      "inode": 1208363,
+      "offset": 3779
+    }
+  },
+  "start": "2026-10-27T10:14:47.121607219Z",
+  "linger": false,
+  "probe_urls": [
+    "http://127.0.0.1/",
+    "http://127.0.0.1/?p=1",
+    "http://127.0.0.1/?p=2",
+    "http://127.0.0.1/about.php",
+    "http://127.0.0.1/phosphor-app/"
+  ],
+  "sapi": "fpm"
+}

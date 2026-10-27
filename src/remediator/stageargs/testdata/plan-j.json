@@ -1,0 +1,63 @@
+{
+  "schema": "phosphor/plan/v1",
+  "inventory_version": 0,
+  "generated_at": "2026-10-26T07:02:24.736515001Z",
+  "runtimes": [
+    {
+      "asset_name": "phosphor-dev-j",
+      "runtime_id": "rt-cbbf6e0a6d8292ed",
+      "sapi": "mod_php",
+      "exposure": "unknown",
+      "current_version": "7.4.33",
+      "target_version": "7.4.33-phosphor1",
+      "action": "same-minor-build",
+      "risk": "low",
+      "reasons": [
+        "same-minor",
+        "custom-build"
+      ],
+      "proposed": [],
+      "eligible": true,
+      "group": null,
+      "asg": null,
+      "precedence": "P5",
+      "base": "upstream",
+      "requires": [],
+      "info": [
+        {
+          "code": "oom-terminates-worker",
+          "evidence": []
+        }
+      ],
+      "readiness": "not-run"
+    },
+    {
+      "asset_name": "phosphor-dev-j",
+      "runtime_id": "rt-196c53c8050a130b",
+      "sapi": "cli",
+      "exposure": "unknown",
+      "current_version": "7.4.33",
+      "target_version": "7.4.33-phosphor1",
+      "action": "same-minor-build",
+      "risk": "low",
+      "reasons": [
+        "same-minor",
+        "custom-build"
+      ],
+      "proposed": [],
+      "eligible": true,
+      "group": null,
+      "asg": null,
+      "precedence": "P5",
+      "base": "upstream",
+      "requires": [],
+      "info": [
+        {
+          "code": "oom-terminates-worker",
+          "evidence": []
+        }
+      ],
+      "readiness": "not-run"
+    }
+  ]
+}

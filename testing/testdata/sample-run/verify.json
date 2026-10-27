@@ -1,0 +1,88 @@
+{
+  "schema": "phosphor/verify/v1",
+  "generated_at": "2026-10-27T10:14:46.118811093Z",
+  "runtimes": [
+    {
+      "runtime_id": "rt-466d61e2bb558221",
+      "php_version": "7.4.33",
+      "sapi": "fpm",
+      "code_roots": [
+        "/var/www/wordpress",
+        "/var/www/wordpress/wp-admin",
+        "/var/www/wordpress/wp-content/plugins/akismet",
+        "/var/www/wordpress/wp-content/plugins/old-gallery",
+        "/var/www/wordpress/wp-content/themes/twentytwentyfour",
+        "/var/www/wordpress/wp-content/themes/twentytwentythree",
+        "/var/www/wordpress/wp-content/themes/twentytwentytwo",
+        "/var/www/wordpress/wp-includes"
+      ],
+      "migration_target": "",
+      "target_version": "7.4.33-phosphor1",
+      "action": "same-minor-build",
+      "precedence": "P5",
+      "verdict": "ready",
+      "readiness": "n/a",
+      "reasons": [],
+      "evidence": [
+        {
+          "check": "readiness",
+          "status": "info",
+          "new": "review",
+          "doc": "readiness.json"
+        },
+        {
+          "check": "info",
+          "status": "info",
+          "log": "oom-terminates-worker",
+          "doc": "plan.json"
+        }
+      ],
+      "documents": [
+        "fingerprint.json",
+        "plan.json",
+        "build.json",
+        "scan.json",
+        "preflight.json"
+      ],
+      "verify_hash": "de71dc4356876a3657fc8aeeb286ac7f5f331cae4a744c7ef3a110756ca7f4dc"
+    },
+    {
+      "runtime_id": "rt-e317ff5eeb20d571",
+      "php_version": "7.4.33",
+      "sapi": "cli",
+      "code_roots": [
+        "/srv/acme/bin",
+        "/usr/local/bin/acme-report"
+      ],
+      "migration_target": "",
+      "target_version": "7.4.33-phosphor1",
+      "action": "same-minor-build",
+      "precedence": "P5",
+      "verdict": "ready",
+      "readiness": "n/a",
+      "reasons": [],
+      "evidence": [
+        {
+          "check": "readiness",
+          "status": "info",
+          "new": "review",
+          "doc": "readiness.json"
+        },
+        {
+          "check": "info",
+          "status": "info",
+          "log": "oom-terminates-worker",
+          "doc": "plan.json"
+        }
+      ],
+      "documents": [
+        "fingerprint.json",
+        "plan.json",
+        "build.json",
+        "scan.json",
+        "preflight.json"
+      ],
+      "verify_hash": "7b96ac93c75259ac45ece540bf86f479ef352bbc0a0829f06bc0dec5d7623b85"
+    }
+  ]
+}

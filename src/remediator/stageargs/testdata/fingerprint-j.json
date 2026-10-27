@@ -1,0 +1,434 @@
+{
+  "schema": "phosphor/fingerprint/v1",
+  "phosphor_version": "dev-0",
+  "started_at": "2026-10-26T07:02:21.292098014Z",
+  "finished_at": "2026-10-26T07:02:21.876518458Z",
+  "status": "ok",
+  "host": {
+    "hostname": "phosphor-dev-j",
+    "os_id": "debian",
+    "os_version_id": "11",
+    "os_like": [],
+    "kernel": "6.12.76-linuxkit",
+    "arch": "arm64",
+    "glibc": "2.31",
+    "openssl_system": "1.1.1w",
+    "cpus": 11,
+    "mem_mb": 23492,
+    "disk_free_mb": {
+      "/opt": 337918,
+      "/tmp": 337918
+    },
+    "load1": 1.95,
+    "init": "systemd",
+    "pkg_mgr": "apt",
+    "in_container": true,
+    "ubuntu_pro_attached": false
+  },
+  "runtimes": [
+    {
+      "id": "rt-cbbf6e0a6d8292ed",
+      "sapi": "mod_php",
+      "binary": "/usr/local/php74-apache/modules/libphp7.so",
+      "binary_sha256": "e8c4b8d2c430eeeb6a147bd125ec7af93267f2632861a646609dce247a1d69e8",
+      "version": "7.4.33",
+      "version_id": 70433,
+      "extra_version": "",
+      "zts": false,
+      "debug": false,
+      "php_api": "20190902",
+      "zend_ext_api": "320190902",
+      "configure_command": "'./configure'  '--prefix=/usr/local/php74-apache' '--with-config-file-path=/usr/local/php74-apache/etc' '--with-config-file-scan-dir=/usr/local/php74-apache/etc/conf.d' '--disable-phpdbg' '--with-apxs2=/usr/bin/apxs' '--disable-cgi' '--with-openssl' '--with-curl' '--with-zlib' '--enable-mbstring' '--enable-gd' '--with-mysqli' '--with-pdo-mysql' '--enable-opcache' '--enable-sockets'",
+      "configure_source": "verbatim",
+      "static_modules": [
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dom",
+        "fileinfo",
+        "filter",
+        "gd",
+        "hash",
+        "iconv",
+        "json",
+        "libxml",
+        "mbstring",
+        "mysqli",
+        "mysqlnd",
+        "openssl",
+        "pcre",
+        "PDO",
+        "pdo_mysql",
+        "pdo_sqlite",
+        "Phar",
+        "posix",
+        "Reflection",
+        "session",
+        "SimpleXML",
+        "sockets",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlwriter",
+        "zlib"
+      ],
+      "shared_exts": [
+        {
+          "name": "opcache",
+          "so_path": "/usr/local/php74-apache/lib/php/extensions/no-debug-non-zts-20190902/opcache.so",
+          "ini_file": "/usr/local/php74-apache/etc/conf.d/10-opcache.ini",
+          "zend": true,
+          "bundled": true
+        }
+      ],
+      "ini": {
+        "loaded_file": "/usr/local/php74-apache/etc/php.ini",
+        "scan_dir": "/usr/local/php74-apache/etc/conf.d",
+        "scanned_files": [
+          "/usr/local/php74-apache/etc/conf.d/10-opcache.ini"
+        ],
+        "sets_extension_dir": false,
+        "config_file_path": "/usr/local/php74-apache/etc",
+        "config_file_scan_dir": "/usr/local/php74-apache/etc/conf.d"
+      },
+      "extension_dir": "/usr/local/php74-apache/lib/php/extensions/no-debug-non-zts-20190902",
+      "modules": [
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dom",
+        "fileinfo",
+        "filter",
+        "gd",
+        "hash",
+        "iconv",
+        "json",
+        "libxml",
+        "mbstring",
+        "mysqli",
+        "mysqlnd",
+        "openssl",
+        "pcre",
+        "PDO",
+        "pdo_mysql",
+        "pdo_sqlite",
+        "Phar",
+        "posix",
+        "Reflection",
+        "session",
+        "SimpleXML",
+        "sockets",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlwriter",
+        "Zend OPcache",
+        "zlib"
+      ],
+      "zend_extensions": [
+        "Zend OPcache"
+      ],
+      "third_party_exts": [],
+      "provenance": {
+        "kind": "custom",
+        "repo": "unknown"
+      },
+      "service": {
+        "manager": "systemd",
+        "unit": "apache2.service",
+        "unit_type": "forking",
+        "exec_start": "/usr/sbin/apachectl start",
+        "pids": [
+          50,
+          2167,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57
+        ],
+        "user": "www-data",
+        "listen": [
+          "80",
+          "443"
+        ],
+        "conf_files": [
+          "/etc/apache2/apache2.conf"
+        ],
+        "max_connections_per_child": 0
+      },
+      "logs": {
+        "php_error": [
+          "/var/log/apache2/error.log"
+        ],
+        "web_error": [
+          "/var/log/apache2/error.log"
+        ],
+        "access": [
+          {
+            "path": "/var/log/apache2/access.log",
+            "format": "combined"
+          },
+          {
+            "path": "/var/log/apache2/other_vhosts_access.log",
+            "format": "unknown"
+          }
+        ],
+        "log_errors": true,
+        "error_log_target": "unset"
+      },
+      "code_roots": [
+        {
+          "path": "/var/www/html",
+          "kind": "first-party",
+          "via": "apache-docroot",
+          "frameworks": [],
+          "php_files": 3,
+          "bytes": 668,
+          "third_party_paths": [],
+          "readable": true
+        }
+      ],
+      "php2shell": {
+        "status": "vulnerable",
+        "basis": "version",
+        "fingerprint": {
+          "method": "elf",
+          "matched": false,
+          "markers": []
+        }
+      },
+      "openssl_linkage": {
+        "kind": "system",
+        "version": "1.1.1w",
+        "path": "/usr/lib/aarch64-linux-gnu/libssl.so.1.1",
+        "curl_ssl": "OpenSSL/1.1.1w",
+        "static_syms": false
+      },
+      "processes": [
+        {
+          "pid": 50,
+          "started_at": "2026-10-26T00:54:16.6Z",
+          "object": "/usr/local/php74-apache/modules/libphp7.so",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 2167,
+          "started_at": "2026-10-26T01:07:49.7Z",
+          "object": "/usr/local/php74-apache/modules/libphp7.so",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 52,
+          "started_at": "2026-10-26T00:54:16.6Z",
+          "object": "/usr/local/php74-apache/modules/libphp7.so",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 53,
+          "started_at": "2026-10-26T00:54:16.6Z",
+          "object": "/usr/local/php74-apache/modules/libphp7.so",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 54,
+          "started_at": "2026-10-26T00:54:16.6Z",
+          "object": "/usr/local/php74-apache/modules/libphp7.so",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 55,
+          "started_at": "2026-10-26T00:54:16.6Z",
+          "object": "/usr/local/php74-apache/modules/libphp7.so",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 56,
+          "started_at": "2026-10-26T00:54:16.6Z",
+          "object": "/usr/local/php74-apache/modules/libphp7.so",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 57,
+          "started_at": "2026-10-26T00:54:17.61Z",
+          "object": "/usr/local/php74-apache/modules/libphp7.so",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        }
+      ],
+      "cli_binary": "/usr/local/php74-apache/bin/php"
+    },
+    {
+      "id": "rt-196c53c8050a130b",
+      "sapi": "cli",
+      "binary": "/usr/local/php74-apache/bin/php",
+      "binary_sha256": "2ac0e294c4aec0b75325e447cf51f2452841d2bd9b9f4317def48d78edd24254",
+      "version": "7.4.33",
+      "version_id": 70433,
+      "extra_version": "",
+      "zts": false,
+      "debug": false,
+      "php_api": "20190902",
+      "zend_ext_api": "320190902",
+      "configure_command": "'./configure'  '--prefix=/usr/local/php74-apache' '--with-config-file-path=/usr/local/php74-apache/etc' '--with-config-file-scan-dir=/usr/local/php74-apache/etc/conf.d' '--disable-phpdbg' '--with-apxs2=/usr/bin/apxs' '--disable-cgi' '--with-openssl' '--with-curl' '--with-zlib' '--enable-mbstring' '--enable-gd' '--with-mysqli' '--with-pdo-mysql' '--enable-opcache' '--enable-sockets'",
+      "configure_source": "verbatim",
+      "static_modules": [
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dom",
+        "fileinfo",
+        "filter",
+        "gd",
+        "hash",
+        "iconv",
+        "json",
+        "libxml",
+        "mbstring",
+        "mysqli",
+        "mysqlnd",
+        "openssl",
+        "pcre",
+        "PDO",
+        "pdo_mysql",
+        "pdo_sqlite",
+        "Phar",
+        "posix",
+        "Reflection",
+        "session",
+        "SimpleXML",
+        "sockets",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlwriter",
+        "zlib"
+      ],
+      "shared_exts": [
+        {
+          "name": "opcache",
+          "so_path": "/usr/local/php74-apache/lib/php/extensions/no-debug-non-zts-20190902/opcache.so",
+          "ini_file": "/usr/local/php74-apache/etc/conf.d/10-opcache.ini",
+          "zend": true,
+          "bundled": true
+        }
+      ],
+      "ini": {
+        "loaded_file": "/usr/local/php74-apache/etc/php.ini",
+        "scan_dir": "/usr/local/php74-apache/etc/conf.d",
+        "scanned_files": [
+          "/usr/local/php74-apache/etc/conf.d/10-opcache.ini"
+        ],
+        "sets_extension_dir": false,
+        "config_file_path": "/usr/local/php74-apache/etc",
+        "config_file_scan_dir": "/usr/local/php74-apache/etc/conf.d"
+      },
+      "extension_dir": "/usr/local/php74-apache/lib/php/extensions/no-debug-non-zts-20190902",
+      "modules": [
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dom",
+        "fileinfo",
+        "filter",
+        "gd",
+        "hash",
+        "iconv",
+        "json",
+        "libxml",
+        "mbstring",
+        "mysqli",
+        "mysqlnd",
+        "openssl",
+        "pcre",
+        "PDO",
+        "pdo_mysql",
+        "pdo_sqlite",
+        "Phar",
+        "posix",
+        "Reflection",
+        "session",
+        "SimpleXML",
+        "sockets",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlwriter",
+        "Zend OPcache",
+        "zlib"
+      ],
+      "zend_extensions": [
+        "Zend OPcache"
+      ],
+      "third_party_exts": [],
+      "provenance": {
+        "kind": "custom",
+        "repo": "unknown"
+      },
+      "service": {
+        "manager": "none",
+        "pids": [],
+        "user": "",
+        "listen": [],
+        "conf_files": []
+      },
+      "logs": {
+        "php_error": [],
+        "web_error": [],
+        "access": [],
+        "log_errors": true,
+        "error_log_target": "unset"
+      },
+      "code_roots": [],
+      "php2shell": {
+        "status": "vulnerable",
+        "basis": "version",
+        "fingerprint": {
+          "method": "elf",
+          "matched": false,
+          "markers": []
+        }
+      },
+      "openssl_linkage": {
+        "kind": "system",
+        "version": "1.1.1w",
+        "path": "/usr/lib/aarch64-linux-gnu/libssl.so.1.1",
+        "curl_ssl": "OpenSSL/1.1.1w",
+        "static_syms": false
+      }
+    }
+  ],
+  "consumers": []
+}

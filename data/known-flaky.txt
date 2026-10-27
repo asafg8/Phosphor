@@ -1,0 +1,5 @@
+# timing-dependent tests ignored by the build smoke test.
+Zend/tests/bug74093.phpt
+# environment-dependent: allocates >2 GB; under a 2 GB cgroup memory.max the kernel OOM-kills it (Killed / Termsig=9).
+# Fails on vanilla php.net 7.4.33 and on 7.4.33-phosphor1 alike: data/research/smoke-baseline/RESULTS-2026-10-25.txt
+Zend/tests/bug55509.phpt

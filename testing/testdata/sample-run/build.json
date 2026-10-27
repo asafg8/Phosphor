@@ -1,0 +1,43 @@
+{
+  "schema": "phosphor/build/v1",
+  "phosphor_version": "dev-4f657856",
+  "started_at": "2026-10-27T10:13:44.226456884Z",
+  "finished_at": "2026-10-27T10:13:44.511182468Z",
+  "status": "ok",
+  "runtime_id": "rt-466d61e2bb558221",
+  "runtimes": [
+    {
+      "runtime_id": "rt-466d61e2bb558221",
+      "action": "same-minor-build"
+    }
+  ],
+  "base": "upstream",
+  "shape_key": "d19c4fdd15b71d186c05b091e9bc1e9d1b5dcd6e700feab3ae4fbcd76e3a64e0",
+  "cache": "hit",
+  "source": "cache",
+  "target": {
+    "version": "7.4.33",
+    "extra": "-phosphor1",
+    "patchset": "php2shell-7.4@712e60f9+516ffb52"
+  },
+  "sources": [],
+  "prefix": "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd",
+  "configure": {
+    "original": [],
+    "effective": [],
+    "dropped": []
+  },
+  "openssl": {
+    "mode": "system",
+    "version": "1.1.1w"
+  },
+  "deps_installed": [],
+  "deps_removed": false,
+  "exts": [],
+  "version_string": "7.4.33-phosphor1",
+  "duration_s": 0.284724083,
+  "resource": {
+    "peak_rss_mb": 146,
+    "swapfile_added": false
+  }
+}

@@ -1,0 +1,4 @@
+Real Configure Command lines (php -i): docker-library-7.4 (php:7.4-apache), docker-library-8.2 (php:8.2.35-fpm).
+custom-7.4-fpm-apxs.txt: the shape of a hand-built 7.4 (data/research/openssl fixture-f original + apxs + env assignments).
+Distro packages strip the line (php -i shows none): AL2023 8.1/8.2, AlmaLinux 8 php:7.4, ondrej 7.4 jammy, Debian 11 php7.4,
+Amazon Linux 2 amzn-extras 7.4 -> fingerprint configure_source=absent; those runtimes never take the upstream route.

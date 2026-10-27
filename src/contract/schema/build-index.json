@@ -1,0 +1,40 @@
+{
+  "$defs": {
+    "BuildIndex": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "type": "integer"
+        },
+        "promoted_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "shape_key": {
+          "type": "string"
+        },
+        "version_string": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bytes",
+        "promoted_at",
+        "schema",
+        "sha256",
+        "shape_key",
+        "version_string"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/build-index.json",
+  "$ref": "#/$defs/BuildIndex",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

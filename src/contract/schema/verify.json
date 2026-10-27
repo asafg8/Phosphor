@@ -1,0 +1,211 @@
+{
+  "$defs": {
+    "Verify": {
+      "additionalProperties": false,
+      "properties": {
+        "consent": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/VerifyConsent"
+            }
+          ]
+        },
+        "generated_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "runtimes": {
+          "items": {
+            "$ref": "#/$defs/VerifyRuntime"
+          },
+          "type": "array"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "runtimes",
+        "schema"
+      ],
+      "type": "object"
+    },
+    "VerifyCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "type": "string"
+        },
+        "doc": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer"
+        },
+        "log": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "old": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "check",
+        "status"
+      ],
+      "type": "object"
+    },
+    "VerifyConsent": {
+      "additionalProperties": false,
+      "properties": {
+        "at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "by": {
+          "type": "string"
+        },
+        "via": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "at",
+        "by",
+        "via"
+      ],
+      "type": "object"
+    },
+    "VerifyRuntime": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "same-minor-build",
+            "needs-code-change",
+            "needs-migration",
+            "report-only",
+            "distro-update",
+            "none"
+          ],
+          "type": "string"
+        },
+        "already_fixed": {
+          "type": "boolean"
+        },
+        "code_roots": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "documents": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/VerifyCheck"
+          },
+          "type": "array"
+        },
+        "migration_target": {
+          "type": "string"
+        },
+        "php_version": {
+          "type": "string"
+        },
+        "precedence": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7",
+            "unresolved"
+          ],
+          "type": "string"
+        },
+        "readiness": {
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "sapi": {
+          "enum": [
+            "fpm",
+            "mod_php",
+            "cgi",
+            "cli"
+          ],
+          "type": "string"
+        },
+        "target_version": {
+          "type": "string"
+        },
+        "unblock": {
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "ready",
+            "review",
+            "will-break",
+            "cant-verify"
+          ],
+          "type": "string"
+        },
+        "verify_hash": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "code_roots",
+        "documents",
+        "evidence",
+        "migration_target",
+        "php_version",
+        "precedence",
+        "readiness",
+        "reasons",
+        "runtime_id",
+        "sapi",
+        "target_version",
+        "verify_hash"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/verify.json",
+  "$ref": "#/$defs/Verify",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

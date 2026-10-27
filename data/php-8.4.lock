@@ -1,0 +1,40 @@
+{
+  "schema": "phosphor/source-lock/v1",
+  "branch": "8.4",
+  "version": "8.4.27",
+  "why": "first 8.4 release fixing CVE-2026-109618/109619 (php.net 2026-10-21, NEWS line 7) and still the latest 8.4 release on 2026-10-26 (php.net releases JSON; no newer php-src tag). It does NOT contain the gh-24488 SimpleXML GC fix (php-src f963484725, merged 2026-10-22; compare php-8.4.27...f963484725 = diverged), so phosphor builds carry patches/php-8.4/gh24488-simplexml-gc.patch (sha256 in patches/php-8.4/SHA256SUMS, fuzz 0 verified 2026-10-26) and are versioned 8.4.27-phosphor1.",
+  "tarball": {
+    "url": "https://www.php.net/distributions/php-8.4.27.tar.xz",
+    "sha256": "dcf93923b0e38e0d5252b25b796520b5a47761a08b3488b6d0b5d1115764d3f0"
+  },
+  "signature": {
+    "url": "https://www.php.net/distributions/php-8.4.27.tar.xz.asc",
+    "signer_fpr": "9D7F99A0CB8F05C8A6958D6256A97AF7600A39A6",
+    "signer": "Calvin Buckley (PHP) <calvinb@php.net>",
+    "release_manager_fprs": [
+      "AFD8691FDAEDF03BDF6E460563F15A9B715376CA",
+      "9D7F99A0CB8F05C8A6958D6256A97AF7600A39A6",
+      "0616E93D95AF471243E26761770426E17EBBB3DD"
+    ],
+    "release_managers": [
+      "Eric Mann",
+      "Calvin Buckley",
+      "Saki Takamachi"
+    ],
+    "keyring": "data/keys/php-keyring.asc",
+    "keyring_sha256": "43fcb3eaf65536cb0833c229b492c70cfad8562138164dd13673e08925d6c56c",
+    "verify": "gpg --dearmor < keyring > k.gpg && gpgv --keyring k.gpg <tarball>.asc <tarball>  (verified 2026-10-26: Good signature from \"Calvin Buckley (PHP) <calvinb@php.net>\", key 9D7F99A0CB8F05C8A6958D6256A97AF7600A39A6); release_manager_fprs = the PHP 8.4 keys listed on https://www.php.net/gpg-keys.php on 2026-10-26, all present in the repo keyring (unchanged)"
+  },
+  "patches": {
+    "dir": "patches/php-8.4",
+    "extra_version": "-phosphor1",
+    "carried": [
+      {
+        "file": "gh24488-simplexml-gc.patch",
+        "sha256": "0e59429e14324ba4774c07d7335cbd51d699c7d196e7a52284a7fea5f2a0743e",
+        "upstream": "php-src f9634847258a8c3ed6c12bb79104eba60bb631ea (Fix GH-24488)"
+      }
+    ]
+  },
+  "verified": "2026-10-26"
+}

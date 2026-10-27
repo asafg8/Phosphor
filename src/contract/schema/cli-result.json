@@ -1,0 +1,239 @@
+{
+  "$defs": {
+    "CliChange": {
+      "additionalProperties": false,
+      "properties": {
+        "detail": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "result": {
+          "type": "string"
+        },
+        "step": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "result",
+        "step"
+      ],
+      "type": "object"
+    },
+    "CliResult": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "type": "string"
+        },
+        "documents": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Error"
+            }
+          ]
+        },
+        "exit_code": {
+          "type": "integer"
+        },
+        "host": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "summary": {
+          "$ref": "#/$defs/CliSummary"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "command",
+        "documents",
+        "exit_code",
+        "host",
+        "next",
+        "schema",
+        "summary",
+        "version"
+      ],
+      "type": "object"
+    },
+    "CliRuntime": {
+      "additionalProperties": false,
+      "properties": {
+        "binary": {
+          "type": "string"
+        },
+        "code_roots": {
+          "type": "integer"
+        },
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "first_code_root": {
+          "type": "string"
+        },
+        "package": {
+          "type": "string"
+        },
+        "provenance": {
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "repo": {
+          "type": "string"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "sapi": {
+          "enum": [
+            "fpm",
+            "mod_php",
+            "cgi",
+            "cli"
+          ],
+          "type": "string"
+        },
+        "service": {
+          "type": "string"
+        },
+        "target_version": {
+          "type": "string"
+        },
+        "unblock": {
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "ready",
+            "review",
+            "will-break",
+            "cant-verify"
+          ],
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "binary",
+        "code_roots",
+        "provenance",
+        "runtime_id",
+        "sapi",
+        "service",
+        "version"
+      ],
+      "type": "object"
+    },
+    "CliSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "change": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/CliChange"
+            }
+          ]
+        },
+        "runtimes": {
+          "items": {
+            "$ref": "#/$defs/CliRuntime"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "runtimes"
+      ],
+      "type": "object"
+    },
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "E_NO_DISK",
+            "E_EXT_REBUILD",
+            "E_SOURCE_INTEGRITY",
+            "E_ARTIFACT_INTEGRITY",
+            "E_BUILD_FAILED",
+            "E_DEPS_INSTALL",
+            "E_PREFLIGHT",
+            "E_NOT_ELIGIBLE",
+            "E_LAB_FLAG",
+            "E_ROOT_UNREADABLE",
+            "E_MANIFEST",
+            "E_USAGE",
+            "E_SCAN_FAILED",
+            "E_SWAP_FAILED",
+            "E_SWAP_VERIFY",
+            "E_ROLLBACK_FAILED",
+            "E_TIMEOUT",
+            "E_UNSUPPORTED",
+            "E_INTERNAL",
+            "E_PATCH_APPLY",
+            "E_DRIFT",
+            "E_VERSION_PATCH",
+            "E_SMOKE",
+            "E_DEPS_UNAVAILABLE",
+            "E_SOURCE_UNVERIFIED",
+            "E_RESULT_MISSING",
+            "E_NO_MEMORY",
+            "E_TELEMETRY_IN_BUILD",
+            "E_VERDICT_REQUIRED",
+            "E_BUSY"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/cli-result.json",
+  "$ref": "#/$defs/CliResult",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

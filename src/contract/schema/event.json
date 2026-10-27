@@ -1,0 +1,64 @@
+{
+  "$defs": {
+    "Event": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "seq": {
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "inspected",
+            "scanned",
+            "preflighted",
+            "swapped",
+            "rolled-back",
+            "blocked",
+            "needs-code-change",
+            "needs-migration",
+            "failed",
+            "report-only",
+            "held"
+          ],
+          "type": "string"
+        },
+        "step": {
+          "type": "string"
+        },
+        "ts": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "status",
+            "step",
+            "trigger",
+            "error",
+            "info"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "ts",
+        "type"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/event.json",
+  "$ref": "#/$defs/Event",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

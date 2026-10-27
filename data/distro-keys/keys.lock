@@ -1,0 +1,79 @@
+{
+  "schema": "phosphor/distro-keys/v1",
+  "updated": "2026-10-25",
+  "source": {
+    "debian": "debian:trixie image, debian-archive-keyring 2025.1, exported per suite with gpg --export <primary fprs> (2026-10-25). bullseye's own debian-archive-keyring 2021.1.1+deb11u1 lacks the current signing subkeys and fails closed (E_SOURCE_UNVERIFIED).",
+    "almalinux": "almalinux:8 image, almalinux-release-8.10-1.el8, /etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux"
+  },
+  "how_to_verify": {
+    "deb": "Use apt with our temporary sources entry 'deb-src [signed-by=<pinned keyring>] <archive> <suite> main' and ALWAYS these options: -o Dir::Etc::sourcelist=<tmp> -o Dir::Etc::sourceparts=- -o Dir::Etc::trustedparts=/nonexistent -o APT::Get::AllowUnauthenticated=false -o Acquire::AllowInsecureRepositories=false -o Acquire::AllowDowngradeToInsecureRepositories=false. The last three are REQUIRED: host apt.conf.d settings apply to our invocation, and with them set to true a wrong-key source was ACCEPTED (2026-10-24). Any NO_PUBKEY / 'not signed' / refused download -> blocked: source-unverified. Never pass --allow-unauthenticated or [trusted=yes]. The .dsc uploader signature (dpkg-source 'failed to verify signature') is optional and NOT the integrity anchor.",
+    "rpm": "Download the SRPM directly (no dnf, so dnf.conf gpgcheck/localpkg_gpgcheck never apply). rpm --initdb --dbpath <tmp>; rpm --dbpath <tmp> --import <pinned key>; then rpmkeys --macros=/usr/lib/rpm/macros --define '_pkgverify_level all' --define '_pkgverify_flags 0x0' --checksig --dbpath <tmp> <srpm> must end with exactly 'digests signatures OK'; anything else -> blocked: source-unverified. REQUIRED: host /etc/rpm/macros* (e.g. %_pkgverify_level none, %_pkgverify_flags/%__vsflags 0xffff) make a plain 'rpm -K' print just 'OK' for an empty or wrong keyring (verified 2026-10-24); --macros=/usr/lib/rpm/macros loads no host macro files and the defines force verification."
+  },
+  "verified_2026_10_24": {
+    "deb_pinned": "bullseye-security InRelease + php7.4 7.4.33-1+deb11u12 source download: OK",
+    "deb_wrong_key": "signed-by=debian-archive-bullseye-stable.gpg for bullseye-security: source download REFUSED",
+    "rpm_empty_keyring": "php-7.4.33-6...src.rpm: digests SIGNATURES NOT OK",
+    "rpm_pinned": "php-7.4.33-6...src.rpm: digests signatures OK (key id 2ae81e8aced7258b)",
+    "hostile_host": "host /etc/apt/sources.list.d entry [trusted=yes] for the same suite + apt.conf.d AllowUnauthenticated/AllowInsecureRepositories/AllowDowngradeToInsecureRepositories=true",
+    "hostile_host_wrong_key_without_overrides": "ACCEPTED (NO_PUBKEY logged) - unsafe",
+    "hostile_host_wrong_key_with_overrides": "REFUSED",
+    "hostile_host_pinned_key_with_overrides": "ACCEPTED",
+    "rpm_hostile_host": "/etc/rpm/macros.hostile: %_pkgverify_level none, %_pkgverify_flags/%__vsflags/%_vsflags_query 0xffff; /etc/dnf/dnf.conf gpgcheck=0 localpkg_gpgcheck=0",
+    "rpm_hostile_naive_rpm_K": "empty keyring: 'OK'; wrong key (Rocky official): 'OK'; pinned: 'OK' - unsafe",
+    "rpm_hostile_robust_rpmkeys": "empty: 'digests SIGNATURES NOT OK'; wrong (Rocky): 'digests SIGNATURES NOT OK'; pinned: 'digests signatures OK'"
+  },
+  "keys": [
+    {
+      "file": "debian-archive-bullseye-automatic.gpg",
+      "fpr": "1F89983E0081FDE018F3CC9673A4F27B8DD47936",
+      "uid": "Debian Archive Automatic Signing Key (11/bullseye) <ftpmaster@debian.org>",
+      "expires": "2029-01-15",
+      "use": "InRelease of archive.debian.org bullseye (signed 2026-10-25 by subkey 0E98404D386FA1D9 of the bullseye key, plus the 11 stable and 12 automatic keys)",
+      "sha256": "307923a6621a3d518342e0305a099085cf7f8da6bcc2af044c8d857d04e797bf",
+      "also": [
+        "A4285295FC7B1A81600062A9605C66F00D6C9793 (11 stable release)",
+        "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8 (12 archive automatic)"
+      ],
+      "signing_subkeys": [
+        "A7236886F3CCCAAD148A27F80E98404D386FA1D9",
+        "4CB50190207B4758A3F73A796ED0E7B82643E131"
+      ]
+    },
+    {
+      "file": "debian-archive-bullseye-security-automatic.gpg",
+      "fpr": "AC530D520F2F3269F5E98313A48449044AAD5C5D",
+      "uid": "Debian Security Archive Automatic Signing Key (11/bullseye) <ftpmaster@debian.org>",
+      "expires": "2029-01-15",
+      "use": "InRelease of archive.debian.org bullseye-security (signed 2026-10-25 by subkey 54404762BBB6E853 of the bullseye security key and BDE6D2B9216EC7A8 of the 12 security key)",
+      "sha256": "75984059dda5ecc4e92e8b5f363eca3d48dc53f381943b11afee46b7d4812ae1",
+      "also": [
+        "05AB90340C0C5E797F44A8C8254CF3B5AEC0A8F0 (12 security automatic)"
+      ],
+      "signing_subkeys": [
+        "ED541312A33F1128F10B1C6C54404762BBB6E853",
+        "B0CAB9266E8C3929798B3EEEBDE6D2B9216EC7A8"
+      ]
+    },
+    {
+      "file": "debian-archive-bullseye-stable.gpg",
+      "fpr": "A4285295FC7B1A81600062A9605C66F00D6C9793",
+      "uid": "Debian Stable Release Key (11/bullseye) <debian-release@lists.debian.org>",
+      "expires": "2029-02-11",
+      "use": "second signature on bullseye Release (not on bullseye-security)",
+      "sha256": "0cdd043ff2e04448802488fd4a4e3812c298a1ab5d81374ea9a9693a274cef8c"
+    },
+    {
+      "file": "almalinux-8-RPM-GPG-KEY-AlmaLinux",
+      "fpr": "BC5EDDCADF502C077F1582882AE81E8ACED7258B",
+      "uid": "AlmaLinux OS 8 <packager@almalinux.org>",
+      "expires": null,
+      "use": "AlmaLinux 8 RPM/SRPM signatures (key id 2ae81e8aced7258b); file also contains expired 5E9B8F5617B5066CE92057C3488FCF7C3ABB34F8",
+      "sha256": "2cbe597b108cefbf571d8d430d238d0a7a6575eebf6c80649be5e10c323e7023"
+    }
+  ],
+  "rotation": "Debian rotates archive signing subkeys; a stale pin fails closed (blocked: source-unverified), never open. Refresh: re-export from the newest debian-archive-keyring, check primary fprs are unchanged, re-run the verified_* checks, re-pin sha256.",
+  "verified_2026_10_25": {
+    "deb_pinned_refreshed_under_hostile_host": "ACCEPTED (php7.4 7.4.33-1+deb11u12 source)",
+    "deb_wrong_key_security_under_hostile_host": "REFUSED (NO_PUBKEY 54404762BBB6E853, BDE6D2B9216EC7A8)"
+  }
+}

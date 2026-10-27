@@ -1,0 +1,8 @@
+/bin/
+/dist/
+/.cache/
+/phosphor-results/
+/phosphor-results*/
+/testing/e2e/out/
+/testing/lab/docker/loadgen/loadgen
+/testing/e2e/cache/

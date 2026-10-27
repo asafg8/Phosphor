@@ -1,0 +1,318 @@
+{
+  "schema": "phosphor/scan/v1",
+  "phosphor_version": "dev-4f657856",
+  "started_at": "2026-10-27T10:13:44.817366384Z",
+  "finished_at": "2026-10-27T10:13:47.041330135Z",
+  "status": "ok",
+  "runtime_id": "rt-466d61e2bb558221",
+  "target_version": "8.2-",
+  "tool": {
+    "php": "",
+    "phpcs": "",
+    "phpcompat_ref": "",
+    "phpcsutils": ""
+  },
+  "roots": [
+    {
+      "path": "/var/www/wordpress",
+      "kind": "first-party",
+      "files": 1130,
+      "errors": 0,
+      "warnings": 0,
+      "duration_ms": 2223,
+      "raw_key": "",
+      "truncated": false
+    },
+    {
+      "path": "/srv/acme/bin",
+      "kind": "first-party",
+      "files": 2,
+      "errors": 0,
+      "warnings": 0,
+      "duration_ms": 0,
+      "raw_key": "",
+      "truncated": false
+    },
+    {
+      "path": "/usr/local/bin/acme-report",
+      "kind": "first-party",
+      "files": 0,
+      "errors": 0,
+      "warnings": 0,
+      "duration_ms": 0,
+      "raw_key": "",
+      "truncated": false
+    }
+  ],
+  "counts": {
+    "first_party": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "third_party": {
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "by_sniff": [],
+  "top_findings": [],
+  "runtime_risk": [
+    {
+      "rule": "dynamic-call",
+      "file": "/var/www/wordpress/phosphor-app/upload.php",
+      "line": 2,
+      "kind": "review"
+    }
+  ],
+  "uses_uploads": true,
+  "uploads_usage": "used",
+  "uploads_evidence": [
+    {
+      "file": "/var/www/wordpress/phosphor-app/upload.php",
+      "line": 2
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/async-upload.php",
+      "line": 114
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+      "line": 2570
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-custom-background.php",
+      "line": 348
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-custom-image-header.php",
+      "line": 659
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/class-file-upload-upgrader.php",
+      "line": 56
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/file.php",
+      "line": 768
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/import.php",
+      "line": 83
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/media.php",
+      "line": 288
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/ms.php",
+      "line": 15
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/plugin-install.php",
+      "line": 355
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/template.php",
+      "line": 1027
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/includes/theme-install.php",
+      "line": 198
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/media-new.php",
+      "line": 30
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/nav-menus.php",
+      "line": 1057
+    },
+    {
+      "file": "/var/www/wordpress/wp-admin/update.php",
+      "line": 157
+    },
+    {
+      "file": "/var/www/wordpress/wp-includes/class-snoopy.php",
+      "line": 111
+    },
+    {
+      "file": "/var/www/wordpress/wp-includes/rest-api/class-wp-rest-request.php",
+      "line": 43
+    },
+    {
+      "file": "/var/www/wordpress/wp-includes/rest-api/class-wp-rest-server.php",
+      "line": 370
+    },
+    {
+      "file": "/var/www/wordpress/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php",
+      "line": 239
+    }
+  ],
+  "feature_use": [
+    {
+      "setting": "file_uploads",
+      "verdict": "used",
+      "evidence": [
+        {
+          "file": "/var/www/wordpress/phosphor-app/upload.php",
+          "line": 2,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/async-upload.php",
+          "line": 114,
+          "kind": "wp_handle_upload"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/ajax-actions.php",
+          "line": 2570,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/class-custom-background.php",
+          "line": 348,
+          "kind": "multipart-form"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/class-custom-image-header.php",
+          "line": 659,
+          "kind": "multipart-form"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/class-file-upload-upgrader.php",
+          "line": 56,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/file.php",
+          "line": 768,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/import.php",
+          "line": 83,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/media.php",
+          "line": 288,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/ms.php",
+          "line": 15,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/plugin-install.php",
+          "line": 355,
+          "kind": "multipart-form"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/template.php",
+          "line": 1027,
+          "kind": "multipart-form"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/includes/theme-install.php",
+          "line": 198,
+          "kind": "multipart-form"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/media-new.php",
+          "line": 30,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/nav-menus.php",
+          "line": 1057,
+          "kind": "multipart-form"
+        },
+        {
+          "file": "/var/www/wordpress/wp-admin/update.php",
+          "line": 157,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/class-snoopy.php",
+          "line": 111,
+          "kind": "multipart-form"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/rest-api/class-wp-rest-request.php",
+          "line": 43,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/rest-api/class-wp-rest-server.php",
+          "line": 370,
+          "kind": "$_FILES"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/rest-api/endpoints/class-wp-rest-attachments-controller.php",
+          "line": 239,
+          "kind": "$_FILES"
+        }
+      ]
+    },
+    {
+      "setting": "session.upload_progress",
+      "verdict": "unused",
+      "evidence": []
+    },
+    {
+      "setting": "simplexml",
+      "verdict": "used",
+      "evidence": [
+        {
+          "file": "/var/www/wordpress/wp-includes/ID3/getid3.lib.php",
+          "line": 741,
+          "kind": "simplexml_load"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/class-wp-oembed.php",
+          "line": 673,
+          "kind": "simplexml_load"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/embed.php",
+          "line": 815,
+          "kind": "SimpleXMLElement"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/sitemaps/class-wp-sitemaps-renderer.php",
+          "line": 147,
+          "kind": "SimpleXMLElement"
+        }
+      ]
+    },
+    {
+      "setting": "shutdown-handler",
+      "verdict": "used",
+      "evidence": [
+        {
+          "file": "/var/www/wordpress/wp-includes/class-wp-fatal-error-handler.php",
+          "line": 25,
+          "kind": "register_shutdown_function"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/error-protection.php",
+          "line": 95,
+          "kind": "register_shutdown_function"
+        },
+        {
+          "file": "/var/www/wordpress/wp-includes/load.php",
+          "line": 1804,
+          "kind": "register_shutdown_function"
+        },
+        {
+          "file": "/var/www/wordpress/wp-settings.php",
+          "line": 146,
+          "kind": "register_shutdown_function"
+        }
+      ]
+    }
+  ],
+  "readiness": "not-run",
+  "blocking_reasons": []
+}

@@ -1,0 +1,298 @@
+{
+  "$defs": {
+    "EOLInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "branch_eol": {
+          "type": "boolean"
+        },
+        "next_action": {
+          "enum": [
+            "same-minor-build",
+            "needs-code-change",
+            "needs-migration",
+            "report-only",
+            "distro-update",
+            "none"
+          ],
+          "type": "string"
+        },
+        "next_target": {
+          "type": "string"
+        },
+        "unpatched_cves": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      },
+      "required": [
+        "branch_eol",
+        "next_action",
+        "unpatched_cves"
+      ],
+      "type": "object"
+    },
+    "FileLine": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file",
+        "line"
+      ],
+      "type": "object"
+    },
+    "InfoNote": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/FileLine"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "code",
+        "evidence"
+      ],
+      "type": "object"
+    },
+    "Plan": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "runtimes": {
+          "items": {
+            "$ref": "#/$defs/PlanRuntime"
+          },
+          "type": "array"
+        },
+        "schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "runtimes",
+        "schema"
+      ],
+      "type": "object"
+    },
+    "PlanRuntime": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "same-minor-build",
+            "needs-code-change",
+            "needs-migration",
+            "report-only",
+            "distro-update",
+            "none"
+          ],
+          "type": "string"
+        },
+        "base": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "upstream",
+                "distro-source",
+                "own-base"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "current_version": {
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "eligible": {
+          "type": "boolean"
+        },
+        "eol": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/EOLInfo"
+            }
+          ]
+        },
+        "fix_evidence": {
+          "type": "string"
+        },
+        "fix_source": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "distro",
+                "upstream",
+                "phosphor-build"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "info": {
+          "items": {
+            "$ref": "#/$defs/InfoNote"
+          },
+          "type": "array"
+        },
+        "precedence": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3",
+            "P4",
+            "P5",
+            "P6",
+            "P7",
+            "unresolved"
+          ],
+          "type": "string"
+        },
+        "readiness": {
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "enum": [
+              "same-minor",
+              "distro-patched",
+              "custom-build",
+              "scan-blocking",
+              "cross-minor",
+              "eol-minor",
+              "already-fixed",
+              "bitnami-adapter-v2",
+              "unsupported-sapi",
+              "unsupported-service-manager",
+              "ext-reused",
+              "distro-pkg-no-fix",
+              "openssl-route-a3",
+              "openssl-route-b",
+              "eol-openssl",
+              "openssl-semantics",
+              "upload-progress-removed",
+              "requires-ubuntu-pro",
+              "fixed-distro",
+              "fixed-upstream",
+              "fixed-phosphor",
+              "distro-fix-available",
+              "hard-rule-eol-packaged",
+              "pkg-candidate-unknown",
+              "provenance-unknown",
+              "fixed-claim-unverified",
+              "exit-rate",
+              "general-traffic-signal",
+              "under-attack",
+              "saturation",
+              "openssl-too-old",
+              "restart-required",
+              "configure-absent",
+              "configure-synthesized",
+              "pkg-held",
+              "low-disk",
+              "source-integrity",
+              "build-failed",
+              "preflight-failed",
+              "ext-rebuild-failed",
+              "deps-unavailable",
+              "aborted",
+              "swap-failed",
+              "partial",
+              "patch-conflict",
+              "no-rollback-artifact",
+              "source-unverified",
+              "smoke-failed",
+              "version-patch",
+              "insufficient-memory"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "requires": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "risk": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "type": "string"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "sapi": {
+          "enum": [
+            "fpm",
+            "mod_php",
+            "cgi",
+            "cli"
+          ],
+          "type": "string"
+        },
+        "target_version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "current_version",
+        "eligible",
+        "info",
+        "precedence",
+        "readiness",
+        "reasons",
+        "requires",
+        "risk",
+        "runtime_id",
+        "sapi",
+        "target_version"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/plan.json",
+  "$ref": "#/$defs/Plan",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "phosphor/build-memory-lock/v1",
+  "updated": "2026-10-27",
+  "rule": "Minimum memory a compile may use (the build scope's MemoryMax = 70% of effective cgroup memory, plus 2048 MB when the agent could add its own swapfile; pre-existing host swap is not counted). Below floor_mb the build blocks with E_NO_MEMORY / insufficient-memory before any build dependency is installed. Keyed by base only: the private OpenSSL compiles in the same scope at a lower peak than PHP's worst translation unit.",
+  "routes": {
+    "distro-source": {
+      "floor_mb": 1200,
+      "peak_rss_mb": null,
+      "measured": "2026-10-25, debian 11 php7.4 7.4.33-1+deb11u12 dpkg-buildpackage, make -j1, arm64: scope 716M -> cc1 OOM-killed at ext/fileinfo/libmagic/apprentice.c; scope 1433M -> built (71 debs, smoke ok). 1 s cc1 RSS sampling saw 552 MB (zend_execute.c) and missed the apprentice.c spike. Floor is bracketed (716 < floor <= 1433) with margin; refine to exact peak_rss_mb (rusage, build.json resource.peak_rss_mb) from the next run."
+    },
+    "upstream": {
+      "floor_mb": 1200,
+      "peak_rss_mb": 660,
+      "measured": "2026-10-26 (lab fixture n): 8.4.27-phosphor1 cold build, Debian 12 arm64, official php:8.4.26-fpm configure line, make -j1 under CPUQuota=50%/MemoryMax=2150M: peak_rss_mb 660 (build.json resource.peak_rss_mb, rusage), 1133.5 s, no swapfile, full smoke green. 8.5.12-phosphor1, same host/limits, official php:8.5.11-fpm line, OpenSSL 3.0.22: peak_rss_mb 608, 1186.7 s, no swapfile, smoke green. 7.4 upstream built at scope 1433M on fixture i (2026-10-25), peak not recorded. Floor 1200 kept: ~1.8x the higher measured 8.x peak (660)."
+    }
+  }
+}

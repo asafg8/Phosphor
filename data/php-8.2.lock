@@ -1,0 +1,25 @@
+{
+  "schema": "phosphor/source-lock/v1",
+  "branch": "8.2",
+  "version": "8.2.35",
+  "why": "first 8.2 release fixing CVE-2026-109618/109619 (GHSA-w8hw-w9fx-j79w, GHSA-6wmf-4rv5-p3rp: php-src < 8.2.35 -> 8.2.35); latest 8.2 as of 2026-10-24",
+  "tarball": {
+    "url": "https://www.php.net/distributions/php-8.2.35.tar.xz",
+    "sha256": "5737b98601fe5ab1b8c5db0c82ed3158acb9283ed3081ffe2faffb9ac81455e6"
+  },
+  "signature": {
+    "url": "https://www.php.net/distributions/php-8.2.35.tar.xz.asc",
+    "signer_fpr": "E60913E4DF209907D8E30D96659A97C9CF2A795A",
+    "signer": "Sergey Panteleev <sergey@php.net>",
+    "release_manager_fprs": ["E60913E4DF209907D8E30D96659A97C9CF2A795A", "39B641343D8C104B2B146DC3F9C39DC0B9698544"],
+    "keyring": "data/keys/php-keyring.asc",
+    "keyring_sha256": "43fcb3eaf65536cb0833c229b492c70cfad8562138164dd13673e08925d6c56c",
+    "verify": "gpg --dearmor < keyring > k.gpg && gpgv --keyring k.gpg <tarball>.asc <tarball>  (verified 2026-10-24: Good signature, key E609…795A); additionally require the signing fpr to be in release_manager_fprs"
+  },
+  "lab_prefix_pin": {
+    "fixture": "(h) al2023 php8.2 same-minor-build",
+    "pin": "php8.2-*-8.2.34-1.amzn2023.0.1",
+    "note": "8.2.34 is the newest pre-fix AL2023 build (dnf --showduplicates 2026-10-24: 8.2.31..8.2.35); excludepkgs=php8.2*-8.2.35*"
+  },
+  "verified": "2026-10-24"
+}

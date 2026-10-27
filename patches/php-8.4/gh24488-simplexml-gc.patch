@@ -1,0 +1,45 @@
+# php-src f963484725 (PHP-8.4, 2026-10-22) 'Fix GH-24488: GC double-frees the SimpleXMLElement properties table', NEWS hunk removed.
+# Applies at fuzz 0 to php-8.4.27 and php-8.5.12 tarballs (verified 2026-10-24).
+diff --git a/ext/simplexml/simplexml.c b/ext/simplexml/simplexml.c
+index 7d4337ae384a..b8475ec62c8f 100644
+--- a/ext/simplexml/simplexml.c
++++ b/ext/simplexml/simplexml.c
+@@ -2202,7 +2202,7 @@ static void sxe_object_free_storage(zend_object *object)
+ 
+ 	if (sxe->properties) {
+ 		ZEND_ASSERT(!(GC_FLAGS(sxe->properties) & IS_ARRAY_IMMUTABLE));
+-		zend_hash_release(sxe->properties);
++		zend_array_release(sxe->properties);
+ 	}
+ }
+ /* }}} */
+diff --git a/ext/simplexml/tests/gh24488.phpt b/ext/simplexml/tests/gh24488.phpt
+new file mode 100644
+index 000000000000..c8eaf25d489e
+--- /dev/null
++++ b/ext/simplexml/tests/gh24488.phpt
+@@ -0,0 +1,24 @@
++--TEST--
++GH-24488 (GC double-frees the SimpleXMLElement properties table)
++--EXTENSIONS--
++simplexml
++--FILE--
++<?php
++
++for ($i = 0; $i < 2; $i++) {
++    $xml = new SimpleXMLElement('<a><b/></a>');
++    get_object_vars($xml);
++
++    $holder = new stdClass;
++    $holder->xml = $xml;
++    $holder->self = $holder;
++    unset($xml, $holder);
++
++    gc_collect_cycles();
++    $junk[] = str_repeat('x', 100);
++}
++
++echo "Done\n";
++?>
++--EXPECT--
++Done

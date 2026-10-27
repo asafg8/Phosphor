@@ -1,0 +1,528 @@
+{
+  "$defs": {
+    "Baseline": {
+      "additionalProperties": false,
+      "properties": {
+        "exits_pm": {
+          "type": "number"
+        },
+        "from": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "rate_5xx": {
+          "type": "number"
+        },
+        "requests": {
+          "type": "integer"
+        },
+        "rpm": {
+          "type": "number"
+        },
+        "signatures": {
+          "items": {
+            "$ref": "#/$defs/SigCount"
+          },
+          "type": "array"
+        },
+        "sufficient": {
+          "type": "boolean"
+        },
+        "to": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exits_pm",
+        "from",
+        "rate_5xx",
+        "requests",
+        "rpm",
+        "signatures",
+        "sufficient",
+        "to"
+      ],
+      "type": "object"
+    },
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "E_NO_DISK",
+            "E_EXT_REBUILD",
+            "E_SOURCE_INTEGRITY",
+            "E_ARTIFACT_INTEGRITY",
+            "E_BUILD_FAILED",
+            "E_DEPS_INSTALL",
+            "E_PREFLIGHT",
+            "E_NOT_ELIGIBLE",
+            "E_LAB_FLAG",
+            "E_ROOT_UNREADABLE",
+            "E_MANIFEST",
+            "E_USAGE",
+            "E_SCAN_FAILED",
+            "E_SWAP_FAILED",
+            "E_SWAP_VERIFY",
+            "E_ROLLBACK_FAILED",
+            "E_TIMEOUT",
+            "E_UNSUPPORTED",
+            "E_INTERNAL",
+            "E_PATCH_APPLY",
+            "E_DRIFT",
+            "E_VERSION_PATCH",
+            "E_SMOKE",
+            "E_DEPS_UNAVAILABLE",
+            "E_SOURCE_UNVERIFIED",
+            "E_RESULT_MISSING",
+            "E_NO_MEMORY",
+            "E_TELEMETRY_IN_BUILD",
+            "E_VERDICT_REQUIRED",
+            "E_BUSY"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "type": "object"
+    },
+    "ProbeRound": {
+      "additionalProperties": false,
+      "properties": {
+        "answered_failures": {
+          "type": "integer"
+        },
+        "counted": {
+          "type": "boolean"
+        },
+        "failed": {
+          "type": "integer"
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "t": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "answered_failures",
+        "counted",
+        "failed",
+        "ok",
+        "t",
+        "total"
+      ],
+      "type": "object"
+    },
+    "Sample": {
+      "additionalProperties": false,
+      "properties": {
+        "fpm_maxchildren": {
+          "type": "integer"
+        },
+        "large_502": {
+          "type": "integer"
+        },
+        "new_sigs": {
+          "type": "integer"
+        },
+        "oom_kills": {
+          "type": "integer"
+        },
+        "probe_status": {
+          "type": "integer"
+        },
+        "proc_up": {
+          "type": "boolean"
+        },
+        "req": {
+          "type": "integer"
+        },
+        "s5xx": {
+          "type": "integer"
+        },
+        "segv": {
+          "type": "integer"
+        },
+        "t": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "worker_exits": {
+          "type": "integer"
+        },
+        "worker_exits_137": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "fpm_maxchildren",
+        "new_sigs",
+        "oom_kills",
+        "probe_status",
+        "proc_up",
+        "req",
+        "s5xx",
+        "segv",
+        "t",
+        "worker_exits",
+        "worker_exits_137"
+      ],
+      "type": "object"
+    },
+    "SigCount": {
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "sig": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "count",
+        "sig"
+      ],
+      "type": "object"
+    },
+    "StepRuntime": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "same-minor-build",
+            "needs-code-change",
+            "needs-migration",
+            "report-only",
+            "distro-update",
+            "none"
+          ],
+          "type": "string"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "inspected",
+            "scanned",
+            "preflighted",
+            "swapped",
+            "rolled-back",
+            "blocked",
+            "needs-code-change",
+            "needs-migration",
+            "failed",
+            "report-only",
+            "held"
+          ],
+          "type": "string"
+        },
+        "verify": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/StepVerify"
+            }
+          ]
+        }
+      },
+      "required": [
+        "runtime_id"
+      ],
+      "type": "object"
+    },
+    "StepVerify": {
+      "additionalProperties": false,
+      "properties": {
+        "new_binary_live": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "new_binary_live"
+      ],
+      "type": "object"
+    },
+    "TriggerHit": {
+      "additionalProperties": false,
+      "properties": {
+        "at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "evidence": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "matched_regression": {
+          "type": "string"
+        },
+        "rule": {
+          "enum": [
+            "segv",
+            "new-fatal",
+            "5xx-rate",
+            "proc-down",
+            "swap-reverted",
+            "swap-verify",
+            "httpd-test",
+            "aborted",
+            "body-fatal",
+            "probe-witness",
+            "known-regression",
+            "operator",
+            "worker-exit-rate"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "at",
+        "evidence",
+        "rule"
+      ],
+      "type": "object"
+    },
+    "Watch": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline": {
+          "$ref": "#/$defs/Baseline"
+        },
+        "decision": {
+          "enum": [
+            "pass",
+            "rollback",
+            "aborted",
+            "running",
+            "held"
+          ],
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Error"
+            }
+          ]
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            }
+          ]
+        },
+        "held_reason": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "same-minor",
+                "distro-patched",
+                "custom-build",
+                "scan-blocking",
+                "cross-minor",
+                "eol-minor",
+                "already-fixed",
+                "bitnami-adapter-v2",
+                "unsupported-sapi",
+                "unsupported-service-manager",
+                "ext-reused",
+                "distro-pkg-no-fix",
+                "openssl-route-a3",
+                "openssl-route-b",
+                "eol-openssl",
+                "openssl-semantics",
+                "upload-progress-removed",
+                "requires-ubuntu-pro",
+                "fixed-distro",
+                "fixed-upstream",
+                "fixed-phosphor",
+                "distro-fix-available",
+                "hard-rule-eol-packaged",
+                "pkg-candidate-unknown",
+                "provenance-unknown",
+                "fixed-claim-unverified",
+                "exit-rate",
+                "general-traffic-signal",
+                "under-attack",
+                "saturation",
+                "openssl-too-old",
+                "restart-required",
+                "configure-absent",
+                "configure-synthesized",
+                "pkg-held",
+                "low-disk",
+                "source-integrity",
+                "build-failed",
+                "preflight-failed",
+                "ext-rebuild-failed",
+                "deps-unavailable",
+                "aborted",
+                "swap-failed",
+                "partial",
+                "patch-conflict",
+                "no-rollback-artifact",
+                "source-unverified",
+                "smoke-failed",
+                "version-patch",
+                "insufficient-memory"
+              ],
+              "type": "string"
+            }
+          ]
+        },
+        "kind": {
+          "enum": [
+            "runtime"
+          ],
+          "type": "string"
+        },
+        "linger": {
+          "type": "boolean"
+        },
+        "markers": {
+          "items": {
+            "$ref": "#/$defs/WatchMarker"
+          },
+          "type": "array"
+        },
+        "phosphor_version": {
+          "type": "string"
+        },
+        "probe_rounds": {
+          "items": {
+            "$ref": "#/$defs/ProbeRound"
+          },
+          "type": "array"
+        },
+        "probe_url": {
+          "type": "string"
+        },
+        "probe_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "runtimes": {
+          "items": {
+            "$ref": "#/$defs/StepRuntime"
+          },
+          "type": "array"
+        },
+        "samples": {
+          "items": {
+            "$ref": "#/$defs/Sample"
+          },
+          "type": "array"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "signal": {
+          "enum": [
+            "sufficient",
+            "insufficient"
+          ],
+          "type": "string"
+        },
+        "sources": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "started_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "failed",
+            "blocked"
+          ],
+          "type": "string"
+        },
+        "triggers": {
+          "items": {
+            "$ref": "#/$defs/TriggerHit"
+          },
+          "type": "array"
+        },
+        "window_s": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "baseline",
+        "decision",
+        "kind",
+        "linger",
+        "phosphor_version",
+        "runtime_id",
+        "runtimes",
+        "samples",
+        "schema",
+        "signal",
+        "started_at",
+        "status",
+        "triggers",
+        "window_s"
+      ],
+      "type": "object"
+    },
+    "WatchMarker": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "t": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "t"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/watch.json",
+  "$ref": "#/$defs/Watch",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

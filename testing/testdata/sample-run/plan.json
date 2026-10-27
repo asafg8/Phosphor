@@ -1,0 +1,86 @@
+{
+  "schema": "phosphor/plan/v1",
+  "generated_at": "2026-10-27T10:14:45.826050218Z",
+  "runtimes": [
+    {
+      "runtime_id": "rt-466d61e2bb558221",
+      "sapi": "fpm",
+      "current_version": "7.4.33",
+      "target_version": "7.4.33-phosphor1",
+      "action": "same-minor-build",
+      "risk": "low",
+      "reasons": [
+        "same-minor",
+        "custom-build"
+      ],
+      "eligible": true,
+      "precedence": "P5",
+      "base": "upstream",
+      "requires": [],
+      "info": [
+        {
+          "code": "oom-terminates-worker",
+          "evidence": [
+            {
+              "file": "/var/www/wordpress/wp-includes/class-wp-fatal-error-handler.php",
+              "line": 25
+            },
+            {
+              "file": "/var/www/wordpress/wp-includes/error-protection.php",
+              "line": 95
+            },
+            {
+              "file": "/var/www/wordpress/wp-includes/load.php",
+              "line": 1804
+            },
+            {
+              "file": "/var/www/wordpress/wp-settings.php",
+              "line": 146
+            }
+          ]
+        }
+      ],
+      "readiness": "review"
+    },
+    {
+      "runtime_id": "rt-e317ff5eeb20d571",
+      "sapi": "cli",
+      "current_version": "7.4.33",
+      "target_version": "7.4.33-phosphor1",
+      "action": "same-minor-build",
+      "risk": "low",
+      "reasons": [
+        "same-minor",
+        "custom-build"
+      ],
+      "eligible": true,
+      "precedence": "P5",
+      "base": "upstream",
+      "requires": [],
+      "info": [
+        {
+          "code": "oom-terminates-worker",
+          "evidence": [
+            {
+              "file": "/var/www/wordpress/wp-includes/class-wp-fatal-error-handler.php",
+              "line": 25
+            },
+            {
+              "file": "/var/www/wordpress/wp-includes/error-protection.php",
+              "line": 95
+            },
+            {
+              "file": "/var/www/wordpress/wp-includes/load.php",
+              "line": 1804
+            },
+            {
+              "file": "/var/www/wordpress/wp-settings.php",
+              "line": 146
+            }
+          ]
+        }
+      ],
+      "readiness": "review"
+    }
+  ]
+}

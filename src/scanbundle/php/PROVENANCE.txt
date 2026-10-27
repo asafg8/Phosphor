@@ -1,0 +1,34 @@
+phosphor scan bundle PHP: self-built static PHP 8.5.12 CLI (+ gh-24488 fix), amd64 + arm64. Built 2026-10-26.
+
+Why: a php2shell remediation tool must not ship a pre-php2shell PHP, even as a local-only scanner. static-php.dev's
+newest 8.5 build is 8.5.8 (pre-fix), so we build 8.5.12 ourselves.
+
+Inputs (all pinned, all verified inside build.sh before use):
+- php-src: https://www.php.net/distributions/php-8.5.12.tar.xz
+  sha256 08bc2eba2a588654ade1357174aa646b761556c862dda0678345ee29ed481209 = data/php-8.5.lock (gpgv Good: Daniel Scherzer
+  D95C03BC702BE9515344AE3374E44BC9067701A5, a PHP 8.5 release manager on php.net/gpg-keys.php). Fixes CVE-2026-109618/109619.
+- patch: patches/php-8.5/gh24488-simplexml-gc.patch (php-src f9634847258a8c3ed6c12bb79104eba60bb631ea, Fix GH-24488),
+  sha256 0e59429e14324ba4774c07d7335cbd51d699c7d196e7a52284a7fea5f2a0743e, applied with patch -p1 -F0.
+- builder: static-php-cli 2.8.5 release binary (github.com/crazywhalecc/static-php-cli/releases/tag/2.8.5),
+  spc-linux-aarch64.tar.gz sha256 675a3840dcdc4ed041fe20eaa54310ce019a9984c1c03951df9ec66df5795213,
+  spc-linux-x86_64.tar.gz  sha256 523ba4279c54c7a377156c0dd3a36adf92ee64b01e9a7f5e9e2ec084b8e458e5 (GitHub asset digests).
+- libraries fetched by spc 2.8.5 from its source list: libxml2 2.15.4 (GNOME tag v2.15.4), libiconv 1.19, zlib 1.3.2,
+  pkg-config 0.29.2, phpmicro (required by spc, not linked into the CLI).
+- toolchain: alpine:3.20 (musl), gcc 13.2.1. Fully static, stripped.
+
+Extensions (only what phpcs + PHPCompatibility need): ctype dom filter iconv mbstring phar simplexml tokenizer xml
+xmlreader xmlwriter pcntl posix zlib (+ core: date hash json pcre random reflection spl standard, lexbor, uri, opcache).
+No network, database or crypto extensions.
+
+Build: docker run --rm --platform linux/<arm64|amd64> -v src/scanbundle/php:/s:ro -v OUT:/out alpine:3.20 \
+         sh /s/build.sh <spc asset> <spc sha256>        (arm64 native 161 s; amd64 under emulation 446 s)
+build.sh checks every input sha256, applies the patch, verifies php -v = 8.5.12, runs the GH-24488 reproduction
+(must print "gh24488-repro ok"), and packs the binary as a single file "php" with a deterministic tar header.
+
+Outputs (pinned in src/scanbundle/bundle.lock):
+- php-8.5.12-phosphor-cli-linux-aarch64.tar.gz sha256 a099a33f39cb697bd5c14ec3875c6b0b2b44784af379190545a5b9b88686ca5b
+- php-8.5.12-phosphor-cli-linux-x86_64.tar.gz  sha256 c5e62e0d847e19c64a72a26e88d74bd801747a9db25c7bdf14dc6ea06ce59365
+
+Checked: phpcs 4.0.4 + PHPCompatibility 4b1ac835 + PHPCSUtils 1.2.3 under the scanner's ini (-n, display_errors=stderr)
+on this binary give a clean JSON report, the same findings as the old 8.4.23 bundle on the same sample, and no stderr.
+Known gap (independent of the runtime): PHPCompatibility 4b1ac835 has no sniff for the 8.5 pipe operator.

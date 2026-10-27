@@ -1,0 +1,652 @@
+{
+  "schema": "phosphor/advisories/v1",
+  "cves": [
+    "CVE-2026-109618",
+    "CVE-2026-109619"
+  ],
+  "upstream_ghsa": [
+    "GHSA-w8hw-w9fx-j79w",
+    "GHSA-6wmf-4rv5-p3rp"
+  ],
+  "updated": "2026-10-24",
+  "rules": {
+    "compare": "rpm: rpmvercmp on EVR (epoch defaults to 0); deb: dpkg --compare-versions semantics. installed >= fixed => fixed-distro.",
+    "probe_pkg": "the binary package that owns the runtime's binary or libphp (rpm -qf / dpkg -S), mapped to its source via source_pkg",
+    "unlisted": "a distro/stream not listed here (and not in no_fix) => fall back to php -v rules",
+    "verified_only": "every entry was checked on `verified` against `evidence`; RHEL proper, Debian ELTS, packages.sury.org (Debian) and non-jammy ondrej builds are NOT verified and therefore absent",
+    "repo": "entries with `repo` match only when fingerprint provenance.repo is that repo (e.g. ondrej); entries without `repo` match the distro's own archive only"
+  },
+  "upstream": [
+    {
+      "branch": "8.2",
+      "fixed": "8.2.35",
+      "evidence": "https://www.php.net/ChangeLog-8.php#8.2.35",
+      "ghsa_range": "php-src < 8.2.35 -> 8.2.35 (GHSA-w8hw-w9fx-j79w and GHSA-6wmf-4rv5-p3rp, published 2026-10-21)"
+    },
+    {
+      "branch": "8.3",
+      "fixed": "8.3.36",
+      "evidence": "https://www.php.net/ChangeLog-8.php#8.3.36",
+      "ghsa_range": "php-src < 8.3.36 -> 8.3.36 (GHSA-w8hw-w9fx-j79w and GHSA-6wmf-4rv5-p3rp, published 2026-10-21)"
+    },
+    {
+      "branch": "8.4",
+      "fixed": "8.4.27",
+      "evidence": "https://www.php.net/ChangeLog-8.php#8.4.27",
+      "ghsa_range": "php-src < 8.4.27 -> 8.4.27 (GHSA-w8hw-w9fx-j79w and GHSA-6wmf-4rv5-p3rp, published 2026-10-21)"
+    },
+    {
+      "branch": "8.5",
+      "fixed": "8.5.12",
+      "evidence": "https://www.php.net/ChangeLog-8.php#8.5.12",
+      "ghsa_range": "php-src < 8.5.12 -> 8.5.12 (GHSA-w8hw-w9fx-j79w and GHSA-6wmf-4rv5-p3rp, published 2026-10-21)"
+    },
+    {
+      "branch": "7.4",
+      "fixed": null,
+      "note": "EOL; fix exists only as php-src branch PHP-7.4-CVE-2026-109618-109619 @712e60f9 (patches/php-7.4/)"
+    },
+    {
+      "branch": "8.1",
+      "fixed": null,
+      "note": "EOL; not in the GHSA patched ranges"
+    },
+    {
+      "branch": "8.0",
+      "fixed": null,
+      "note": "EOL; not in the GHSA patched ranges"
+    }
+  ],
+  "entries": [
+    {
+      "os_id": "almalinux",
+      "os_version": "8",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:7.4",
+      "fixed": "7.4.33-8",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "7.4.33-8 2026-10-21 'Avoid state corruption via bailout CVE-2026-109618, CVE-2026-109619'"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "almalinux",
+      "os_version": "8",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:8.0",
+      "fixed": "8.0.30-1.module_el8.10.0+4319+26f10322.alma.1",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "8.0.30-1.alma.1 2026-10-21 (AlmaLinux-only patch; Rocky 8 php:8.0 has no fix)"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "almalinux",
+      "os_version": "8",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:8.2",
+      "fixed": "8.2.35-1",
+      "evidence": {
+        "kind": "rebase",
+        "ref": "rebase to upstream 8.2.35"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "almalinux",
+      "os_version": "9",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:8.1",
+      "fixed": "8.1.32-1.module_el9.8.0+326+528679fc.alma.1",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "8.1.32-1.alma.1 2026-10-21 (AlmaLinux-only patch; Rocky 9 php:8.1 has no fix)"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "almalinux",
+      "os_version": "9",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:8.2",
+      "fixed": "8.2.35-1",
+      "evidence": {
+        "kind": "rebase",
+        "ref": "rebase to upstream 8.2.35"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "almalinux",
+      "os_version": "9",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:8.3",
+      "fixed": "8.3.36-1",
+      "evidence": {
+        "kind": "rebase",
+        "ref": "rebase to upstream 8.3.36"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "almalinux",
+      "os_version": "10",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": null,
+      "fixed": "8.3.36-1",
+      "evidence": {
+        "kind": "rebase",
+        "ref": "8.3.36-1.el10_2 'rebase to 8.3.36' 2026-10-20"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "rocky",
+      "os_version": "8",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:7.4",
+      "fixed": "7.4.33-8",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "7.4.33-8 2026-10-21 CVE-2026-109618, CVE-2026-109619"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "rocky",
+      "os_version": "8",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:8.2",
+      "fixed": "8.2.35-1",
+      "evidence": {
+        "kind": "rebase",
+        "ref": "8.2.35-1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "rocky",
+      "os_version": "9",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:8.2",
+      "fixed": "8.2.35-1",
+      "evidence": {
+        "kind": "rebase",
+        "ref": "8.2.35-1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "rocky",
+      "os_version": "9",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "php:8.3",
+      "fixed": "8.3.36-1",
+      "evidence": {
+        "kind": "rebase",
+        "ref": "8.3.36-1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "amzn",
+      "os_version": "2023",
+      "fmt": "rpm",
+      "source_pkg": "php8.2",
+      "probe_pkg": "php8.2-common",
+      "stream": null,
+      "fixed": "8.2.35-1.amzn2023.0.1",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "ALAS2023-2026-3301"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "amzn",
+      "os_version": "2023",
+      "fmt": "rpm",
+      "source_pkg": "php8.3",
+      "probe_pkg": "php8.3-common",
+      "stream": null,
+      "fixed": "8.3.36-1.amzn2023.0.1",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "ALAS2023-2026-3302"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "amzn",
+      "os_version": "2023",
+      "fmt": "rpm",
+      "source_pkg": "php8.4",
+      "probe_pkg": "php8.4-common",
+      "stream": null,
+      "fixed": "8.4.27-1.amzn2023.0.1",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "ALAS2023-2026-3303"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "amzn",
+      "os_version": "2023",
+      "fmt": "rpm",
+      "source_pkg": "php8.5",
+      "probe_pkg": "php8.5-common",
+      "stream": null,
+      "fixed": "8.5.12-1.amzn2023.0.1",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "ALAS2023-2026-3304"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "amzn",
+      "os_version": "2",
+      "fmt": "rpm",
+      "source_pkg": "php",
+      "probe_pkg": "php-common",
+      "stream": "amazon-linux-extras:php8.2",
+      "fixed": "8.2.35-1.amzn2.0.1",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "ALAS2PHP8.2-2026-015"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "debian",
+      "os_version": "12",
+      "fmt": "deb",
+      "source_pkg": "php8.2",
+      "probe_pkg": "php8.2-common",
+      "stream": null,
+      "fixed": "8.2.35-1~deb12u1",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "DLA-4848-1 (security-tracker.debian.org)"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "debian",
+      "os_version": "13",
+      "fmt": "deb",
+      "source_pkg": "php8.4",
+      "probe_pkg": "php8.4-common",
+      "stream": null,
+      "fixed": "8.4.27-1~deb13u1",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "DSA-6574-1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "14.04",
+      "fmt": "deb",
+      "source_pkg": "php5",
+      "probe_pkg": "php5-common",
+      "stream": null,
+      "fixed": "5.5.9+dfsg-1ubuntu4.29+esm18",
+      "requires": "ubuntu-pro-esm",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "USN-8948-1/-2"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "16.04",
+      "fmt": "deb",
+      "source_pkg": "php7.0",
+      "probe_pkg": "php7.0-common",
+      "stream": null,
+      "fixed": "7.0.33-0ubuntu0.16.04.16+esm22",
+      "requires": "ubuntu-pro-esm",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "USN-8948-1/-2"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "18.04",
+      "fmt": "deb",
+      "source_pkg": "php7.2",
+      "probe_pkg": "php7.2-common",
+      "stream": null,
+      "fixed": "7.2.24-0ubuntu0.18.04.17+esm14",
+      "requires": "ubuntu-pro-esm",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "USN-8948-1/-2"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "20.04",
+      "fmt": "deb",
+      "source_pkg": "php7.4",
+      "probe_pkg": "php7.4-common",
+      "stream": null,
+      "fixed": "7.4.3-4ubuntu2.29+esm5",
+      "requires": "ubuntu-pro-esm",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "USN-8948-1/-2"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "fmt": "deb",
+      "source_pkg": "php8.1",
+      "probe_pkg": "php8.1-common",
+      "stream": null,
+      "fixed": "8.1.2-1ubuntu2.28",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "USN-8948-1/-2"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "24.04",
+      "fmt": "deb",
+      "source_pkg": "php8.3",
+      "probe_pkg": "php8.3-common",
+      "stream": null,
+      "fixed": "8.3.6-0ubuntu0.24.04.13",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "USN-8948-1/-2"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "26.04",
+      "fmt": "deb",
+      "source_pkg": "php8.5",
+      "probe_pkg": "php8.5-common",
+      "stream": null,
+      "fixed": "8.5.4-0ubuntu1.5",
+      "evidence": {
+        "kind": "advisory",
+        "ref": "USN-8948-1/-2"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php5.6",
+      "probe_pkg": "php5.6-common",
+      "stream": null,
+      "fixed": "5.6.40-104",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "debian/changelog of 5.6.40-105+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php7.0",
+      "probe_pkg": "php7.0-common",
+      "stream": null,
+      "fixed": "7.0.33-92",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "7.0.33-92+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php7.1",
+      "probe_pkg": "php7.1-common",
+      "stream": null,
+      "fixed": "7.1.33-80",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "7.1.33-80+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php7.2",
+      "probe_pkg": "php7.2-common",
+      "stream": null,
+      "fixed": "7.2.34-66",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "7.2.34-66+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php7.3",
+      "probe_pkg": "php7.3-common",
+      "stream": null,
+      "fixed": "7.3.33-35",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "7.3.33-35+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php7.4",
+      "probe_pkg": "php7.4-common",
+      "stream": null,
+      "fixed": "1:7.4.33-31",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "1:7.4.33-31 'CVE-2026-109618, CVE-2026-109619: Avoid state corruption via bailout' (patch 0164)"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php8.0",
+      "probe_pkg": "php8.0-common",
+      "stream": null,
+      "fixed": "1:8.0.30-25",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "1:8.0.30-25+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php8.1",
+      "probe_pkg": "php8.1-common",
+      "stream": null,
+      "fixed": "8.1.34-9",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "8.1.34-9+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php8.2",
+      "probe_pkg": "php8.2-common",
+      "stream": null,
+      "fixed": "8.2.35-1",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "8.2.35-1+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php8.3",
+      "probe_pkg": "php8.3-common",
+      "stream": null,
+      "fixed": "8.3.36-1",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "8.3.36-1+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php8.4",
+      "probe_pkg": "php8.4-common",
+      "stream": null,
+      "fixed": "8.4.27-1",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "8.4.27-1+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    },
+    {
+      "os_id": "ubuntu",
+      "os_version": "22.04",
+      "repo": "ppa:ondrej/php",
+      "fmt": "deb",
+      "source_pkg": "php8.5",
+      "probe_pkg": "php8.5-common",
+      "stream": null,
+      "fixed": "8.5.12-1",
+      "evidence": {
+        "kind": "changelog",
+        "ref": "8.5.12-1+ubuntu22.04.1+deb.sury.org+1"
+      },
+      "verified": "2026-10-24"
+    }
+  ],
+  "no_fix": [
+    {
+      "os_id": "amzn",
+      "os_version": "2023",
+      "source_pkg": "php8.1",
+      "status": "no-fix-planned",
+      "evidence": "ALAS CVE page"
+    },
+    {
+      "os_id": "amzn",
+      "os_version": "2",
+      "source_pkg": "php",
+      "stream": "core",
+      "status": "no-fix-planned",
+      "evidence": "ALAS CVE page"
+    },
+    {
+      "os_id": "almalinux",
+      "os_version": "9",
+      "source_pkg": "php",
+      "stream": null,
+      "status": "not-fixed-yet",
+      "evidence": "latest 8.0.30-8.el9_8.1 (2026-10-19) changelog has no entry"
+    },
+    {
+      "os_id": "rocky",
+      "os_version": "8",
+      "source_pkg": "php",
+      "stream": "php:8.0",
+      "status": "not-fixed-yet",
+      "evidence": "latest 8.0.30-1 has no entry"
+    },
+    {
+      "os_id": "rocky",
+      "os_version": "9",
+      "source_pkg": "php",
+      "stream": null,
+      "status": "not-fixed-yet",
+      "evidence": "latest 8.0.30-8.el9_8.1 has no entry"
+    },
+    {
+      "os_id": "rocky",
+      "os_version": "9",
+      "source_pkg": "php",
+      "stream": "php:8.1",
+      "status": "not-fixed-yet",
+      "evidence": "latest 8.1.32-1 has no entry"
+    },
+    {
+      "os_id": "debian",
+      "os_version": "11",
+      "source_pkg": "php7.4",
+      "status": "not-tracked",
+      "evidence": "bullseye absent from the Debian tracker for both CVEs (LTS ended); ELTS not checked"
+    }
+  ]
+}

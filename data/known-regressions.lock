@@ -1,0 +1,17 @@
+{
+  "schema": "phosphor/known-regressions-lock/v1",
+  "updated": "2026-10-26",
+  "rule": "A verify target whose version equals `release` exactly gets a known-regression row with the scan's feature_use evidence for `feature` (a scan.json feature_use setting: simplexml | session.upload_progress | shutdown-handler | memory_limit | file_uploads); the verdict is review only when the code uses that feature, otherwise the row is info. Regressions that phosphor builds patch are not listed (the 8.4/8.5 SimpleXML GC fix is carried by patches/php-8.4|8.5). Only confirmed regressions in a specific release that a scan pack can attribute to code are listed.",
+  "entries": [
+    {
+      "release": "8.4.27",
+      "issue": "php-src#24493",
+      "feature": "session.upload_progress"
+    },
+    {
+      "release": "8.5.12",
+      "issue": "php-src#24493",
+      "feature": "session.upload_progress"
+    }
+  ]
+}

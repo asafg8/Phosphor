@@ -1,0 +1,201 @@
+{
+  "$defs": {
+    "Baseline": {
+      "additionalProperties": false,
+      "properties": {
+        "exits_pm": {
+          "type": "number"
+        },
+        "from": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "rate_5xx": {
+          "type": "number"
+        },
+        "requests": {
+          "type": "integer"
+        },
+        "rpm": {
+          "type": "number"
+        },
+        "signatures": {
+          "items": {
+            "$ref": "#/$defs/SigCount"
+          },
+          "type": "array"
+        },
+        "sufficient": {
+          "type": "boolean"
+        },
+        "to": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exits_pm",
+        "from",
+        "rate_5xx",
+        "requests",
+        "rpm",
+        "signatures",
+        "sufficient",
+        "to"
+      ],
+      "type": "object"
+    },
+    "SigCount": {
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "sig": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "count",
+        "sig"
+      ],
+      "type": "object"
+    },
+    "WatchConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "access": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "base_fatal": {
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "type": "object"
+        },
+        "baseline": {
+          "$ref": "#/$defs/Baseline"
+        },
+        "doc_name": {
+          "type": "string"
+        },
+        "error_logs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "runtime"
+          ],
+          "type": "string"
+        },
+        "linger": {
+          "type": "boolean"
+        },
+        "log_path": {
+          "type": "string"
+        },
+        "manager": {
+          "type": "string"
+        },
+        "max_conn_per_child": {
+          "type": "integer"
+        },
+        "offsets": {
+          "additionalProperties": {
+            "$ref": "#/$defs/WatchPos"
+          },
+          "type": "object"
+        },
+        "probe_ok_before": {
+          "type": "boolean"
+        },
+        "probe_url": {
+          "type": "string"
+        },
+        "probe_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "proc_match": {
+          "type": "string"
+        },
+        "program": {
+          "type": "string"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "sample_s": {
+          "type": "integer"
+        },
+        "sapi": {
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "verify_check": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "window_s": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "access",
+        "baseline",
+        "doc_name",
+        "error_logs",
+        "kind",
+        "linger",
+        "manager",
+        "offsets",
+        "probe_ok_before",
+        "probe_url",
+        "proc_match",
+        "program",
+        "runtime_id",
+        "sample_s",
+        "start",
+        "unit",
+        "window_s"
+      ],
+      "type": "object"
+    },
+    "WatchPos": {
+      "additionalProperties": false,
+      "properties": {
+        "inode": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "offset": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "inode",
+        "offset"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/watch-config.json",
+  "$ref": "#/$defs/WatchConfig",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

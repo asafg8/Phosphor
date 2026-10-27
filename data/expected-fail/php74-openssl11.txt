@@ -1,0 +1,4 @@
+# baseline failures of vanilla 7.4.33 ext/openssl tests on OpenSSL 1.1.1 hosts (20.04 baseline, A, A2, A3 all identical).
+ext/openssl/tests/openssl_error_string_basic.phpt
+ext/openssl/tests/sni_server_key_cert.phpt
+ext/openssl/tests/sni_server.phpt

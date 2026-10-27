@@ -1,0 +1,7 @@
+# phosphor scan bundle. One component per line: name version url sha256 <hex>. Never "latest".
+# PHP is self-built (static 8.5.12 + gh-24488 fix): file: = repo-relative path, see src/scanbundle/php/PROVENANCE.txt.
+php-linux-arm64 8.5.12 file:src/scanbundle/php/php-8.5.12-phosphor-cli-linux-aarch64.tar.gz sha256 a099a33f39cb697bd5c14ec3875c6b0b2b44784af379190545a5b9b88686ca5b
+php-linux-amd64 8.5.12 file:src/scanbundle/php/php-8.5.12-phosphor-cli-linux-x86_64.tar.gz sha256 c5e62e0d847e19c64a72a26e88d74bd801747a9db25c7bdf14dc6ea06ce59365
+phpcs 4.0.4 https://github.com/PHPCSStandards/PHP_CodeSniffer/releases/download/4.0.4/phpcs.phar sha256 4b010cd21d8bc8a17e2504792e3c77ef8259126f24caf7eafe7eddef1fa871e9
+phpcompatibility 4b1ac835da9b71a6ac3bc70ff903638187f33674 https://codeload.github.com/PHPCompatibility/PHPCompatibility/tar.gz/4b1ac835da9b71a6ac3bc70ff903638187f33674 sha256 4f39bdfc57fcba1d1904e764f890b0ae5e1f41b257a51587d8072a6b04b354e3
+phpcsutils 1.2.3 https://codeload.github.com/PHPCSStandards/PHPCSUtils/tar.gz/refs/tags/1.2.3 sha256 1bd2198fefb8e9081ce35332127aca50f01cd4106d6f7f6bd28c0d507041d6c9

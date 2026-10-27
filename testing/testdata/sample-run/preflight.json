@@ -1,0 +1,150 @@
+{
+  "schema": "phosphor/preflight/v1",
+  "phosphor_version": "dev-4f657856",
+  "started_at": "2026-10-27T10:14:46.679350427Z",
+  "finished_at": "2026-10-27T10:14:46.822184635Z",
+  "status": "ok",
+  "runtime_id": "rt-466d61e2bb558221",
+  "runtimes": [
+    {
+      "runtime_id": "rt-466d61e2bb558221",
+      "action": "same-minor-build",
+      "status": "preflighted"
+    },
+    {
+      "runtime_id": "rt-e317ff5eeb20d571",
+      "action": "same-minor-build",
+      "status": "preflighted"
+    }
+  ],
+  "checks": [
+    {
+      "id": "modules-equal",
+      "status": "pass",
+      "data": {
+        "rt-466d61e2bb558221": {
+          "extra": [],
+          "missing": []
+        },
+        "rt-e317ff5eeb20d571": {
+          "extra": [],
+          "missing": []
+        }
+      }
+    },
+    {
+      "id": "zend-exts-equal",
+      "status": "pass",
+      "data": {
+        "rt-466d61e2bb558221": {
+          "extra": [],
+          "missing": []
+        },
+        "rt-e317ff5eeb20d571": {
+          "extra": [],
+          "missing": []
+        }
+      }
+    },
+    {
+      "id": "lint",
+      "status": "pass",
+      "data": {
+        "rt-466d61e2bb558221": {
+          "errors": 0,
+          "files": 9
+        },
+        "rt-e317ff5eeb20d571": {
+          "errors": 0,
+          "files": 2
+        }
+      }
+    },
+    {
+      "id": "fpm-test",
+      "status": "pass",
+      "data": {
+        "rt-466d61e2bb558221": {
+          "config": "/usr/local/php74/etc/php-fpm.conf",
+          "exit": 0,
+          "out": "[27-Oct-2026 10:14:46] NOTICE: configuration file /usr/local/php74/etc/php-fpm.conf test is successful"
+        }
+      }
+    },
+    {
+      "id": "httpd-test",
+      "status": "skip"
+    },
+    {
+      "id": "openssl-coherent",
+      "status": "pass",
+      "data": {
+        "rt-466d61e2bb558221": {
+          "curl_ssl": "OpenSSL/1.1.1w",
+          "kind": "system",
+          "needs": [
+            "libssl.so.1.1"
+          ],
+          "static_syms": 0,
+          "version": "OpenSSL 1.1.1w  11 Sep 2023"
+        },
+        "rt-e317ff5eeb20d571": {
+          "curl_ssl": "OpenSSL/1.1.1w",
+          "kind": "system",
+          "needs": [
+            "libssl.so.1.1"
+          ],
+          "static_syms": 0,
+          "version": "OpenSSL 1.1.1w  11 Sep 2023"
+        }
+      }
+    },
+    {
+      "id": "systemd-notify-support",
+      "status": "pass",
+      "data": {
+        "rt-466d61e2bb558221": {
+          "libsystemd": true,
+          "unit": "php74-fpm.service"
+        }
+      }
+    },
+    {
+      "id": "ini-diff",
+      "status": "pass",
+      "data": {
+        "rt-466d61e2bb558221": {
+          "changed": null
+        },
+        "rt-e317ff5eeb20d571": {
+          "changed": null
+        }
+      }
+    },
+    {
+      "id": "disk",
+      "status": "pass",
+      "data": {
+        "/etc": 357678,
+        "/opt/phosphor": 357678
+      }
+    },
+    {
+      "id": "pkg-guard-available",
+      "status": "skip",
+      "data": {
+        "reason": "custom-build"
+      }
+    }
+  ],
+  "module_diff": {
+    "missing": [],
+    "extra": []
+  },
+  "lint": {
+    "files": 11,
+    "errors": []
+  },
+  "decision": "go",
+  "no_go_reasons": []
+}

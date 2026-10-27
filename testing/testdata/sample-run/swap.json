@@ -1,0 +1,167 @@
+{
+  "schema": "phosphor/swap/v1",
+  "phosphor_version": "dev-4f657856",
+  "started_at": "2026-10-27T10:14:47.005331344Z",
+  "finished_at": "2026-10-27T10:14:47.121211385Z",
+  "status": "ok",
+  "runtime_id": "rt-466d61e2bb558221",
+  "runtimes": [
+    {
+      "runtime_id": "rt-466d61e2bb558221",
+      "action": "same-minor-build",
+      "status": "swapped",
+      "verify": {
+        "new_binary_live": true
+      }
+    },
+    {
+      "runtime_id": "rt-e317ff5eeb20d571",
+      "action": "same-minor-build",
+      "status": "swapped",
+      "verify": {
+        "new_binary_live": true
+      }
+    }
+  ],
+  "kind": "runtime",
+  "install_model": "prefix",
+  "sapi": "fpm",
+  "at": "2026-10-27T10:14:47.005331552Z",
+  "old": {
+    "binary": "/usr/local/php74/sbin/php-fpm",
+    "version": "7.4.33"
+  },
+  "new": {
+    "binary": "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/sbin/php-fpm",
+    "version": "7.4.33-phosphor1"
+  },
+  "changes": [
+    {
+      "op": "dropin",
+      "path": "/etc/systemd/system/php74-fpm.service.d/50-phosphor.conf",
+      "before_sha256": null,
+      "after_sha256": "bdf266d1198c3e3c42b446ba8e586e6e8f721e1328450a88a42a61291b81d2cf",
+      "content": "# phosphor: patched PHP from /opt/phosphor/php/7.4.33-phosphor1-d19c4fdd (undo: phosphor rollback --out /root/phosphor-results)\n[Service]\nExecStart=\nExecStart=/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/sbin/php-fpm --nodaemonize --fpm-config /usr/local/php74/etc/php-fpm.conf --pid /run/php74-fpm.pid\n"
+    },
+    {
+      "op": "alternatives",
+      "path": "/usr/bin/php",
+      "before_sha256": null,
+      "after_sha256": null,
+      "args": [
+        "update-alternatives",
+        "--install",
+        "/usr/bin/php",
+        "php",
+        "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/bin/php",
+        "100"
+      ]
+    },
+    {
+      "op": "alternatives",
+      "path": "/usr/bin/php",
+      "before_sha256": null,
+      "after_sha256": null,
+      "args": [
+        "update-alternatives",
+        "--set",
+        "php",
+        "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/bin/php"
+      ],
+      "data": {
+        "previous": "/usr/local/php74/bin/php",
+        "previous_mode": "auto"
+      }
+    },
+    {
+      "op": "marker",
+      "path": "/etc/phosphor.json",
+      "before_sha256": null,
+      "after_sha256": "0d0e14d166867a07d70987710bbc4b0419722462adf73561319c7f847dcc8cbb",
+      "content": "{\n  \"schema\": \"phosphor/marker/v1\",\n  \"kind\": \"runtime\",\n  \"written_at\": \"2026-10-27T10:14:47.015114219Z\",\n  \"new_binary\": \"/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/sbin/php-fpm\",\n  \"changes\": [\n    {\n      \"op\": \"dropin\",\n      \"path\": \"/etc/systemd/system/php74-fpm.service.d/50-phosphor.conf\",\n      \"before_sha256\": null,\n      \"after_sha256\": \"bdf266d1198c3e3c42b446ba8e586e6e8f721e1328450a88a42a61291b81d2cf\",\n      \"content\": \"# phosphor: patched PHP from /opt/phosphor/php/7.4.33-phosphor1-d19c4fdd (undo: phosphor rollback --out /root/phosphor-results)\\n[Service]\\nExecStart=\\nExecStart=/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/sbin/php-fpm --nodaemonize --fpm-config /usr/local/php74/etc/php-fpm.conf --pid /run/php74-fpm.pid\\n\"\n    },\n    {\n      \"op\": \"alternatives\",\n      \"path\": \"/usr/bin/php\",\n      \"before_sha256\": null,\n      \"after_sha256\": null,\n      \"args\": [\n        \"update-alternatives\",\n        \"--install\",\n        \"/usr/bin/php\",\n        \"php\",\n        \"/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/bin/php\",\n        \"100\"\n      ]\n    },\n    {\n      \"op\": \"alternatives\",\n      \"path\": \"/usr/bin/php\",\n      \"before_sha256\": null,\n      \"after_sha256\": null,\n      \"args\": [\n        \"update-alternatives\",\n        \"--set\",\n        \"php\",\n        \"/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/bin/php\"\n      ],\n      \"data\": {\n        \"previous\": \"/usr/local/php74/bin/php\",\n        \"previous_mode\": \"auto\"\n      }\n    }\n  ],\n  \"undo_cmd\": \"phosphor rollback --out /root/phosphor-results\",\n  \"manual_undo\": [\n    \"rm -f /etc/phosphor.json\",\n    \"update-alternatives --auto php\",\n    \"update-alternatives --remove php /opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/bin/php\",\n    \"rm -f /etc/systemd/system/php74-fpm.service.d/50-phosphor.conf\",\n    \"systemctl daemon-reload\",\n    \"systemctl restart php74-fpm.service\",\n    \"systemctl restart acme-queue.service\"\n  ]\n}\n"
+    }
+  ],
+  "reload": {
+    "cmd": "systemctl daemon-reload && systemctl restart php74-fpm.service && systemctl restart acme-queue.service",
+    "exit": 0,
+    "ms": 83
+  },
+  "verify": {
+    "new_binary_live": true,
+    "evidence": {
+      "after_rollback": {
+        "old_version_live": true,
+        "php74-fpm.service": "/usr/local/php74/sbin/php-fpm"
+      },
+      "rt-466d61e2bb558221": {
+        "active": "active",
+        "exe": "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/sbin/php-fpm",
+        "main_pid": "118980",
+        "unit": "php74-fpm.service",
+        "want_exe": "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/sbin/php-fpm"
+      },
+      "rt-e317ff5eeb20d571": {
+        "entry": "/usr/bin/php",
+        "php_version": "7.4.33-phosphor1",
+        "want": "7.4.33-phosphor1"
+      }
+    }
+  },
+  "rollback": [
+    {
+      "op": "remove",
+      "path": "/etc/phosphor.json",
+      "before_sha256": "0d0e14d166867a07d70987710bbc4b0419722462adf73561319c7f847dcc8cbb",
+      "after_sha256": null
+    },
+    {
+      "op": "alternatives",
+      "path": "/usr/bin/php",
+      "before_sha256": null,
+      "after_sha256": null,
+      "args": [
+        "update-alternatives",
+        "--auto",
+        "php"
+      ],
+      "data": {
+        "inverse": true
+      }
+    },
+    {
+      "op": "alternatives",
+      "path": "/usr/bin/php",
+      "before_sha256": null,
+      "after_sha256": null,
+      "args": [
+        "update-alternatives",
+        "--remove",
+        "php",
+        "/opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/bin/php"
+      ],
+      "data": {
+        "inverse": true
+      }
+    },
+    {
+      "op": "remove",
+      "path": "/etc/systemd/system/php74-fpm.service.d/50-phosphor.conf",
+      "before_sha256": "bdf266d1198c3e3c42b446ba8e586e6e8f721e1328450a88a42a61291b81d2cf",
+      "after_sha256": null
+    }
+  ],
+  "undo_cmd": "phosphor rollback --out /root/phosphor-results",
+  "manual_undo": [
+    "rm -f /etc/phosphor.json",
+    "update-alternatives --auto php",
+    "update-alternatives --remove php /opt/phosphor/php/7.4.33-phosphor1-d19c4fdd/bin/php",
+    "rm -f /etc/systemd/system/php74-fpm.service.d/50-phosphor.conf",
+    "systemctl daemon-reload",
+    "systemctl restart php74-fpm.service",
+    "systemctl restart acme-queue.service"
+  ],
+  "held_packages": [],
+  "rolled_back_at": "2026-10-27T10:17:47.963590178Z",
+  "rollback_reason": "operator",
+  "rolled_back_by": "root"
+}

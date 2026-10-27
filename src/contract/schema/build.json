@@ -1,0 +1,564 @@
+{
+  "$defs": {
+    "Artifact": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "type": "integer"
+        },
+        "key": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bytes",
+        "key",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "Build": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Artifact"
+            }
+          ]
+        },
+        "base": {
+          "enum": [
+            "upstream",
+            "distro-source",
+            "own-base"
+          ],
+          "type": "string"
+        },
+        "cache": {
+          "enum": [
+            "hit",
+            "miss"
+          ],
+          "type": "string"
+        },
+        "configure": {
+          "$ref": "#/$defs/ConfigureInfo"
+        },
+        "deps_installed": {
+          "items": {
+            "$ref": "#/$defs/PkgRef"
+          },
+          "type": "array"
+        },
+        "deps_removed": {
+          "type": "boolean"
+        },
+        "duration_s": {
+          "type": "number"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Error"
+            }
+          ]
+        },
+        "exts": {
+          "items": {
+            "$ref": "#/$defs/ExtBuild"
+          },
+          "type": "array"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            }
+          ]
+        },
+        "openssl": {
+          "$ref": "#/$defs/OpenSSLInfo"
+        },
+        "phosphor_version": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "repo_fallback": {
+          "type": "string"
+        },
+        "resource": {
+          "$ref": "#/$defs/BuildResource"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "runtimes": {
+          "items": {
+            "$ref": "#/$defs/StepRuntime"
+          },
+          "type": "array"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "shape_key": {
+          "type": "string"
+        },
+        "smoke": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Smoke"
+            }
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          },
+          "type": "array"
+        },
+        "started_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "failed",
+            "blocked"
+          ],
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/BuildTarget"
+        },
+        "version_string": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "base",
+        "cache",
+        "configure",
+        "deps_installed",
+        "deps_removed",
+        "duration_s",
+        "exts",
+        "openssl",
+        "phosphor_version",
+        "prefix",
+        "resource",
+        "runtime_id",
+        "runtimes",
+        "schema",
+        "shape_key",
+        "source",
+        "sources",
+        "started_at",
+        "status",
+        "target",
+        "version_string"
+      ],
+      "type": "object"
+    },
+    "BuildResource": {
+      "additionalProperties": false,
+      "properties": {
+        "peak_rss_mb": {
+          "type": "integer"
+        },
+        "swapfile_added": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "peak_rss_mb",
+        "swapfile_added"
+      ],
+      "type": "object"
+    },
+    "BuildTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "extra": {
+          "type": "string"
+        },
+        "patchset": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "extra",
+        "patchset",
+        "version"
+      ],
+      "type": "object"
+    },
+    "ConfigureInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "dropped": {
+          "items": {
+            "$ref": "#/$defs/DroppedFlag"
+          },
+          "type": "array"
+        },
+        "effective": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "original": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "renamed": {
+          "items": {
+            "$ref": "#/$defs/RenamedFlag"
+          },
+          "type": "array"
+        },
+        "renames_lock": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "dropped",
+        "effective",
+        "original"
+      ],
+      "type": "object"
+    },
+    "DroppedFlag": {
+      "additionalProperties": false,
+      "properties": {
+        "arg": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "arg",
+        "reason"
+      ],
+      "type": "object"
+    },
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "E_NO_DISK",
+            "E_EXT_REBUILD",
+            "E_SOURCE_INTEGRITY",
+            "E_ARTIFACT_INTEGRITY",
+            "E_BUILD_FAILED",
+            "E_DEPS_INSTALL",
+            "E_PREFLIGHT",
+            "E_NOT_ELIGIBLE",
+            "E_LAB_FLAG",
+            "E_ROOT_UNREADABLE",
+            "E_MANIFEST",
+            "E_USAGE",
+            "E_SCAN_FAILED",
+            "E_SWAP_FAILED",
+            "E_SWAP_VERIFY",
+            "E_ROLLBACK_FAILED",
+            "E_TIMEOUT",
+            "E_UNSUPPORTED",
+            "E_INTERNAL",
+            "E_PATCH_APPLY",
+            "E_DRIFT",
+            "E_VERSION_PATCH",
+            "E_SMOKE",
+            "E_DEPS_UNAVAILABLE",
+            "E_SOURCE_UNVERIFIED",
+            "E_RESULT_MISSING",
+            "E_NO_MEMORY",
+            "E_TELEMETRY_IN_BUILD",
+            "E_VERDICT_REQUIRED",
+            "E_BUSY"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "type": "object"
+    },
+    "ExtBuild": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "rebuilt",
+            "reused",
+            "bundled",
+            "failed"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "source_url": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "action",
+        "name",
+        "version"
+      ],
+      "type": "object"
+    },
+    "OpenSSLInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "system",
+            "private",
+            "system-patched",
+            "private-shared"
+          ],
+          "type": "string"
+        },
+        "private_prefix": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "mode",
+        "version"
+      ],
+      "type": "object"
+    },
+    "PkgRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "type": "object"
+    },
+    "RenamedFlag": {
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "to"
+      ],
+      "type": "object"
+    },
+    "Smoke": {
+      "additionalProperties": false,
+      "properties": {
+        "expected_fail_ignored": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "failed": {
+          "type": "integer"
+        },
+        "failed_tests": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "flaky_ignored": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "passed": {
+          "type": "integer"
+        },
+        "ran": {
+          "type": "boolean"
+        },
+        "skipped": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "expected_fail_ignored",
+        "failed",
+        "failed_tests",
+        "flaky_ignored",
+        "passed",
+        "ran",
+        "skipped",
+        "total"
+      ],
+      "type": "object"
+    },
+    "SourceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "verified": {
+          "enum": [
+            "sha256",
+            "gpg"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "sha256",
+        "url",
+        "verified"
+      ],
+      "type": "object"
+    },
+    "StepRuntime": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "same-minor-build",
+            "needs-code-change",
+            "needs-migration",
+            "report-only",
+            "distro-update",
+            "none"
+          ],
+          "type": "string"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "inspected",
+            "scanned",
+            "preflighted",
+            "swapped",
+            "rolled-back",
+            "blocked",
+            "needs-code-change",
+            "needs-migration",
+            "failed",
+            "report-only",
+            "held"
+          ],
+          "type": "string"
+        },
+        "verify": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/StepVerify"
+            }
+          ]
+        }
+      },
+      "required": [
+        "runtime_id"
+      ],
+      "type": "object"
+    },
+    "StepVerify": {
+      "additionalProperties": false,
+      "properties": {
+        "new_binary_live": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "new_binary_live"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/build.json",
+  "$ref": "#/$defs/Build",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

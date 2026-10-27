@@ -1,0 +1,24 @@
+{
+  "schema": "phosphor/telemetry-denylist/v1",
+  "updated": "2026-10-24",
+  "use": {
+    "inspect": "vendor_telemetry flag: byte-string match of `match` values in the installed php binaries / libphp*.so (no execution). Show the flag only for entries with confirmed=true.",
+    "build": "no-phone-home check: the patched source tree and every phosphor-built binary, shared object and image layer are scanned for ALL `match` values, confirmed or not; any hit fails the build."
+  },
+  "entries": [
+    {
+      "id": "ondrej-ppa-dns-version-check",
+      "vendor": "ppa:ondrej/php (Ubuntu 22.04 builds)",
+      "host": "telemetry.sury.org",
+      "port": 53,
+      "match": ["telemetry.sury.org", "Wui6lKD3puA0A22fzuyzTL3hfB5jbbv9k_A6D1f0ME4"],
+      "source_markers": ["secure_dns_telemetry", "telemetry_check("],
+      "affected_observed": ["php7.4-fpm 1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1 (amd64, arm64)", "libapache2-mod-php7.4 1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1 (amd64)"],
+      "not_affected_observed": ["php7.4-cli 1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1"],
+      "behaviour": "sends one DNS TXT query (UDP 53) to the host when the php-fpm / Apache PHP module starts; per the package source the query carries package name, version and a timestamp, encrypted",
+      "confirmed": true,
+      "evidence": "data/research/vendor-telemetry/EVIDENCE.txt (patch 0128, php-common.mk, PPA pool binary greps, sandbox capture sandbox-2026-10-24/caseA-tcpdump.txt on fixture f2)"
+    }
+  ],
+  "not_examined": "cPanel (ea-php), Plesk (plesk-php), CloudLinux (alt-php), Bitnami, other ondrej branches/releases: no verified evidence either way; add entries only with an evidence pack like the one above."
+}

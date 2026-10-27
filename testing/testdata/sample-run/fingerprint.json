@@ -1,0 +1,575 @@
+{
+  "schema": "phosphor/fingerprint/v1",
+  "phosphor_version": "dev-4f657856",
+  "started_at": "2026-10-27T10:07:10.807157924Z",
+  "finished_at": "2026-10-27T10:07:10.963920883Z",
+  "status": "ok",
+  "host": {
+    "hostname": "phosphor-restr-i",
+    "os_id": "debian",
+    "os_version_id": "11",
+    "os_like": [],
+    "kernel": "6.12.76-linuxkit",
+    "arch": "arm64",
+    "glibc": "2.31",
+    "openssl_system": "1.1.1w",
+    "cpus": 11,
+    "mem_mb": 23492,
+    "disk_free_mb": {
+      "/opt": 358486,
+      "/tmp": 358486
+    },
+    "load1": 3.6,
+    "init": "systemd",
+    "pkg_mgr": "apt",
+    "in_container": true,
+    "ubuntu_pro_attached": false
+  },
+  "runtimes": [
+    {
+      "id": "rt-466d61e2bb558221",
+      "sapi": "fpm",
+      "binary": "/usr/local/php74/sbin/php-fpm",
+      "binary_sha256": "41c400a9121a1fdcc9696226b2b80414cb5c6510820c8786c4978ebe6f2255ac",
+      "version": "7.4.33",
+      "version_id": 70433,
+      "extra_version": "",
+      "zts": false,
+      "debug": false,
+      "php_api": "20190902",
+      "zend_ext_api": "320190902",
+      "configure_command": "'./configure'  '--prefix=/usr/local/php74' '--with-config-file-path=/usr/local/php74/etc' '--with-config-file-scan-dir=/usr/local/php74/etc/conf.d' '--disable-phpdbg' '--enable-fpm' '--with-fpm-systemd' '--with-fpm-user=www-data' '--with-fpm-group=www-data' '--with-openssl' '--with-curl' '--with-zlib' '--enable-mbstring' '--enable-gd' '--with-mysqli' '--with-pdo-mysql' '--enable-opcache' '--enable-sockets'",
+      "configure_source": "verbatim",
+      "static_modules": [
+        "cgi-fcgi",
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dom",
+        "fileinfo",
+        "filter",
+        "gd",
+        "hash",
+        "iconv",
+        "json",
+        "libxml",
+        "mbstring",
+        "mysqli",
+        "mysqlnd",
+        "openssl",
+        "pcre",
+        "PDO",
+        "pdo_mysql",
+        "pdo_sqlite",
+        "Phar",
+        "posix",
+        "Reflection",
+        "session",
+        "SimpleXML",
+        "sockets",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlwriter",
+        "zlib"
+      ],
+      "shared_exts": [
+        {
+          "name": "opcache",
+          "so_path": "/usr/local/php74/lib/php/extensions/no-debug-non-zts-20190902/opcache.so",
+          "ini_file": "/usr/local/php74/etc/conf.d/10-opcache.ini",
+          "zend": true,
+          "bundled": true
+        },
+        {
+          "name": "redis",
+          "so_path": "/usr/local/php74/lib/php/extensions/no-debug-non-zts-20190902/redis.so",
+          "ini_file": "/usr/local/php74/etc/conf.d/20-redis.ini",
+          "zend": false,
+          "bundled": false
+        }
+      ],
+      "ini": {
+        "loaded_file": "/usr/local/php74/etc/php.ini",
+        "scan_dir": "/usr/local/php74/etc/conf.d",
+        "scanned_files": [
+          "/usr/local/php74/etc/conf.d/10-opcache.ini",
+          "/usr/local/php74/etc/conf.d/20-redis.ini"
+        ],
+        "sets_extension_dir": false,
+        "config_file_path": "/usr/local/php74/etc",
+        "config_file_scan_dir": "/usr/local/php74/etc/conf.d"
+      },
+      "extension_dir": "/usr/local/php74/lib/php/extensions/no-debug-non-zts-20190902",
+      "modules": [
+        "cgi-fcgi",
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dom",
+        "fileinfo",
+        "filter",
+        "gd",
+        "hash",
+        "iconv",
+        "json",
+        "libxml",
+        "mbstring",
+        "mysqli",
+        "mysqlnd",
+        "openssl",
+        "pcre",
+        "PDO",
+        "pdo_mysql",
+        "pdo_sqlite",
+        "Phar",
+        "posix",
+        "redis",
+        "Reflection",
+        "session",
+        "SimpleXML",
+        "sockets",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlwriter",
+        "Zend OPcache",
+        "zlib"
+      ],
+      "zend_extensions": [
+        "Zend OPcache"
+      ],
+      "third_party_exts": [
+        {
+          "name": "redis",
+          "version": "5.3.7",
+          "so_path": "/usr/local/php74/lib/php/extensions/no-debug-non-zts-20190902/redis.so",
+          "sha256": "96252c239a399bd619cc6c9ccd94d6d0a405cc85554c9295de96256fd338dd96",
+          "source": "pecl"
+        }
+      ],
+      "provenance": {
+        "kind": "custom",
+        "repo": "unknown"
+      },
+      "service": {
+        "manager": "systemd",
+        "unit": "php74-fpm.service",
+        "unit_type": "notify",
+        "exec_start": "/usr/local/php74/sbin/php-fpm --nodaemonize --fpm-config /usr/local/php74/etc/php-fpm.conf --pid /run/php74-fpm.pid",
+        "pids": [
+          38,
+          46,
+          49
+        ],
+        "user": "www-data",
+        "listen": [
+          "/run/php74-fpm.sock"
+        ],
+        "conf_files": [
+          "/usr/local/php74/etc/php-fpm.conf",
+          "/usr/local/php74/etc/php-fpm.d/www.conf",
+          "/etc/nginx/nginx.conf",
+          "/etc/nginx/modules-enabled/50-mod-http-geoip.conf",
+          "/etc/nginx/modules-enabled/50-mod-http-image-filter.conf",
+          "/etc/nginx/modules-enabled/50-mod-http-xslt-filter.conf",
+          "/etc/nginx/modules-enabled/50-mod-mail.conf",
+          "/etc/nginx/modules-enabled/50-mod-stream.conf",
+          "/etc/nginx/modules-enabled/70-mod-stream-geoip.conf",
+          "/etc/nginx/mime.types",
+          "/etc/nginx/conf.d/00-phosphor-lab-log.conf",
+          "/etc/nginx/sites-enabled/default",
+          "/etc/nginx/fastcgi_params"
+        ],
+        "catch_workers_output": false
+      },
+      "logs": {
+        "php_error": [
+          "/var/log/nginx/error.log"
+        ],
+        "fpm_error": "/usr/local/php74/var/log/php-fpm.log",
+        "web_error": [
+          "/var/log/nginx/error.log"
+        ],
+        "access": [
+          {
+            "path": "/var/log/nginx/access.log",
+            "format": "combined"
+          }
+        ],
+        "log_errors": true,
+        "error_log_target": "unset"
+      },
+      "code_roots": [
+        {
+          "path": "/var/www/wordpress",
+          "kind": "first-party",
+          "via": "nginx-root",
+          "frameworks": [
+            "wordpress"
+          ],
+          "php_files": 1130,
+          "bytes": 17523386,
+          "third_party_paths": [
+            "/var/www/wordpress/wp-activate.php",
+            "/var/www/wordpress/wp-admin",
+            "/var/www/wordpress/wp-blog-header.php",
+            "/var/www/wordpress/wp-comments-post.php",
+            "/var/www/wordpress/wp-config-sample.php",
+            "/var/www/wordpress/wp-content/plugins/akismet",
+            "/var/www/wordpress/wp-content/plugins/old-gallery",
+            "/var/www/wordpress/wp-content/themes/twentytwentyfour",
+            "/var/www/wordpress/wp-content/themes/twentytwentythree",
+            "/var/www/wordpress/wp-content/themes/twentytwentytwo",
+            "/var/www/wordpress/wp-cron.php",
+            "/var/www/wordpress/wp-includes",
+            "/var/www/wordpress/wp-index.php",
+            "/var/www/wordpress/wp-links-opml.php",
+            "/var/www/wordpress/wp-load.php",
+            "/var/www/wordpress/wp-login.php",
+            "/var/www/wordpress/wp-mail.php",
+            "/var/www/wordpress/wp-settings.php",
+            "/var/www/wordpress/wp-signup.php",
+            "/var/www/wordpress/wp-trackback.php",
+            "/var/www/wordpress/xmlrpc.php"
+          ],
+          "readable": true
+        },
+        {
+          "path": "/var/www/wordpress/wp-admin",
+          "kind": "third-party",
+          "via": "nginx-root",
+          "frameworks": [],
+          "php_files": 239,
+          "bytes": 4089982,
+          "third_party_paths": [],
+          "readable": true
+        },
+        {
+          "path": "/var/www/wordpress/wp-content/plugins/akismet",
+          "kind": "third-party",
+          "via": "nginx-root",
+          "frameworks": [],
+          "php_files": 20,
+          "bytes": 203285,
+          "third_party_paths": [],
+          "readable": true
+        },
+        {
+          "path": "/var/www/wordpress/wp-content/plugins/old-gallery",
+          "kind": "third-party",
+          "via": "nginx-root",
+          "frameworks": [],
+          "php_files": 1,
+          "bytes": 219,
+          "third_party_paths": [],
+          "readable": true
+        },
+        {
+          "path": "/var/www/wordpress/wp-content/themes/twentytwentyfour",
+          "kind": "third-party",
+          "via": "nginx-root",
+          "frameworks": [],
+          "php_files": 57,
+          "bytes": 161153,
+          "third_party_paths": [],
+          "readable": true
+        },
+        {
+          "path": "/var/www/wordpress/wp-content/themes/twentytwentythree",
+          "kind": "third-party",
+          "via": "nginx-root",
+          "frameworks": [],
+          "php_files": 6,
+          "bytes": 9142,
+          "third_party_paths": [],
+          "readable": true
+        },
+        {
+          "path": "/var/www/wordpress/wp-content/themes/twentytwentytwo",
+          "kind": "third-party",
+          "via": "nginx-root",
+          "frameworks": [],
+          "php_files": 69,
+          "bytes": 163588,
+          "third_party_paths": [],
+          "readable": true
+        },
+        {
+          "path": "/var/www/wordpress/wp-includes",
+          "kind": "third-party",
+          "via": "nginx-root",
+          "frameworks": [],
+          "php_files": 715,
+          "bytes": 12738272,
+          "third_party_paths": [],
+          "readable": true
+        }
+      ],
+      "php2shell": {
+        "status": "vulnerable",
+        "basis": "version",
+        "fingerprint": {
+          "method": "elf",
+          "matched": false,
+          "markers": []
+        }
+      },
+      "openssl_linkage": {
+        "kind": "system",
+        "version": "1.1.1w",
+        "path": "/usr/lib/aarch64-linux-gnu/libssl.so.1.1",
+        "curl_ssl": "OpenSSL/1.1.1w",
+        "static_syms": false
+      },
+      "processes": [
+        {
+          "pid": 38,
+          "started_at": "2026-10-27T10:07:02.19Z",
+          "object": "/usr/local/php74/sbin/php-fpm",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 46,
+          "started_at": "2026-10-27T10:07:02.2Z",
+          "object": "/usr/local/php74/sbin/php-fpm",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        },
+        {
+          "pid": 49,
+          "started_at": "2026-10-27T10:07:02.2Z",
+          "object": "/usr/local/php74/sbin/php-fpm",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        }
+      ]
+    },
+    {
+      "id": "rt-e317ff5eeb20d571",
+      "sapi": "cli",
+      "binary": "/usr/local/php74/bin/php",
+      "binary_sha256": "9b944fb7a02bae188037d52bc24e7035895797763e62087b93d417b1d03da24e",
+      "version": "7.4.33",
+      "version_id": 70433,
+      "extra_version": "",
+      "zts": false,
+      "debug": false,
+      "php_api": "20190902",
+      "zend_ext_api": "320190902",
+      "configure_command": "'./configure'  '--prefix=/usr/local/php74' '--with-config-file-path=/usr/local/php74/etc' '--with-config-file-scan-dir=/usr/local/php74/etc/conf.d' '--disable-phpdbg' '--enable-fpm' '--with-fpm-systemd' '--with-fpm-user=www-data' '--with-fpm-group=www-data' '--with-openssl' '--with-curl' '--with-zlib' '--enable-mbstring' '--enable-gd' '--with-mysqli' '--with-pdo-mysql' '--enable-opcache' '--enable-sockets'",
+      "configure_source": "verbatim",
+      "static_modules": [
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dom",
+        "fileinfo",
+        "filter",
+        "gd",
+        "hash",
+        "iconv",
+        "json",
+        "libxml",
+        "mbstring",
+        "mysqli",
+        "mysqlnd",
+        "openssl",
+        "pcre",
+        "PDO",
+        "pdo_mysql",
+        "pdo_sqlite",
+        "Phar",
+        "posix",
+        "Reflection",
+        "session",
+        "SimpleXML",
+        "sockets",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlwriter",
+        "zlib"
+      ],
+      "shared_exts": [
+        {
+          "name": "opcache",
+          "so_path": "/usr/local/php74/lib/php/extensions/no-debug-non-zts-20190902/opcache.so",
+          "ini_file": "/usr/local/php74/etc/conf.d/10-opcache.ini",
+          "zend": true,
+          "bundled": true
+        },
+        {
+          "name": "redis",
+          "so_path": "/usr/local/php74/lib/php/extensions/no-debug-non-zts-20190902/redis.so",
+          "ini_file": "/usr/local/php74/etc/conf.d/20-redis.ini",
+          "zend": false,
+          "bundled": false
+        }
+      ],
+      "ini": {
+        "loaded_file": "/usr/local/php74/etc/php.ini",
+        "scan_dir": "/usr/local/php74/etc/conf.d",
+        "scanned_files": [
+          "/usr/local/php74/etc/conf.d/10-opcache.ini",
+          "/usr/local/php74/etc/conf.d/20-redis.ini"
+        ],
+        "sets_extension_dir": false,
+        "config_file_path": "/usr/local/php74/etc",
+        "config_file_scan_dir": "/usr/local/php74/etc/conf.d"
+      },
+      "extension_dir": "/usr/local/php74/lib/php/extensions/no-debug-non-zts-20190902",
+      "modules": [
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dom",
+        "fileinfo",
+        "filter",
+        "gd",
+        "hash",
+        "iconv",
+        "json",
+        "libxml",
+        "mbstring",
+        "mysqli",
+        "mysqlnd",
+        "openssl",
+        "pcre",
+        "PDO",
+        "pdo_mysql",
+        "pdo_sqlite",
+        "Phar",
+        "posix",
+        "redis",
+        "Reflection",
+        "session",
+        "SimpleXML",
+        "sockets",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "tokenizer",
+        "xml",
+        "xmlreader",
+        "xmlwriter",
+        "Zend OPcache",
+        "zlib"
+      ],
+      "zend_extensions": [
+        "Zend OPcache"
+      ],
+      "third_party_exts": [
+        {
+          "name": "redis",
+          "version": "5.3.7",
+          "so_path": "/usr/local/php74/lib/php/extensions/no-debug-non-zts-20190902/redis.so",
+          "sha256": "96252c239a399bd619cc6c9ccd94d6d0a405cc85554c9295de96256fd338dd96",
+          "source": "pecl"
+        }
+      ],
+      "provenance": {
+        "kind": "custom",
+        "repo": "unknown"
+      },
+      "service": {
+        "manager": "none",
+        "pids": [
+          33
+        ],
+        "user": "",
+        "listen": [],
+        "conf_files": []
+      },
+      "logs": {
+        "php_error": [],
+        "web_error": [],
+        "access": [],
+        "log_errors": true,
+        "error_log_target": "unset"
+      },
+      "code_roots": [
+        {
+          "path": "/srv/acme/bin",
+          "kind": "first-party",
+          "via": "cron",
+          "frameworks": [],
+          "php_files": 2,
+          "bytes": 354,
+          "third_party_paths": [],
+          "readable": true
+        },
+        {
+          "path": "/usr/local/bin/acme-report",
+          "kind": "first-party",
+          "via": "cli",
+          "frameworks": [],
+          "php_files": 1,
+          "bytes": 164,
+          "third_party_paths": [],
+          "readable": true
+        }
+      ],
+      "php2shell": {
+        "status": "vulnerable",
+        "basis": "version",
+        "fingerprint": {
+          "method": "elf",
+          "matched": false,
+          "markers": []
+        }
+      },
+      "openssl_linkage": {
+        "kind": "system",
+        "version": "1.1.1w",
+        "path": "/usr/lib/aarch64-linux-gnu/libssl.so.1.1",
+        "curl_ssl": "OpenSSL/1.1.1w",
+        "static_syms": false
+      },
+      "processes": [
+        {
+          "pid": 33,
+          "started_at": "2026-10-27T10:07:02.18Z",
+          "object": "/usr/local/php74/bin/php",
+          "deleted": false,
+          "replaced": false,
+          "started_before_install": false
+        }
+      ]
+    }
+  ],
+  "consumers": [
+    {
+      "kind": "cron",
+      "path": "/var/spool/cron/crontabs/root",
+      "cmd": "php /srv/acme/bin/worker.php >> /var/log/acme-worker.log 2>&1"
+    },
+    {
+      "kind": "shebang",
+      "path": "/usr/local/bin/acme-report",
+      "cmd": "/usr/bin/php"
+    },
+    {
+      "kind": "systemd",
+      "path": "acme-queue.service",
+      "cmd": "/usr/bin/php /srv/acme/bin/queue.php"
+    }
+  ]
+}

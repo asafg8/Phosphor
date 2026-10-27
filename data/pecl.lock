@@ -1,0 +1,13 @@
+{
+  "schema": "phosphor/pecl-lock/v1",
+  "updated": "2026-10-24",
+  "rule": "A third-party extension is rebuilt from PECL only when name@version (the installed version, from phpversion(<ext>) or the owning package) is listed here; the tarball is fetched from the store copy or url and must match sha256. Unlisted -> reuse the old .so (same minor) + review. PECL has no signatures; sha256 here is the pin.",
+  "entries": [
+    {"name": "redis", "version": "5.3.7", "url": "https://pecl.php.net/get/redis-5.3.7.tgz", "sha256": "b958166ccda4f40bd17c6998f9e2239021ae644467cd8ad5c15def420aad65b0", "php_min": "7.0.0", "used_by": ["fixture i"]},
+    {"name": "redis", "version": "6.0.2", "url": "https://pecl.php.net/get/redis-6.0.2.tgz", "sha256": "01aeccb0e14f897fe56f0509be6e6991ff0ad459f9d34e95e4556d02699b9a03", "php_min": "7.2.0", "used_by": ["fixture h 8.2"]},
+    {"name": "imagick", "version": "3.7.0", "url": "https://pecl.php.net/get/imagick-3.7.0.tgz", "sha256": "5a364354109029d224bcbb2e82e15b248be9b641227f45e63425c06531792d3e", "php_min": "5.4.0", "build_deps": {"apt": ["libmagickwand-dev"], "rpm": ["ImageMagick-devel"]}},
+    {"name": "igbinary", "version": "3.2.16", "url": "https://pecl.php.net/get/igbinary-3.2.16.tgz", "sha256": "8bf25d465abc7973d9e2c9a3039a5f8eea635b23bc1477017ff3999ff95836da", "php_min": "7.0.0"},
+    {"name": "apcu", "version": "5.1.24", "url": "https://pecl.php.net/get/apcu-5.1.24.tgz", "sha256": "5c28a55b27082c69657e25b7ecf553e2cf6b74ec3fa77d6b76f4fb982e001e43", "php_min": "7.0.0"}
+  ],
+  "verified": "2026-10-24: each tarball downloaded from pecl.php.net and hashed; php_min from its package.xml"
+}

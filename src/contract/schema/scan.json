@@ -1,0 +1,496 @@
+{
+  "$defs": {
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "E_NO_DISK",
+            "E_EXT_REBUILD",
+            "E_SOURCE_INTEGRITY",
+            "E_ARTIFACT_INTEGRITY",
+            "E_BUILD_FAILED",
+            "E_DEPS_INSTALL",
+            "E_PREFLIGHT",
+            "E_NOT_ELIGIBLE",
+            "E_LAB_FLAG",
+            "E_ROOT_UNREADABLE",
+            "E_MANIFEST",
+            "E_USAGE",
+            "E_SCAN_FAILED",
+            "E_SWAP_FAILED",
+            "E_SWAP_VERIFY",
+            "E_ROLLBACK_FAILED",
+            "E_TIMEOUT",
+            "E_UNSUPPORTED",
+            "E_INTERNAL",
+            "E_PATCH_APPLY",
+            "E_DRIFT",
+            "E_VERSION_PATCH",
+            "E_SMOKE",
+            "E_DEPS_UNAVAILABLE",
+            "E_SOURCE_UNVERIFIED",
+            "E_RESULT_MISSING",
+            "E_NO_MEMORY",
+            "E_TELEMETRY_IN_BUILD",
+            "E_VERDICT_REQUIRED",
+            "E_BUSY"
+          ],
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "type": "object"
+    },
+    "FeatureEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file",
+        "kind",
+        "line"
+      ],
+      "type": "object"
+    },
+    "FileLine": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "file",
+        "line"
+      ],
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "first_party": {
+          "type": "boolean"
+        },
+        "line": {
+          "type": "integer"
+        },
+        "source": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "ERROR",
+            "WARNING"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "file",
+        "first_party",
+        "line",
+        "source",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResourceLimits": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_quota": {
+          "type": "string"
+        },
+        "ionice": {
+          "type": "string"
+        },
+        "memory_max": {
+          "type": "string"
+        },
+        "nice": {
+          "type": "integer"
+        },
+        "via": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ionice",
+        "nice",
+        "via"
+      ],
+      "type": "object"
+    },
+    "RiskHit": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer"
+        },
+        "rule": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "file",
+        "kind",
+        "line",
+        "rule"
+      ],
+      "type": "object"
+    },
+    "Scan": {
+      "additionalProperties": false,
+      "properties": {
+        "blocking_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "by_sniff": {
+          "items": {
+            "$ref": "#/$defs/SniffCount"
+          },
+          "type": "array"
+        },
+        "counts": {
+          "$ref": "#/$defs/ScanCounts"
+        },
+        "decision": {
+          "enum": [
+            "clear",
+            "review",
+            "blocking"
+          ],
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Error"
+            }
+          ]
+        },
+        "feature_use": {
+          "items": {
+            "$ref": "#/$defs/ScanFeatureUse"
+          },
+          "type": "array"
+        },
+        "files_not_scanned": {
+          "type": "integer"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "format": "date-time",
+              "type": "string"
+            }
+          ]
+        },
+        "limits": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/ResourceLimits"
+            }
+          ]
+        },
+        "phosphor_version": {
+          "type": "string"
+        },
+        "readiness": {
+          "type": "string"
+        },
+        "roots": {
+          "items": {
+            "$ref": "#/$defs/ScanRoot"
+          },
+          "type": "array"
+        },
+        "runtime_id": {
+          "type": "string"
+        },
+        "runtime_risk": {
+          "items": {
+            "$ref": "#/$defs/RiskHit"
+          },
+          "type": "array"
+        },
+        "schema": {
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "failed",
+            "blocked"
+          ],
+          "type": "string"
+        },
+        "target_version": {
+          "type": "string"
+        },
+        "tool": {
+          "$ref": "#/$defs/ScanTools"
+        },
+        "top_findings": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "type": "array"
+        },
+        "uploads_evidence": {
+          "items": {
+            "$ref": "#/$defs/FileLine"
+          },
+          "type": "array"
+        },
+        "uploads_usage": {
+          "enum": [
+            "used",
+            "unused",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "uses_uploads": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "blocking_reasons",
+        "by_sniff",
+        "counts",
+        "feature_use",
+        "phosphor_version",
+        "roots",
+        "runtime_id",
+        "runtime_risk",
+        "schema",
+        "started_at",
+        "status",
+        "target_version",
+        "tool",
+        "top_findings",
+        "uploads_evidence",
+        "uploads_usage",
+        "uses_uploads"
+      ],
+      "type": "object"
+    },
+    "ScanCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "first_party": {
+          "$ref": "#/$defs/SevCount"
+        },
+        "third_party": {
+          "$ref": "#/$defs/SevCount"
+        }
+      },
+      "required": [
+        "first_party",
+        "third_party"
+      ],
+      "type": "object"
+    },
+    "ScanFeatureUse": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/FeatureEvidence"
+          },
+          "type": "array"
+        },
+        "setting": {
+          "type": "string"
+        },
+        "verdict": {
+          "enum": [
+            "used",
+            "unused",
+            "unknown"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "evidence",
+        "setting",
+        "verdict"
+      ],
+      "type": "object"
+    },
+    "ScanRoot": {
+      "additionalProperties": false,
+      "properties": {
+        "duration_ms": {
+          "type": "integer"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/Error"
+            }
+          ]
+        },
+        "errors": {
+          "type": "integer"
+        },
+        "files": {
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "first-party",
+            "third-party"
+          ],
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "raw_key": {
+          "type": "string"
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "warnings": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "duration_ms",
+        "errors",
+        "files",
+        "kind",
+        "path",
+        "raw_key",
+        "truncated",
+        "warnings"
+      ],
+      "type": "object"
+    },
+    "ScanTools": {
+      "additionalProperties": false,
+      "properties": {
+        "php": {
+          "type": "string"
+        },
+        "phpcompat_ref": {
+          "type": "string"
+        },
+        "phpcs": {
+          "type": "string"
+        },
+        "phpcsutils": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "php",
+        "phpcompat_ref",
+        "phpcs",
+        "phpcsutils"
+      ],
+      "type": "object"
+    },
+    "SevCount": {
+      "additionalProperties": false,
+      "properties": {
+        "errors": {
+          "type": "integer"
+        },
+        "warnings": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "errors",
+        "warnings"
+      ],
+      "type": "object"
+    },
+    "SniffCount": {
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "first_party": {
+          "type": "integer"
+        },
+        "sample": {
+          "$ref": "#/$defs/FileLine"
+        },
+        "source": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "ERROR",
+            "WARNING"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "count",
+        "first_party",
+        "sample",
+        "source",
+        "type"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://phosphor.dev/schema/phosphor/scan.json",
+  "$ref": "#/$defs/Scan",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
