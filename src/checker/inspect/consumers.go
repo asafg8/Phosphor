@@ -145,6 +145,43 @@ func supervisordPrograms() []supProgram {
 	return out
 }
 
+// interpDirs is where a bare `php` in a consumer command is looked up: cron runs with PATH=/usr/bin:/bin unless the
+// crontab sets one; services and shebang scripts see /usr/local/bin first.
+var interpDirs = map[c.ConsumerKind][]string{
+	"cron": {"/usr/bin", "/bin"},
+	"":     {"/usr/local/bin", "/usr/bin", "/bin"},
+}
+
+// consumerInterp is the resolved php binary a consumer runs ("" when it cannot be resolved): the shebang's
+// interpreter, or the php token of the command, followed through symlinks (/usr/bin/php → /usr/bin/php8.2).
+func consumerInterp(cn c.Consumer) string {
+	tok := cn.Cmd
+	if cn.Kind != "shebang" {
+		m := phpCmdRe.FindStringSubmatch(cn.Cmd)
+		if m == nil {
+			return ""
+		}
+		tok = m[2]
+	}
+	if strings.Contains(tok, "/") {
+		real, err := filepath.EvalSymlinks(tok)
+		if err != nil {
+			return ""
+		}
+		return real
+	}
+	dirs, ok := interpDirs[cn.Kind]
+	if !ok {
+		dirs = interpDirs[""]
+	}
+	for _, d := range dirs {
+		if real, err := filepath.EvalSymlinks(filepath.Join(d, tok)); err == nil {
+			return real
+		}
+	}
+	return ""
+}
+
 // consumerScript extracts the php script path of a consumer command (for CLI code roots).
 func consumerScript(cmd string) string {
 	f := strings.Fields(cmd)

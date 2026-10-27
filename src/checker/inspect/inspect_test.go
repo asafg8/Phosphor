@@ -420,3 +420,44 @@ func TestHeldPackages(t *testing.T) {
 		}
 	}
 }
+
+// A consumer's code root belongs to the php binary that runs it, followed through symlinks: a cron job on
+// /usr/bin/php (→ php8.2) is the 8.2 CLI's, a job on a custom prefix's php is that CLI's, and a job whose
+// interpreter cannot be resolved stays with every CLI.
+func TestConsumerRootsByInterpreter(t *testing.T) {
+	d, err := filepath.EvalSymlinks(t.TempDir()) // macOS: /var is a symlink to /private/var
+	if err != nil {
+		t.Fatal(err)
+	}
+	php82 := filepath.Join(d, "usr/bin/php8.2")
+	php56 := filepath.Join(d, "usr/local/php56/bin/php")
+	touch(t, php82)
+	touch(t, php56)
+	if err := os.Symlink(php82, filepath.Join(d, "usr/bin/php")); err != nil {
+		t.Fatal(err)
+	}
+	cons := []c.Consumer{
+		{Kind: "cron", Path: "/etc/cron.d/moodle", Cmd: filepath.Join(d, "usr/bin/php") + " /var/www/moodle/admin/cli/cron.php"},
+		{Kind: "cron", Path: "/etc/cron.d/shop", Cmd: php56 + " -q /var/www/shop/jobs/nightly.php"},
+		{Kind: "systemd", Path: "worker.service", Cmd: "/nonexistent/php /srv/worker/run.php"},
+	}
+	roots, _, interp := consumerRoots(cons)
+	if len(roots) != 3 {
+		t.Fatalf("roots %v", roots)
+	}
+	want := map[string][]string{
+		"/var/www/moodle/admin/cli": {php82},
+		"/var/www/shop/jobs":        {php56},
+	}
+	for root, bins := range want {
+		if !reflect.DeepEqual(interp[root], bins) {
+			t.Errorf("%s runs on %v, want %v", root, interp[root], bins)
+		}
+	}
+	if len(interp["/srv/worker"]) != 0 {
+		t.Errorf("unresolvable interpreter resolved to %v", interp["/srv/worker"])
+	}
+	if got := consumerInterp(c.Consumer{Kind: "shebang", Path: "/usr/local/bin/tool", Cmd: php56}); got != php56 {
+		t.Errorf("shebang interpreter %q, want %q", got, php56)
+	}
+}
