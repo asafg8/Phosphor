@@ -35,6 +35,22 @@
 
 A tool you run on a PHP host. It finds every PHP runtime and the app it serves, then checks whether that app will survive an upgrade. If the answer is yes, Phosphor can upgrade, watch for errors, and roll back automatically if needed.
 
+## Install
+
+One static binary for Linux (amd64 or arm64), attached to every [release](https://github.com/asafg8/Phosphor/releases).
+On the PHP host:
+
+```sh
+ARCH=$(uname -m | sed 's/x86_64/amd64/; s/aarch64/arm64/')
+curl -fLO "https://github.com/asafg8/Phosphor/releases/latest/download/phosphor-linux-$ARCH"
+curl -fLO https://github.com/asafg8/Phosphor/releases/latest/download/SHA256SUMS
+sha256sum --ignore-missing -c SHA256SUMS
+chmod +x "phosphor-linux-$ARCH" && sudo mv "phosphor-linux-$ARCH" /usr/local/bin/phosphor
+phosphor version
+```
+
+Run it with `sudo`: it reads every PHP runtime on the host and keeps its state under `/opt/phosphor`.
+
 ## Commands
 
 ```sh

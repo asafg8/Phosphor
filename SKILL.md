@@ -31,12 +31,25 @@ phosphor rollback                # restore the original binary and config exactl
 
 ## Getting it onto a host
 
-1. Check the host's architecture (`uname -m`) and download the matching binary, `phosphor-linux-amd64` or
-   `phosphor-linux-arm64`, from the project's Releases page. Building from source (`make build`) produces the same
-   files in `bin/`.
-2. Copy it to a private directory on the host, such as `~/phosphor/phosphor`. Avoid a bare `/tmp`: many servers
-   clean it, and the binary can vanish between runs.
-3. Run it with `sudo`. It needs to read every runtime and keeps its state under `/opt/phosphor`.
+1. Download the binary for the host's architecture from the latest release, check it against `SHA256SUMS`, and
+   make it executable. Release downloads never keep the executable bit, so skipping `chmod +x` gives
+   "Permission denied". Keep it in a private directory such as `~/phosphor/`, not a bare `/tmp`: many servers clean
+   `/tmp`, and the binary can vanish between runs.
+
+   ```sh
+   mkdir -p ~/phosphor && cd ~/phosphor
+   ARCH=$(uname -m | sed 's/x86_64/amd64/; s/aarch64/arm64/')
+   curl -fLO "https://github.com/asafg8/Phosphor/releases/latest/download/phosphor-linux-$ARCH"
+   curl -fLO https://github.com/asafg8/Phosphor/releases/latest/download/SHA256SUMS
+   sha256sum --ignore-missing -c SHA256SUMS
+   chmod +x "phosphor-linux-$ARCH" && mv "phosphor-linux-$ARCH" phosphor
+   ./phosphor version
+   ```
+
+   If the host can't reach GitHub, download on another machine and copy it over with `scp`. Building from source
+   (`make build`) puts the same files in `bin/`.
+2. Run it with `sudo` (`sudo ~/phosphor/phosphor …`). It needs to read every runtime and keeps its state under
+   `/opt/phosphor`.
 
 Before anything that can change the host, record a baseline so you can show exactly what changed:
 - whether the PHP and web services are active;
