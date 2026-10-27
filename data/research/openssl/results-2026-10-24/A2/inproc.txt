@@ -1,0 +1,15 @@
+{
+    "php": "7.4.33-phosphor1",
+    "openssl_text": "OpenSSL 1.1.1w  11 Sep 2023",
+    "curl_ssl": "OpenSSL/1.1.1w",
+    "aes_roundtrip": true,
+    "rsa_sign_verify": true,
+    "openssl_errors": [
+        "error:2406F079:random number generator:RAND_load_file:Cannot open file",
+        "error:0909006C:PEM routines:get_name:no start line"
+    ],
+    "curl_https": "200 ",
+    "curl_https2": "200 ",
+    "php_stream_tls": "ok",
+    "aes_after": true
+}

@@ -1,0 +1,23 @@
+https://ppa.launchpadcontent.net/ondrej/php/ubuntu/pool/main/p/php7.4/php7.4-fpm_7.4.33-31+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+  deb sha256: ad1bd4bda1a3cdb5378a7ffa5ec2883d71242645188c87c52bf7317fb5618211
+  file: /usr/sbin/php-fpm7.4 sha256 7d519c385d9df8a8e415d9aa205cb9235fd9ab1d7f86e770b97c47aa7135ad0e
+  'telemetry.sury.org' occurrences: 1; public key occurrences: 1
+https://ppa.launchpadcontent.net/ondrej/php/ubuntu/pool/main/p/php7.4/php7.4-fpm_7.4.33-31+ubuntu22.04.1+deb.sury.org+1_arm64.deb
+  deb sha256: 3432878d8ccc2dfb3a5c46b999f2aeffeac9dc9bb4fbc9342a02674e2b6ad17f
+  file: /usr/sbin/php-fpm7.4 sha256 136ec00719db09646c58e0ba0c4b68453d8c5cb284254b84c389a701c3a14ee1
+  'telemetry.sury.org' occurrences: 1; public key occurrences: 1
+https://ppa.launchpadcontent.net/ondrej/php/ubuntu/pool/main/p/php7.4/libapache2-mod-php7.4_7.4.33-31+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+  deb sha256: b154fdebb542ee15aa3e77d1d7d42d64535755179c96c226d238a6ec1675fe75
+  file: /usr/lib/apache2/modules/libphp7.4.so sha256 d8514832eb9dc46aa3e339aadad09afdf6594773ac32725a4427bb513538c779
+  'telemetry.sury.org' occurrences: 1; public key occurrences: 1
+https://ppa.launchpadcontent.net/ondrej/php/ubuntu/pool/main/p/php7.4/php7.4-cli_7.4.33-31+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+  deb sha256: d30678a0aa5768ffbbdfea74f02b825139ee60e2744b6b9887248a782485fc89
+  file: /usr/bin/php7.4 sha256 b1950895ddc76736d4f2984dbc2739a7fdf7f86bb7de418cb8242266f4827c2f
+  'telemetry.sury.org' occurrences: 0; public key occurrences: 0
+https://ppa.launchpadcontent.net/ondrej/php/ubuntu/pool/main/p/php-defaults/php-common_101~+ubuntu22.04.1+deb.sury.org+1_all.deb
+  deb sha256: 335cb409c562417a84634bf3daa42fa3e130a672727d2a25740aebfd19845911
+  /usr/lib/php/php-common.mk telemetry lines:
+    3:# Secure DNS Telemetry
+    4-DEB_CFLAGS_MAINT_APPEND += \
+    5-	-DTELEMETRY_HOST='\"telemetry.sury.org\"' \
+    6-	-DTELEMETRY_PORT='\"53\"' \

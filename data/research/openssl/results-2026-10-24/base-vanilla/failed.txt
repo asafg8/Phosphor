@@ -1,0 +1,8 @@
+---------------------------------------------------------------------
+openssl_error_string() tests [ext/openssl/tests/openssl_error_string_basic.phpt]
+openssl_open() tests [ext/openssl/tests/openssl_open_basic.phpt]
+openssl_private_decrypt() tests [ext/openssl/tests/openssl_private_decrypt_basic.phpt]
+sni_server [ext/openssl/tests/sni_server.phpt]
+sni_server with separate pk and cert [ext/openssl/tests/sni_server_key_cert.phpt]
+
+

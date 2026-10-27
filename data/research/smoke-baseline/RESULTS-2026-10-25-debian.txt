@@ -1,0 +1,8 @@
+Debian distro-source smoke baseline, lab fixture (a) ns=cto, 2026-10-25.
+original = /usr/bin/php7.4 from php7.4-cli 7.4.33-1+deb11u12 (Debian archive)
+ours     = php7.4-cli 7.4.33-1+deb11u12+phosphor1 built by the agent (WP-A7b: Debian series + ondrej 0164 + AC_INIT -phosphor1)
+Same tree (dpkg-source -x of the verified 7.4.33-1+deb11u12 source), run-tests -n --offline.
+  original: FAIL ext/session/tests/bug74514.phpt, FAIL ext/session/tests/bug74936.phpt
+  ours    : FAIL ext/session/tests/bug74514.phpt, FAIL ext/session/tests/bug74936.phpt
+diff (both): + string(21) "/var/lib/php/sessions"  - string(0) ""
+Cause: Debian patch 0011-session_save_path (default session.save_path). Vendor baseline -> expected-fail/distro-debian-php7.4.txt.

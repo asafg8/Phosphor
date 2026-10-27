@@ -1,0 +1,15 @@
+---------------------------------------------------------------------
+Bug #74093 (Maximum execution time of n+2 seconds exceed not written in error_log) [Zend/tests/bug74093.phpt]
+openssl_error_string() tests [ext/openssl/tests/openssl_error_string_basic.phpt]
+sni_server [ext/openssl/tests/sni_server.phpt]
+sni_server with separate pk and cert [ext/openssl/tests/sni_server_key_cert.phpt]
+session rfc1867 [ext/session/tests/rfc1867.phpt]
+session rfc1867 [ext/session/tests/rfc1867_inter.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_cookie.phpt]
+session rfc1867 sid get [ext/session/tests/rfc1867_sid_get.phpt]
+session rfc1867 sid get 2 [ext/session/tests/rfc1867_sid_get_2.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_invalid.phpt]
+session rfc1867 sid only cookie [ext/session/tests/rfc1867_sid_only_cookie.phpt]
+session rfc1867 sid post [ext/session/tests/rfc1867_sid_post.phpt]
+
+

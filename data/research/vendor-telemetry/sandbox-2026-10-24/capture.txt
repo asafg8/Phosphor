@@ -1,0 +1,16 @@
+== Case A: telemetry.sury.org -> sink 172.31.250.53 (internal network, no internet)
+restart_ms=493 active=active
+  16:03:10.189917 IP 172.31.250.2.60524 > 172.31.250.53.53: 64946 [1au] TXT? mz74ssHzpaCMMOTRabJDymMu2aa4vQN3EHu_4MksSUA.uNBqJ4lEMchDdX8W81EiGoJEd_1Ju2ay.gfOtAt10xbC5w3XDpBDbhniZLmitg2-lHf0s--2W6M7YIYh8yrCX6ScA5vkVQT9.5k22OWQrJR59z8QXzrnJKVp1ZPEuBnZYojs8s5weJ3APIF0KSuuWoI9EyfONcdP.gVU77mJC0HuTs818gDQ8D1_Q.telemetry.sury.org. (277)
+  package: php7.4-fpm	1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1
+== Case B: hosts override telemetry.sury.org -> 0.0.0.0
+restart_ms=311 active=active
+  packets on any interface: 1
+  16:03:19.617546 lo    In  IP 127.0.0.1.51028 > 127.0.0.1.53: 15844 [1au] TXT? utr0kKDBbOMMFn1JLReS3gHrIyJ-Qj0s_RYoowI10kM.kOAfRNIMLNoyBXZ7cDzsUrT2BHZRpxf1.ZZdhoTZ7id2sysE09_hLZfbf2pKiXrYGQVd9AF3XGBlkA6Mr608HL2HgRcP34kV.7WAGSWDa87pYEKPcgla0hyPmdqjcb4zFH_cctfLhnVbiOHogUrEgQkbuXviPh5g.nQhdzPEhPnMEQ-6Va0ecBpXQ.telemetry.sury.org. (277)
+== Case C: no mapping, internal network (name does not resolve)
+restart_ms=3301 active=active
+  packets on any interface: 4
+  16:03:35.417313 lo    In  IP 127.0.0.11.53 > 127.0.0.1.53583: 60067 ServFail- 0/0/0 (36)
+  16:03:35.437114 lo    In  IP 127.0.0.11.53 > 127.0.0.1.53583: 47266 ServFail- 0/0/0 (36)
+  16:03:35.453594 lo    In  IP 127.0.0.11.53 > 127.0.0.1.53583: 47266 ServFail- 0/0/0 (36)
+  16:03:35.460049 lo    In  IP 127.0.0.11.53 > 127.0.0.1.53583: 60067 ServFail- 0/0/0 (36)
+  getent: telemetry.sury.org does not resolve

@@ -1,0 +1,1688 @@
+
+=====================================================================
+EXPECTED FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Inconsistencies when accessing protected members [Zend/tests/access_modifiers_008.phpt]  XFAIL REASON: Discussion: http://marc.info/?l=php-internals&m=120221184420957&w=2
+Inconsistencies when accessing protected members - 2 [Zend/tests/access_modifiers_009.phpt]  XFAIL REASON: Discussion: http://marc.info/?l=php-internals&m=120221184420957&w=2
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770.phpt]  XFAIL REASON: See Bug #48770
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770_2.phpt]  XFAIL REASON: See Bug #48770
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770_3.phpt]  XFAIL REASON: See Bug #48770
+Initial value of static var in method depends on the include time of the class definition [Zend/tests/method_static_var.phpt]  XFAIL REASON: Maybe not a bug
+updateTimestamp never called when session data is empty [ext/session/tests/bug71162.phpt]  XFAIL REASON: Current session module is designed to write empty session always. In addition, current session module only supports SessionHandlerInterface only from PHP 7.0.
+Bug #73529 session_decode() silently fails on wrong input [ext/session/tests/bug73529.phpt]  XFAIL REASON: session_decode() does not return proper status.
+=====================================================================
+
+=====================================================================
+FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Bug #74093 (Maximum execution time of n+2 seconds exceed not written in error_log) [Zend/tests/bug74093.phpt]
+openssl_error_string() tests [ext/openssl/tests/openssl_error_string_basic.phpt]
+sni_server [ext/openssl/tests/sni_server.phpt]
+sni_server with separate pk and cert [ext/openssl/tests/sni_server_key_cert.phpt]
+session rfc1867 [ext/session/tests/rfc1867.phpt]
+session rfc1867 [ext/session/tests/rfc1867_inter.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_cookie.phpt]
+session rfc1867 sid get [ext/session/tests/rfc1867_sid_get.phpt]
+session rfc1867 sid get 2 [ext/session/tests/rfc1867_sid_get_2.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_invalid.phpt]
+session rfc1867 sid only cookie [ext/session/tests/rfc1867_sid_only_cookie.phpt]
+session rfc1867 sid post [ext/session/tests/rfc1867_sid_post.phpt]
+=====================================================================
+
+
+=====================================================================
+TEST RESULT SUMMARY
+---------------------------------------------------------------------
+Exts skipped    :    0
+Exts tested     :    0
+---------------------------------------------------------------------
+
+Number of tests : 3236              3200
+Tests skipped   :   36 (  1.1%) --------
+Tests warned    :    0 (  0.0%) (  0.0%)
+Tests failed    :   12 (  0.4%) (  0.4%)
+Expected fail   :    8 (  0.2%) (  0.2%)
+Tests passed    : 3180 ( 98.3%) ( 99.4%)
+---------------------------------------------------------------------
+Time taken      :   37 seconds
+=====================================================================
+
+=====================================================================
+EXPECTED FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Inconsistencies when accessing protected members [Zend/tests/access_modifiers_008.phpt]  XFAIL REASON: Discussion: http://marc.info/?l=php-internals&m=120221184420957&w=2
+Inconsistencies when accessing protected members - 2 [Zend/tests/access_modifiers_009.phpt]  XFAIL REASON: Discussion: http://marc.info/?l=php-internals&m=120221184420957&w=2
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770.phpt]  XFAIL REASON: See Bug #48770
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770_2.phpt]  XFAIL REASON: See Bug #48770
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770_3.phpt]  XFAIL REASON: See Bug #48770
+Initial value of static var in method depends on the include time of the class definition [Zend/tests/method_static_var.phpt]  XFAIL REASON: Maybe not a bug
+updateTimestamp never called when session data is empty [ext/session/tests/bug71162.phpt]  XFAIL REASON: Current session module is designed to write empty session always. In addition, current session module only supports SessionHandlerInterface only from PHP 7.0.
+Bug #73529 session_decode() silently fails on wrong input [ext/session/tests/bug73529.phpt]  XFAIL REASON: session_decode() does not return proper status.
+=====================================================================
+
+=====================================================================
+FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Bug #74093 (Maximum execution time of n+2 seconds exceed not written in error_log) [Zend/tests/bug74093.phpt]
+openssl_error_string() tests [ext/openssl/tests/openssl_error_string_basic.phpt]
+sni_server [ext/openssl/tests/sni_server.phpt]
+sni_server with separate pk and cert [ext/openssl/tests/sni_server_key_cert.phpt]
+session rfc1867 [ext/session/tests/rfc1867.phpt]
+session rfc1867 [ext/session/tests/rfc1867_inter.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_cookie.phpt]
+session rfc1867 sid get [ext/session/tests/rfc1867_sid_get.phpt]
+session rfc1867 sid get 2 [ext/session/tests/rfc1867_sid_get_2.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_invalid.phpt]
+session rfc1867 sid only cookie [ext/session/tests/rfc1867_sid_only_cookie.phpt]
+session rfc1867 sid post [ext/session/tests/rfc1867_sid_post.phpt]
+=====================================================================
+
+
+================================================================================
+/b/php-7.4.33/Zend/tests/bug74093.phpt
+================================================================================
+Fatal error: Maximum execution time of 1 second exceeded in /b/php-7.4.33/Zend/tests/bug74093.php on line 6
+================================================================================
+001+ Fatal error: Maximum execution time of 1 second exceeded in /b/php-7.4.33/Zend/tests/bug74093.php on line 6
+001- Fatal error: Maximum execution time of 1+1 seconds exceeded %s
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_error_string_basic.phpt
+================================================================================
+string(80) "error:25066067:DSO support routines:dlfcn_load:could not load the shared library"
+string(78) "error:25070067:DSO support routines:DSO_load:could not load the shared library"
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+The new encoding error doesn't match the expected one
+int(15)
+
+PKEY errors
+openssl_pkey_export_to_file opening: ok
+openssl_pkey_export_to_file pem: ok
+openssl_pkey_export_to_file write: ok
+openssl_pkey_export: ok
+openssl_pkey_get_public: ok
+openssl_private_encrypt: ok
+openssl_private_decrypt: ok
+openssl_private_(en|de)crypt padding: ok
+X509 errors
+openssl_x509_export_to_file open: ok
+openssl_x509_export_to_file pem: ok
+openssl_x509_export_to_file write: ok
+openssl_x509_checkpurpose purpose: ok
+CSR errors
+openssl_csr_get_subject open: ok
+openssl_csr_get_subjec pem: ok
+================================================================================
+001+ string(80) "error:25066067:DSO support routines:dlfcn_load:could not load the shared library"
+002+ string(78) "error:25070067:DSO support routines:DSO_load:could not load the shared library"
+003+ The new encoding error doesn't match the expected one
+004+ The new encoding error doesn't match the expected one
+005+ The new encoding error doesn't match the expected one
+006+ The new encoding error doesn't match the expected one
+007+ The new encoding error doesn't match the expected one
+008+ The new encoding error doesn't match the expected one
+009+ The new encoding error doesn't match the expected one
+010+ The new encoding error doesn't match the expected one
+011+ The new encoding error doesn't match the expected one
+012+ The new encoding error doesn't match the expected one
+013+ The new encoding error doesn't match the expected one
+014+ The new encoding error doesn't match the expected one
+015+ The new encoding error doesn't match the expected one
+016+ The new encoding error doesn't match the expected one
+017+ The new encoding error doesn't match the expected one
+018+ int(15)
+019+ 
+020+ PKEY errors
+021+ openssl_pkey_export_to_file opening: ok
+001- string(89) "error:0607A082:digital envelope routines:EVP_CIPHER_CTX_set_key_length:invalid key length"
+002- bool(false)
+003- int(15)
+004- 
+005- PKEY errors
+006- openssl_pkey_export_to_file opening: ok
+007- openssl_pkey_export_to_file pem: ok
+008- openssl_pkey_export_to_file write: ok
+009- openssl_pkey_export: ok
+010- openssl_pkey_get_public: ok
+011- openssl_private_encrypt: ok
+012- openssl_private_decrypt: ok
+013- openssl_private_(en|de)crypt padding: ok
+014- X509 errors
+015- openssl_x509_export_to_file open: ok
+016- openssl_x509_export_to_file pem: ok
+017- openssl_x509_export_to_file write: ok
+018- openssl_x509_checkpurpose purpose: ok
+019- CSR errors
+020- openssl_csr_get_subject open: ok
+021- openssl_csr_get_subjec pem: ok
+022+ openssl_pkey_export_to_file pem: ok
+023+ openssl_pkey_export_to_file write: ok
+024+ openssl_pkey_export: ok
+025+ openssl_pkey_get_public: ok
+026+ openssl_private_encrypt: ok
+027+ openssl_private_decrypt: ok
+028+ openssl_private_(en|de)crypt padding: ok
+029+ X509 errors
+030+ openssl_x509_export_to_file open: ok
+031+ openssl_x509_export_to_file pem: ok
+032+ openssl_x509_export_to_file write: ok
+033+ openssl_x509_checkpurpose purpose: ok
+034+ CSR errors
+035+ openssl_csr_get_subject open: ok
+036+ openssl_csr_get_subjec pem: ok
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/sni_server.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:1416F086:SSL routines:tls_process_server_certificate:certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): unable to connect to tls://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 12
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+NULL
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 18
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+NULL
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 24
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+NULL
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:1416F086:SSL routines:tls_process_server_certificate:certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+003+ 
+001- string(%d) "cs.php.net"
+002- string(%d) "uk.php.net"
+003- string(%d) "us.php.net"
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tls://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+007+ 
+008+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 12
+009+ 
+010+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+011+ 
+012+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+013+ NULL
+014+ 
+015+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 18
+016+ 
+017+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+018+ 
+019+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+020+ NULL
+021+ 
+022+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 24
+023+ 
+024+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+025+ 
+026+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+027+ NULL
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/sni_server_key_cert.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:1416F086:SSL routines:tls_process_server_certificate:certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): unable to connect to tls://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 12
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+NULL
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 18
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+NULL
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 24
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+NULL
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:1416F086:SSL routines:tls_process_server_certificate:certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+003+ 
+001- string(%d) "cs.php.net"
+002- string(%d) "uk.php.net"
+003- string(%d) "us.php.net"
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tls://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+007+ 
+008+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 12
+009+ 
+010+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+011+ 
+012+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+013+ NULL
+014+ 
+015+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 18
+016+ 
+017+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+018+ 
+019+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+020+ NULL
+021+ 
+022+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 24
+023+ 
+024+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+025+ 
+026+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+027+ NULL
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpMIeRq2"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phphS4ZXp"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_inter.phpt
+================================================================================
+string(13) "rfc1867-tests"
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpMlQvlE"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpw2E1v1"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+NULL
+================================================================================
+030+ NULL
+031+ NULL
+030- array(5) {
+031-   ["start_time"]=>
+032-   int(%d)
+033-   ["content_length"]=>
+034-   int(%d)
+035-   ["bytes_processed"]=>
+036-   int(%d)
+037-   ["done"]=>
+038-   bool(true)
+039-   ["files"]=>
+040-   array(2) {
+041-     [0]=>
+042-     array(7) {
+043-       ["field_name"]=>
+044-       string(5) "file1"
+045-       ["name"]=>
+046-       string(9) "file1.txt"
+047-       ["tmp_name"]=>
+048-       string(%d) "%s"
+049-       ["error"]=>
+050-       int(0)
+051-       ["done"]=>
+052-       bool(true)
+053-       ["start_time"]=>
+054-       int(%d)
+055-       ["bytes_processed"]=>
+056-       int(1)
+057-     }
+058-     [1]=>
+059-     array(7) {
+060-       ["field_name"]=>
+061-       string(5) "file2"
+062-       ["name"]=>
+063-       string(9) "file2.txt"
+064-       ["tmp_name"]=>
+065-       string(%d) "%s"
+066-       ["error"]=>
+067-       int(0)
+068-       ["done"]=>
+069-       bool(true)
+070-       ["start_time"]=>
+071-       int(%d)
+072-       ["bytes_processed"]=>
+073-       int(1)
+074-     }
+075-   }
+076- }
+077- NULL
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_cookie.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpb6Cfk4"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpjlCULt"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_get.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpKNCfBR"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpjuP5lS"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_get_2.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpCtp0A7"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpcNuq9D"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_invalid.phpt
+================================================================================
+string(0) ""
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phphQJFLV"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpc4BeqY"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+001+ string(0) ""
+002+ bool(true)
+003+ array(2) {
+004+   ["file1"]=>
+005+   array(5) {
+006+     ["name"]=>
+007+     string(9) "file1.txt"
+008+     ["type"]=>
+009+     string(0) ""
+010+     ["tmp_name"]=>
+011+     string(14) "/tmp/phphQJFLV"
+012+     ["error"]=>
+013+     int(0)
+014+     ["size"]=>
+015+     int(1)
+016+   }
+017+   ["file2"]=>
+001- Warning: Unknown: The session id is too long or contains illegal characters, valid characters are a-z, A-Z, 0-9 and '-,' in Unknown on line 0
+002- 
+003- Warning: Unknown: Failed to read session data: files (path: ) in Unknown on line 0
+004- 
+005- Warning: Unknown: Failed to write session data (files). Please verify that the current setting of session.save_path is correct () in Unknown on line 0
+006- 
+007- Warning: Unknown: The session id is too long or contains illegal characters, valid characters are a-z, A-Z, 0-9 and '-,' in Unknown on line 0
+008- 
+009- Warning: Unknown: Failed to read session data: files (path: ) in Unknown on line 0
+010- 
+011- Warning: Unknown: Failed to write session data (files). Please verify that the current setting of session.save_path is correct () in Unknown on line 0
+012- string(%d) ""
+013- bool(true)
+014- array(2) {
+015-   ["file1"]=>
+018-     string(9) "file1.txt"
+020+     string(9) "file2.txt"
+028-   ["file2"]=>
+029-   array(5) {
+030+ }
+031+ NULL
+030-     ["name"]=>
+031-     string(9) "file2.txt"
+032-     ["type"]=>
+033-     string(0) ""
+034-     ["tmp_name"]=>
+035-     string(%d) "%s"
+036-     ["error"]=>
+037-     int(0)
+038-     ["size"]=>
+039-     int(1)
+040-   }
+041- }
+042- array(5) {
+043-   ["start_time"]=>
+044-   int(%d)
+045-   ["content_length"]=>
+046-   int(469)
+047-   ["bytes_processed"]=>
+048-   int(469)
+049-   ["done"]=>
+050-   bool(true)
+051-   ["files"]=>
+052-   array(2) {
+053-     [0]=>
+054-     array(7) {
+055-       ["field_name"]=>
+056-       string(5) "file1"
+057-       ["name"]=>
+058-       string(9) "file1.txt"
+059-       ["tmp_name"]=>
+060-       string(%d) "%s"
+061-       ["error"]=>
+062-       int(0)
+063-       ["done"]=>
+064-       bool(true)
+065-       ["start_time"]=>
+066-       int(%d)
+067-       ["bytes_processed"]=>
+068-       int(1)
+069-     }
+070-     [1]=>
+071-     array(7) {
+072-       ["field_name"]=>
+073-       string(5) "file2"
+074-       ["name"]=>
+075-       string(9) "file2.txt"
+076-       ["tmp_name"]=>
+077-       string(%d) "%s"
+078-       ["error"]=>
+079-       int(0)
+080-       ["done"]=>
+081-       bool(true)
+082-       ["start_time"]=>
+083-       int(%d)
+084-       ["bytes_processed"]=>
+085-       int(1)
+086-     }
+087-   }
+088- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_only_cookie.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpviwx0U"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpQZ6UW3"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_post.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phphT9tMT"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpH8vMwI"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+
+================================================================================
+BUILD ENVIRONMENT
+================================================================================
+OS:
+Linux - Linux 095d5e2f1fe8 6.12.76-linuxkit #1 SMP Sat Jul 11 11:18:11 UTC 2026 aarch64
+
+Autoconf:
+
+Bundled Libtool:
+ltmain.sh (GNU libtool) 1.5.26 (1.1220.2.492 2008/01/30 06:40:56)
+
+Copyright (C) 2008  Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+System Libtool:
+N/A
+Compiler:
+N/A
+Bison:
+
+Libraries:
+	linux-vdso.so.1 (0x0000ffff90fe8000)
+	libpq.so.5 => /usr/lib/aarch64-linux-gnu/libpq.so.5 (0x0000ffff8ff10000)
+	libm.so.6 => /usr/lib/aarch64-linux-gnu/libm.so.6 (0x0000ffff8fe70000)
+	libxml2.so.2 => /usr/lib/aarch64-linux-gnu/libxml2.so.2 (0x0000ffff8fc80000)
+	libsqlite3.so.0 => /usr/lib/aarch64-linux-gnu/libsqlite3.so.0 (0x0000ffff8fb20000)
+	libz.so.1 => /usr/lib/aarch64-linux-gnu/libz.so.1 (0x0000ffff8faf0000)
+	libcurl.so.4 => /usr/lib/aarch64-linux-gnu/libcurl.so.4 (0x0000ffff8fa40000)
+	libonig.so.5 => /usr/lib/aarch64-linux-gnu/libonig.so.5 (0x0000ffff8f9a0000)
+	libc.so.6 => /usr/lib/aarch64-linux-gnu/libc.so.6 (0x0000ffff8f7f0000)
+	/lib/ld-linux-aarch64.so.1 (0x0000ffff90fb0000)
+	libssl.so.3 => /lib/aarch64-linux-gnu/libssl.so.3 (0x0000ffff8f740000)
+	libcrypto.so.3 => /lib/aarch64-linux-gnu/libcrypto.so.3 (0x0000ffff8f330000)
+	libgssapi_krb5.so.2 => /lib/aarch64-linux-gnu/libgssapi_krb5.so.2 (0x0000ffff8f2d0000)
+	libldap-2.5.so.0 => /lib/aarch64-linux-gnu/libldap-2.5.so.0 (0x0000ffff8f260000)
+	libicuuc.so.70 => /lib/aarch64-linux-gnu/libicuuc.so.70 (0x0000ffff8f050000)
+	liblzma.so.5 => /lib/aarch64-linux-gnu/liblzma.so.5 (0x0000ffff8f010000)
+	libnghttp2.so.14 => /lib/aarch64-linux-gnu/libnghttp2.so.14 (0x0000ffff8efd0000)
+	libidn2.so.0 => /lib/aarch64-linux-gnu/libidn2.so.0 (0x0000ffff8efa0000)
+	librtmp.so.1 => /lib/aarch64-linux-gnu/librtmp.so.1 (0x0000ffff8ef70000)
+	libssh.so.4 => /lib/aarch64-linux-gnu/libssh.so.4 (0x0000ffff8eef0000)
+	libpsl.so.5 => /lib/aarch64-linux-gnu/libpsl.so.5 (0x0000ffff8eec0000)
+	liblber-2.5.so.0 => /lib/aarch64-linux-gnu/liblber-2.5.so.0 (0x0000ffff8ee90000)
+	libzstd.so.1 => /lib/aarch64-linux-gnu/libzstd.so.1 (0x0000ffff8edc0000)
+	libbrotlidec.so.1 => /lib/aarch64-linux-gnu/libbrotlidec.so.1 (0x0000ffff8eda0000)
+	libkrb5.so.3 => /lib/aarch64-linux-gnu/libkrb5.so.3 (0x0000ffff8ecc0000)
+	libk5crypto.so.3 => /lib/aarch64-linux-gnu/libk5crypto.so.3 (0x0000ffff8ec80000)
+	libcom_err.so.2 => /lib/aarch64-linux-gnu/libcom_err.so.2 (0x0000ffff8ec60000)
+	libkrb5support.so.0 => /lib/aarch64-linux-gnu/libkrb5support.so.0 (0x0000ffff8ec40000)
+	libsasl2.so.2 => /lib/aarch64-linux-gnu/libsasl2.so.2 (0x0000ffff8ec10000)
+	libgnutls.so.30 => /lib/aarch64-linux-gnu/libgnutls.so.30 (0x0000ffff8ea00000)
+	libicudata.so.70 => /lib/aarch64-linux-gnu/libicudata.so.70 (0x0000ffff8cdd0000)
+	libstdc++.so.6 => /lib/aarch64-linux-gnu/libstdc++.so.6 (0x0000ffff8cba0000)
+	libgcc_s.so.1 => /lib/aarch64-linux-gnu/libgcc_s.so.1 (0x0000ffff8cb70000)
+	libunistring.so.2 => /lib/aarch64-linux-gnu/libunistring.so.2 (0x0000ffff8c9b0000)
+	libhogweed.so.6 => /lib/aarch64-linux-gnu/libhogweed.so.6 (0x0000ffff8c950000)
+	libnettle.so.8 => /lib/aarch64-linux-gnu/libnettle.so.8 (0x0000ffff8c8f0000)
+	libgmp.so.10 => /lib/aarch64-linux-gnu/libgmp.so.10 (0x0000ffff8c860000)
+	libbrotlicommon.so.1 => /lib/aarch64-linux-gnu/libbrotlicommon.so.1 (0x0000ffff8c820000)
+	libkeyutils.so.1 => /lib/aarch64-linux-gnu/libkeyutils.so.1 (0x0000ffff8c800000)
+	libresolv.so.2 => /lib/aarch64-linux-gnu/libresolv.so.2 (0x0000ffff8c7d0000)
+	libp11-kit.so.0 => /lib/aarch64-linux-gnu/libp11-kit.so.0 (0x0000ffff8c680000)
+	libtasn1.so.6 => /lib/aarch64-linux-gnu/libtasn1.so.6 (0x0000ffff8c650000)
+	libffi.so.8 => /lib/aarch64-linux-gnu/libffi.so.8 (0x0000ffff8c630000)
+
+
+
+================================================================================
+PHPINFO
+================================================================================
+phpinfo()
+PHP Version => 7.4.33-phosphor1
+
+System => Linux 095d5e2f1fe8 6.12.76-linuxkit #1 SMP Sat Jul 11 11:18:11 UTC 2026 aarch64
+Build Date => Oct 24 2026 11:53:40
+Configure Command =>  './configure'  '--prefix=/opt/phosphor-A' '--disable-phpdbg' '--enable-fpm' '--with-openssl' '--with-curl' '--with-pgsql' '--with-zlib' '--enable-mbstring' '--with-pdo-sqlite' '--with-sqlite3' '--enable-sockets' 'PKG_CONFIG_PATH=/opt/phosphor-ossl/lib/pkgconfig'
+Server API => Command Line Interface
+Virtual Directory Support => disabled
+Configuration File (php.ini) Path => /opt/phosphor-A/lib
+Loaded Configuration File => (none)
+Scan this dir for additional .ini files => (none)
+Additional .ini files parsed => (none)
+PHP API => 20190902
+PHP Extension => 20190902
+Zend Extension => 320190902
+Zend Extension Build => API320190902,NTS
+PHP Extension Build => API20190902,NTS
+Debug Build => no
+Thread Safety => disabled
+Zend Signal Handling => enabled
+Zend Memory Manager => enabled
+Zend Multibyte Support => provided by mbstring
+IPv6 Support => enabled
+DTrace Support => disabled
+
+Registered PHP Streams => https, ftps, compress.zlib, php, file, glob, data, http, ftp, phar
+Registered Stream Socket Transports => tcp, udp, unix, udg, ssl, tls, tlsv1.0, tlsv1.1, tlsv1.2, tlsv1.3
+Registered Stream Filters => zlib.*, convert.iconv.*, string.rot13, string.toupper, string.tolower, string.strip_tags, convert.*, consumed, dechunk
+
+This program makes use of the Zend Scripting Language Engine:
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+
+
+ _______________________________________________________________________
+
+
+Configuration
+
+Core
+
+PHP Version => 7.4.33-phosphor1
+
+Directive => Local Value => Master Value
+allow_url_fopen => On => On
+allow_url_include => Off => Off
+arg_separator.input => & => &
+arg_separator.output => & => &
+auto_append_file => no value => no value
+auto_globals_jit => On => On
+auto_prepend_file => no value => no value
+browscap => no value => no value
+default_charset => UTF-8 => UTF-8
+default_mimetype => text/html => text/html
+disable_classes => no value => no value
+disable_functions => no value => no value
+display_errors => STDERR => STDERR
+display_startup_errors => Off => Off
+doc_root => no value => no value
+docref_ext => no value => no value
+docref_root => no value => no value
+enable_dl => On => On
+enable_post_data_reading => On => On
+error_append_string => no value => no value
+error_log => no value => no value
+error_prepend_string => no value => no value
+error_reporting => no value => no value
+expose_php => On => On
+extension_dir => /opt/phosphor-A/lib/php/extensions/no-debug-non-zts-20190902 => /opt/phosphor-A/lib/php/extensions/no-debug-non-zts-20190902
+file_uploads => On => On
+hard_timeout => 2 => 2
+highlight.comment => <font style="color: #FF8000">#FF8000</font> => <font style="color: #FF8000">#FF8000</font>
+highlight.default => <font style="color: #0000BB">#0000BB</font> => <font style="color: #0000BB">#0000BB</font>
+highlight.html => <font style="color: #000000">#000000</font> => <font style="color: #000000">#000000</font>
+highlight.keyword => <font style="color: #007700">#007700</font> => <font style="color: #007700">#007700</font>
+highlight.string => <font style="color: #DD0000">#DD0000</font> => <font style="color: #DD0000">#DD0000</font>
+html_errors => Off => Off
+ignore_repeated_errors => Off => Off
+ignore_repeated_source => Off => Off
+ignore_user_abort => Off => Off
+implicit_flush => On => On
+include_path => .: => .:
+input_encoding => no value => no value
+internal_encoding => no value => no value
+log_errors => Off => Off
+log_errors_max_len => 1024 => 1024
+mail.add_x_header => Off => Off
+mail.force_extra_parameters => no value => no value
+mail.log => no value => no value
+max_execution_time => 0 => 0
+max_file_uploads => 20 => 20
+max_input_nesting_level => 64 => 64
+max_input_time => -1 => -1
+max_input_vars => 1000 => 1000
+max_multipart_body_parts => -1 => -1
+memory_limit => 128M => 128M
+open_basedir => no value => no value
+output_buffering => 0 => 0
+output_encoding => no value => no value
+output_handler => no value => no value
+post_max_size => 8M => 8M
+precision => 14 => 14
+realpath_cache_size => 4096K => 4096K
+realpath_cache_ttl => 120 => 120
+register_argc_argv => On => On
+report_memleaks => On => On
+report_zend_debug => Off => Off
+request_order => no value => no value
+sendmail_from => no value => no value
+sendmail_path => /usr/sbin/sendmail -t -i => /usr/sbin/sendmail -t -i
+serialize_precision => -1 => -1
+short_open_tag => On => On
+SMTP => localhost => localhost
+smtp_port => 25 => 25
+sys_temp_dir => no value => no value
+syslog.facility => LOG_USER => LOG_USER
+syslog.filter => no-ctrl => no-ctrl
+syslog.ident => php => php
+track_errors => Off => Off
+unserialize_callback_func => no value => no value
+upload_max_filesize => 2M => 2M
+upload_tmp_dir => no value => no value
+user_dir => no value => no value
+user_ini.cache_ttl => 300 => 300
+user_ini.filename => .user.ini => .user.ini
+variables_order => EGPCS => EGPCS
+xmlrpc_error_number => 0 => 0
+xmlrpc_errors => Off => Off
+zend.assertions => 1 => 1
+zend.detect_unicode => On => On
+zend.enable_gc => On => On
+zend.exception_ignore_args => Off => Off
+zend.multibyte => Off => Off
+zend.script_encoding => no value => no value
+zend.signal_check => Off => Off
+
+ctype
+
+ctype functions => enabled
+
+curl
+
+cURL support => enabled
+cURL Information => 7.81.0
+Age => 9
+Features
+AsynchDNS => Yes
+CharConv => No
+Debug => No
+GSS-Negotiate => No
+IDN => Yes
+IPv6 => Yes
+krb4 => No
+Largefile => Yes
+libz => Yes
+NTLM => Yes
+NTLMWB => Yes
+SPNEGO => Yes
+SSL => Yes
+SSPI => No
+TLS-SRP => Yes
+HTTP2 => Yes
+GSSAPI => Yes
+KERBEROS5 => Yes
+UNIX_SOCKETS => Yes
+PSL => Yes
+HTTPS_PROXY => Yes
+MULTI_SSL => No
+BROTLI => Yes
+Protocols => dict, file, ftp, ftps, gopher, gophers, http, https, imap, imaps, ldap, ldaps, mqtt, pop3, pop3s, rtmp, rtsp, scp, sftp, smb, smbs, smtp, smtps, telnet, tftp
+Host => aarch64-unknown-linux-gnu
+SSL Version => OpenSSL/not available
+ZLib Version => 1.2.11
+libSSH Version => libssh/0.9.6/openssl/zlib
+
+Directive => Local Value => Master Value
+curl.cainfo => no value => no value
+
+date
+
+date/time support => enabled
+timelib version => 2018.04
+"Olson" Timezone Database Version => 2022.1
+Timezone Database => internal
+Default timezone => UTC
+
+Directive => Local Value => Master Value
+date.default_latitude => 31.7667 => 31.7667
+date.default_longitude => 35.2333 => 35.2333
+date.sunrise_zenith => 90.583333 => 90.583333
+date.sunset_zenith => 90.583333 => 90.583333
+date.timezone => no value => no value
+
+dom
+
+DOM/XML => enabled
+DOM/XML API Version => 20031129
+libxml Version => 2.9.13
+HTML Support => enabled
+XPath Support => enabled
+XPointer Support => enabled
+Schema Support => enabled
+RelaxNG Support => enabled
+
+fileinfo
+
+fileinfo support => enabled
+libmagic => 537
+
+filter
+
+Input Validation and Filtering => enabled
+
+Directive => Local Value => Master Value
+filter.default => unsafe_raw => unsafe_raw
+filter.default_flags => no value => no value
+
+hash
+
+hash support => enabled
+Hashing Engines => md2 md4 md5 sha1 sha224 sha256 sha384 sha512/224 sha512/256 sha512 sha3-224 sha3-256 sha3-384 sha3-512 ripemd128 ripemd160 ripemd256 ripemd320 whirlpool tiger128,3 tiger160,3 tiger192,3 tiger128,4 tiger160,4 tiger192,4 snefru snefru256 gost gost-crypto adler32 crc32 crc32b crc32c fnv132 fnv1a32 fnv164 fnv1a64 joaat haval128,3 haval160,3 haval192,3 haval224,3 haval256,3 haval128,4 haval160,4 haval192,4 haval224,4 haval256,4 haval128,5 haval160,5 haval192,5 haval224,5 haval256,5 
+
+iconv
+
+iconv support => enabled
+iconv implementation => glibc
+iconv library version => 2.35
+
+Directive => Local Value => Master Value
+iconv.input_encoding => no value => no value
+iconv.internal_encoding => no value => no value
+iconv.output_encoding => no value => no value
+
+json
+
+json support => enabled
+
+libxml
+
+libXML support => active
+libXML Compiled Version => 2.9.13
+libXML Loaded Version => 20913
+libXML streams => enabled
+
+mbstring
+
+Multibyte Support => enabled
+Multibyte string engine => libmbfl
+HTTP input encoding translation => disabled
+libmbfl version => 1.3.2
+
+mbstring extension makes use of "streamable kanji code filter and converter", which is distributed under the GNU Lesser General Public License version 2.1.
+
+Multibyte (japanese) regex support => enabled
+Multibyte regex (oniguruma) version => 6.9.7
+
+Directive => Local Value => Master Value
+mbstring.detect_order => no value => no value
+mbstring.encoding_translation => Off => Off
+mbstring.func_overload => 0 => 0
+mbstring.http_input => no value => no value
+mbstring.http_output => no value => no value
+mbstring.http_output_conv_mimetypes => ^(text/|application/xhtml\+xml) => ^(text/|application/xhtml\+xml)
+mbstring.internal_encoding => no value => no value
+mbstring.language => neutral => neutral
+mbstring.regex_retry_limit => 1000000 => 1000000
+mbstring.regex_stack_limit => 100000 => 100000
+mbstring.strict_detection => Off => Off
+mbstring.substitute_character => no value => no value
+
+openssl
+
+OpenSSL support => enabled
+OpenSSL Library Version => OpenSSL 1.1.1w  11 Sep 2023
+OpenSSL Header Version => OpenSSL 1.1.1w  11 Sep 2023
+Openssl default config => /usr/lib/ssl/openssl.cnf
+
+Directive => Local Value => Master Value
+openssl.cafile => no value => no value
+openssl.capath => no value => no value
+
+pcre
+
+PCRE (Perl Compatible Regular Expressions) Support => enabled
+PCRE Library Version => 10.35 2020-05-09
+PCRE Unicode Version => 13.0.0
+PCRE JIT Support => enabled
+PCRE JIT Target => ARM-64 64bit (little endian + unaligned)
+
+Directive => Local Value => Master Value
+pcre.backtrack_limit => 1000000 => 1000000
+pcre.jit => 1 => 1
+pcre.recursion_limit => 100000 => 100000
+
+PDO
+
+PDO support => enabled
+PDO drivers => sqlite
+
+pdo_sqlite
+
+PDO Driver for SQLite 3.x => enabled
+SQLite Library => 3.37.2
+
+pgsql
+
+PostgreSQL Support => enabled
+PostgreSQL(libpq) Version => 14.24 (Ubuntu 14.24-0ubuntu0.22.04.1)
+PostgreSQL(libpq)  => PostgreSQL 14.24 (Ubuntu 14.24-0ubuntu0.22.04.1) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0, 64-bit
+Multibyte character support => enabled
+SSL support => enabled
+Active Persistent Links => 0
+Active Links => 0
+
+Directive => Local Value => Master Value
+pgsql.allow_persistent => On => On
+pgsql.auto_reset_persistent => Off => Off
+pgsql.ignore_notice => Off => Off
+pgsql.log_notice => Off => Off
+pgsql.max_links => Unlimited => Unlimited
+pgsql.max_persistent => Unlimited => Unlimited
+
+Phar
+
+Phar: PHP Archive support => enabled
+Phar API version => 1.1.1
+Phar-based phar archives => enabled
+Tar-based phar archives => enabled
+ZIP-based phar archives => enabled
+gzip compression => enabled
+bzip2 compression => disabled (install ext/bz2)
+Native OpenSSL support => enabled
+
+
+Phar based on pear/PHP_Archive, original concept by Davey Shafik.
+Phar fully realized by Gregory Beaver and Marcus Boerger.
+Portions of tar implementation Copyright (c) 2003-2009 Tim Kientzle.
+Directive => Local Value => Master Value
+phar.cache_list => no value => no value
+phar.readonly => On => On
+phar.require_hash => On => On
+
+posix
+
+POSIX support => enabled
+
+Reflection
+
+Reflection => enabled
+
+session
+
+Session Support => enabled
+Registered save handlers => files user 
+Registered serializer handlers => php_serialize php php_binary 
+
+Directive => Local Value => Master Value
+session.auto_start => Off => Off
+session.cache_expire => 180 => 180
+session.cache_limiter => nocache => nocache
+session.cookie_domain => no value => no value
+session.cookie_httponly => 0 => 0
+session.cookie_lifetime => 0 => 0
+session.cookie_path => / => /
+session.cookie_samesite => no value => no value
+session.cookie_secure => 0 => 0
+session.gc_divisor => 100 => 100
+session.gc_maxlifetime => 1440 => 1440
+session.gc_probability => 1 => 1
+session.lazy_write => On => On
+session.name => PHPSESSID => PHPSESSID
+session.referer_check => no value => no value
+session.save_handler => files => files
+session.save_path => no value => no value
+session.serialize_handler => php => php
+session.sid_bits_per_character => 4 => 4
+session.sid_length => 32 => 32
+session.upload_progress.cleanup => On => On
+session.upload_progress.enabled => On => On
+session.upload_progress.freq => 1% => 1%
+session.upload_progress.min_freq => 1 => 1
+session.upload_progress.name => PHP_SESSION_UPLOAD_PROGRESS => PHP_SESSION_UPLOAD_PROGRESS
+session.upload_progress.prefix => upload_progress_ => upload_progress_
+session.use_cookies => 1 => 1
+session.use_only_cookies => 1 => 1
+session.use_strict_mode => 0 => 0
+session.use_trans_sid => 0 => 0
+
+SimpleXML
+
+SimpleXML support => enabled
+Schema support => enabled
+
+sockets
+
+Sockets Support => enabled
+
+SPL
+
+SPL support => enabled
+Interfaces => OuterIterator, RecursiveIterator, SeekableIterator, SplObserver, SplSubject
+Classes => AppendIterator, ArrayIterator, ArrayObject, BadFunctionCallException, BadMethodCallException, CachingIterator, CallbackFilterIterator, DirectoryIterator, DomainException, EmptyIterator, FilesystemIterator, FilterIterator, GlobIterator, InfiniteIterator, InvalidArgumentException, IteratorIterator, LengthException, LimitIterator, LogicException, MultipleIterator, NoRewindIterator, OutOfBoundsException, OutOfRangeException, OverflowException, ParentIterator, RangeException, RecursiveArrayIterator, RecursiveCachingIterator, RecursiveCallbackFilterIterator, RecursiveDirectoryIterator, RecursiveFilterIterator, RecursiveIteratorIterator, RecursiveRegexIterator, RecursiveTreeIterator, RegexIterator, RuntimeException, SplDoublyLinkedList, SplFileInfo, SplFileObject, SplFixedArray, SplHeap, SplMinHeap, SplMaxHeap, SplObjectStorage, SplPriorityQueue, SplQueue, SplStack, SplTempFileObject, UnderflowException, UnexpectedValueException
+
+sqlite3
+
+SQLite3 support => enabled
+SQLite Library => 3.37.2
+
+Directive => Local Value => Master Value
+sqlite3.defensive => 1 => 1
+sqlite3.extension_dir => no value => no value
+
+standard
+
+Dynamic Library Support => enabled
+Path to sendmail => /usr/sbin/sendmail -t -i
+
+Directive => Local Value => Master Value
+assert.active => 1 => 1
+assert.bail => 0 => 0
+assert.callback => no value => no value
+assert.exception => 0 => 0
+assert.quiet_eval => 0 => 0
+assert.warning => 1 => 1
+auto_detect_line_endings => 0 => 0
+default_socket_timeout => 60 => 60
+from => no value => no value
+session.trans_sid_hosts => no value => no value
+session.trans_sid_tags => a=href,area=href,frame=src,form= => a=href,area=href,frame=src,form=
+unserialize_max_depth => 4096 => 4096
+url_rewriter.hosts => no value => no value
+url_rewriter.tags => form= => form=
+user_agent => no value => no value
+
+tokenizer
+
+Tokenizer Support => enabled
+
+xml
+
+XML Support => active
+XML Namespace Support => active
+libxml2 Version => 2.9.13
+
+xmlreader
+
+XMLReader => enabled
+
+xmlwriter
+
+XMLWriter => enabled
+
+zlib
+
+ZLib Support => enabled
+Stream Wrapper => compress.zlib://
+Stream Filter => zlib.inflate, zlib.deflate
+Compiled Version => 1.2.11
+Linked Version => 1.2.11
+
+Directive => Local Value => Master Value
+zlib.output_compression => Off => Off
+zlib.output_compression_level => -1 => -1
+zlib.output_handler => no value => no value
+
+Additional Modules
+
+Module Name
+
+Environment
+
+Variable => Value
+SSH_CLIENT => deleted
+HOSTNAME => 095d5e2f1fe8
+SHLVL => 1
+HOME => /root
+OLDPWD => /b
+REPORT_EXIT_STATUS => 1
+SSH_TTY => deleted
+TEST_PHP_EXECUTABLE => /b/php-7.4.33/sapi/cli/php
+_ => /usr/bin/timeout
+PATH => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+DEBIAN_FRONTEND => noninteractive
+SSH_AUTH_SOCK => deleted
+NO_INTERACTION => 1
+PWD => /b/php-7.4.33
+ROUTE => A
+SSH_CONNECTION => deleted
+
+PHP Variables
+
+Variable => Value
+$_SERVER['SSH_CLIENT'] => deleted
+$_SERVER['HOSTNAME'] => 095d5e2f1fe8
+$_SERVER['SHLVL'] => 1
+$_SERVER['HOME'] => /root
+$_SERVER['OLDPWD'] => /b
+$_SERVER['REPORT_EXIT_STATUS'] => 1
+$_SERVER['SSH_TTY'] => deleted
+$_SERVER['TEST_PHP_EXECUTABLE'] => /b/php-7.4.33/sapi/cli/php
+$_SERVER['_'] => /usr/bin/timeout
+$_SERVER['PATH'] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+$_SERVER['DEBIAN_FRONTEND'] => noninteractive
+$_SERVER['SSH_AUTH_SOCK'] => deleted
+$_SERVER['NO_INTERACTION'] => 1
+$_SERVER['PWD'] => /b/php-7.4.33
+$_SERVER['ROUTE'] => A
+$_SERVER['SSH_CONNECTION'] => deleted
+$_SERVER['PHP_SELF'] => 
+$_SERVER['SCRIPT_NAME'] => 
+$_SERVER['SCRIPT_FILENAME'] => 
+$_SERVER['PATH_TRANSLATED'] => 
+$_SERVER['DOCUMENT_ROOT'] => 
+$_SERVER['REQUEST_TIME_FLOAT'] => 1792842895.6932
+$_SERVER['REQUEST_TIME'] => 1792842895
+$_SERVER['argv'] => Array
+(
+)
+
+$_SERVER['argc'] => 0
+$_ENV['SSH_CLIENT'] => deleted
+$_ENV['HOSTNAME'] => 095d5e2f1fe8
+$_ENV['SHLVL'] => 1
+$_ENV['HOME'] => /root
+$_ENV['OLDPWD'] => /b
+$_ENV['REPORT_EXIT_STATUS'] => 1
+$_ENV['SSH_TTY'] => deleted
+$_ENV['TEST_PHP_EXECUTABLE'] => /b/php-7.4.33/sapi/cli/php
+$_ENV['_'] => /usr/bin/timeout
+$_ENV['PATH'] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+$_ENV['DEBIAN_FRONTEND'] => noninteractive
+$_ENV['SSH_AUTH_SOCK'] => deleted
+$_ENV['NO_INTERACTION'] => 1
+$_ENV['PWD'] => /b/php-7.4.33
+$_ENV['ROUTE'] => A
+$_ENV['SSH_CONNECTION'] => deleted
+
+PHP License
+This program is free software; you can redistribute it and/or modify
+it under the terms of the PHP License as published by the PHP Group
+and included in the distribution in the file:  LICENSE
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+If you did not receive a copy of the PHP license, or have any
+questions about PHP licensing, please contact license@php.net.

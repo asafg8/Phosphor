@@ -1,0 +1,55 @@
+Vendor DNS version check in ppa:ondrej/php builds - evidence index (collected 2026-10-24, phosphor CTO)
+Scope: php7.4 1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1 (Ubuntu 22.04). Other branches/releases not examined.
+All statements below are what the files in this directory show. No traffic was sent to the real host.
+
+1. Source change
+   - 0128-Add-minimal-privacy-preserving-secure-DNS-telemetry-.patch (copied verbatim from the source package):
+     https://ppa.launchpadcontent.net/ondrej/php/ubuntu/pool/main/p/php7.4/php7.4_7.4.33-31+ubuntu22.04.1+deb.sury.org+1.debian.tar.xz
+     (sha256 9bb6273e01ea4c127ebe95cedd0cedf6bc3f6658b4ac5e7c830f91ae7e7e3749; .dsc included). Patch dated 2026-02-11.
+   - Adds main/secure_dns_telemetry.h and a call to telemetry_check() in the module-init function of the FPM SAPI
+     (sapi/fpm/fpm/fpm_main.c) and of the Apache 2 handler (sapi/apache2handler/php_functions.c), compiled only when
+     TELEMETRY_HOST is defined. Both call sites pass the package name with the suffix "-fpm".
+   - Payload built by build_edns_packet(): "v1|<package>|<version>|<unix time>", encrypted with libsodium crypto_box
+     to the embedded public key, encoded as base64url DNS labels under "<host>.", sent as one DNS TXT query (EDNS)
+     over UDP directly to the address getaddrinfo() returns for the host, port 53. Receive timeout 2 s (SO_RCVTIMEO).
+     The reply is validated by handle_response(); logging is compiled out (TELEMETRY_LOG defined empty) in both SAPIs.
+   - No ini setting or environment variable controls the call (none present in the patch).
+   - debian-rules-excerpt.txt: debian/rules includes /usr/lib/php/php-common.mk ("not enabled in build by default")
+     and defines TELEMETRY_PACKAGE / TELEMETRY_VERSION.
+   - debian/changelog: 1:7.4.33-25 (2026-02-12) "Add a minimal privacy-preserving secure DNS telemetry to check current
+     version if there are security updates available"; 1:7.4.33-26 (2026-02-13) "Disable debugging output in secure DNS
+     telemetry", "The secure DNS telemetry is disabled at the compile-time".
+
+2. Build configuration that enables it (ppa-pool-evidence.txt, f2-binary-evidence.txt)
+   - php-common 2:101~+ubuntu22.04.1+deb.sury.org+1 (php-defaults, same PPA) ships /usr/lib/php/php-common.mk with
+     TELEMETRY_HOST="telemetry.sury.org", TELEMETRY_PORT="53", TELEMETRY_PK="Wui6lKD3puA0A22fzuyzTL3hfB5jbbv9k_A6D1f0ME4".
+
+3. Shipped binaries (downloaded from the PPA pool; sha256 in ppa-pool-evidence.txt)
+   - php7.4-fpm amd64 and arm64 (/usr/sbin/php-fpm7.4): contain "telemetry.sury.org" (1) and the public key (1).
+   - libapache2-mod-php7.4 amd64 (/usr/lib/apache2/modules/libphp7.4.so): contains both (1, 1).
+   - php7.4-cli amd64 (/usr/bin/php7.4): contains neither.
+   - Lab fixture f2's /usr/sbin/php-fpm7.4 has the same sha256 as the arm64 pool binary (136ec007...).
+   - For comparison: Debian 11 php7.4 7.4.33-1+deb11u12 (fixture f1) and Ubuntu 20.04 php7.4 7.4.3-4ubuntu2.29
+     (fixture f6) binaries contain no such host; Debian's 7.4.33-1+deb11u12 patch series has no such patch.
+
+4. Observed behaviour at php-fpm start (capture.sh, sandbox-2026-10-24/; internal docker network, no internet)
+   - Case A, host name mapped to a capture sink: one UDP datagram at `systemctl restart php7.4-fpm`, a DNS TXT query
+     with EDNS, 277 bytes, name = encrypted labels + ".telemetry.sury.org.", to <mapped address>:53.
+   - Case B, /etc/hosts maps the name to 0.0.0.0: the same query is sent to 127.0.0.1:53 on loopback; nothing on eth0.
+   - Case C, name does not resolve: no query datagram; only the failing address lookups; restart took 3.3 s.
+   - Not measured: apache2/mod_php start; behaviour with a reachable server; a silent firewall drop (by source, the
+     process then waits up to 2 s for a reply).
+
+5. Operator options to prevent the query (factual, from source + sandbox)
+   - No runtime or ini switch exists in this build.
+   - Make the name not resolve on the host (resolver policy for telemetry.sury.org): no datagram (case C).
+   - /etc/hosts entry mapping telemetry.sury.org to 0.0.0.0: the datagram stays on loopback (case B). If a recursive
+     DNS server listens on 127.0.0.1:53 or 0.0.0.0:53 it would receive and could forward the query.
+   - Egress policy allowing UDP/53 only to the organisation's resolvers: the datagram is addressed to the telemetry
+     host itself, so such a policy drops it (not sandbox-measured).
+   - Use a build without the patch (e.g. distro archive packages, or an phosphor rebuild, which excludes 0128).
+
+Suggested neutral report wording (phosphor vendor_telemetry flag):
+  "This php-fpm/mod_php build (ppa:ondrej/php <version>) sends one DNS query to telemetry.sury.org (UDP 53) when the
+   service starts. Per the package source, the query carries the package name, version and a timestamp, encrypted.
+   No PHP setting turns it off; it can be prevented at the DNS or network level."

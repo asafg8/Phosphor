@@ -1,0 +1,3453 @@
+
+=====================================================================
+EXPECTED FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Inconsistencies when accessing protected members [Zend/tests/access_modifiers_008.phpt]  XFAIL REASON: Discussion: http://marc.info/?l=php-internals&m=120221184420957&w=2
+Inconsistencies when accessing protected members - 2 [Zend/tests/access_modifiers_009.phpt]  XFAIL REASON: Discussion: http://marc.info/?l=php-internals&m=120221184420957&w=2
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770.phpt]  XFAIL REASON: See Bug #48770
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770_2.phpt]  XFAIL REASON: See Bug #48770
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770_3.phpt]  XFAIL REASON: See Bug #48770
+Initial value of static var in method depends on the include time of the class definition [Zend/tests/method_static_var.phpt]  XFAIL REASON: Maybe not a bug
+updateTimestamp never called when session data is empty [ext/session/tests/bug71162.phpt]  XFAIL REASON: Current session module is designed to write empty session always. In addition, current session module only supports SessionHandlerInterface only from PHP 7.0.
+Bug #73529 session_decode() silently fails on wrong input [ext/session/tests/bug73529.phpt]  XFAIL REASON: session_decode() does not return proper status.
+=====================================================================
+
+=====================================================================
+FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Bug #74093 (Maximum execution time of n+2 seconds exceed not written in error_log) [Zend/tests/bug74093.phpt]
+Bug #28382 (openssl_x509_parse extensions support) [ext/openssl/tests/bug28382.phpt]
+Bug #71917: openssl_open() returns junk on envelope < 16 bytes [ext/openssl/tests/bug71917.phpt]
+Bug #72362: OpenSSL Blowfish encryption is incorrect for short keys [ext/openssl/tests/bug72362.phpt]
+Bug #73711: Segfault in openssl_pkey_new when generating DSA or DH key [ext/openssl/tests/bug73711.phpt]
+Bug #74022 PHP Fast CGI crashes when reading from a pfx file with valid password, multiple extra certs [ext/openssl/tests/bug74022_2.phpt]
+CVE 2013-4073: Null-byte certificate handling [ext/openssl/tests/cve2013_4073.phpt]
+openssl_*() with OPENSSL_KEYTYPE_EC [ext/openssl/tests/ecc.phpt]
+openssl_decrypt() tests dependent on openssl_encrypt [ext/openssl/tests/openssl_decrypt_basic.phpt]
+openssl_error_string() tests [ext/openssl/tests/openssl_error_string_basic.phpt]
+openssl_open() tests [ext/openssl/tests/openssl_open_basic.phpt]
+openssl_pkcs12_read() tests [ext/openssl/tests/openssl_pkcs12_read_basic.phpt]
+openssl_pkcs7_decrypt() tests [ext/openssl/tests/openssl_pkcs7_decrypt_basic.phpt]
+openssl_pkcs7_encrypt() tests [ext/openssl/tests/openssl_pkcs7_encrypt_basic.phpt]
+openssl_private_decrypt() tests [ext/openssl/tests/openssl_private_decrypt_basic.phpt]
+openssl_seal() tests [ext/openssl/tests/openssl_seal_basic.phpt]
+openssl_spki_export() tests for exporting public key [ext/openssl/tests/openssl_spki_export_basic.phpt]
+openssl_spki_export_challenge() tests for exporting challenge [ext/openssl/tests/openssl_spki_export_challenge_basic.phpt]
+openssl_spki_new() test for creating SPKI string [ext/openssl/tests/openssl_spki_new_basic.phpt]
+openssl_spki_verify() tests for valid signature [ext/openssl/tests/openssl_spki_verify_basic.phpt]
+openssl_x509_parse() tests [ext/openssl/tests/openssl_x509_parse_basic.phpt]
+Capture SSL session meta array in stream context [ext/openssl/tests/session_meta_capture.phpt]
+sni_server [ext/openssl/tests/sni_server.phpt]
+sni_server with separate pk and cert [ext/openssl/tests/sni_server_key_cert.phpt]
+Basic bitwise stream crypto context flag assignment [ext/openssl/tests/stream_crypto_flags_001.phpt]
+TLSv1.1 and TLSv1.2 bitwise stream crypto flag assignment [ext/openssl/tests/stream_crypto_flags_002.phpt]
+Server bitwise stream crypto flag assignment [ext/openssl/tests/stream_crypto_flags_003.phpt]
+Specific protocol method specification [ext/openssl/tests/stream_crypto_flags_004.phpt]
+security_level setting to prohibit cert [ext/openssl/tests/stream_security_level.phpt]
+tls stream wrapper with min version 1.0 and max version 1.1 [ext/openssl/tests/tls_min_v1.0_max_v1.1_wrapper.phpt]
+tls stream wrapper [ext/openssl/tests/tls_wrapper.phpt]
+tls stream wrapper when TLS 1.3 available [ext/openssl/tests/tls_wrapper_with_tls_v1.3.phpt]
+tlsv1.0 stream wrapper [ext/openssl/tests/tlsv1.0_wrapper.phpt]
+tlsv1.1 stream wrapper [ext/openssl/tests/tlsv1.1_wrapper.phpt]
+session rfc1867 [ext/session/tests/rfc1867.phpt]
+session rfc1867 [ext/session/tests/rfc1867_inter.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_cookie.phpt]
+session rfc1867 sid get [ext/session/tests/rfc1867_sid_get.phpt]
+session rfc1867 sid get 2 [ext/session/tests/rfc1867_sid_get_2.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_invalid.phpt]
+session rfc1867 sid only cookie [ext/session/tests/rfc1867_sid_only_cookie.phpt]
+session rfc1867 sid post [ext/session/tests/rfc1867_sid_post.phpt]
+=====================================================================
+
+
+=====================================================================
+TEST RESULT SUMMARY
+---------------------------------------------------------------------
+Exts skipped    :    0
+Exts tested     :    0
+---------------------------------------------------------------------
+
+Number of tests : 3237              3200
+Tests skipped   :   37 (  1.1%) --------
+Tests warned    :    0 (  0.0%) (  0.0%)
+Tests failed    :   42 (  1.3%) (  1.3%)
+Expected fail   :    8 (  0.2%) (  0.2%)
+Tests passed    : 3150 ( 97.3%) ( 98.4%)
+---------------------------------------------------------------------
+Time taken      :   67 seconds
+=====================================================================
+
+=====================================================================
+EXPECTED FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Inconsistencies when accessing protected members [Zend/tests/access_modifiers_008.phpt]  XFAIL REASON: Discussion: http://marc.info/?l=php-internals&m=120221184420957&w=2
+Inconsistencies when accessing protected members - 2 [Zend/tests/access_modifiers_009.phpt]  XFAIL REASON: Discussion: http://marc.info/?l=php-internals&m=120221184420957&w=2
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770.phpt]  XFAIL REASON: See Bug #48770
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770_2.phpt]  XFAIL REASON: See Bug #48770
+Bug #48770 (call_user_func_array() fails to call parent from inheriting class) [Zend/tests/bug48770_3.phpt]  XFAIL REASON: See Bug #48770
+Initial value of static var in method depends on the include time of the class definition [Zend/tests/method_static_var.phpt]  XFAIL REASON: Maybe not a bug
+updateTimestamp never called when session data is empty [ext/session/tests/bug71162.phpt]  XFAIL REASON: Current session module is designed to write empty session always. In addition, current session module only supports SessionHandlerInterface only from PHP 7.0.
+Bug #73529 session_decode() silently fails on wrong input [ext/session/tests/bug73529.phpt]  XFAIL REASON: session_decode() does not return proper status.
+=====================================================================
+
+=====================================================================
+FAILED TEST SUMMARY
+---------------------------------------------------------------------
+Bug #74093 (Maximum execution time of n+2 seconds exceed not written in error_log) [Zend/tests/bug74093.phpt]
+Bug #28382 (openssl_x509_parse extensions support) [ext/openssl/tests/bug28382.phpt]
+Bug #71917: openssl_open() returns junk on envelope < 16 bytes [ext/openssl/tests/bug71917.phpt]
+Bug #72362: OpenSSL Blowfish encryption is incorrect for short keys [ext/openssl/tests/bug72362.phpt]
+Bug #73711: Segfault in openssl_pkey_new when generating DSA or DH key [ext/openssl/tests/bug73711.phpt]
+Bug #74022 PHP Fast CGI crashes when reading from a pfx file with valid password, multiple extra certs [ext/openssl/tests/bug74022_2.phpt]
+CVE 2013-4073: Null-byte certificate handling [ext/openssl/tests/cve2013_4073.phpt]
+openssl_*() with OPENSSL_KEYTYPE_EC [ext/openssl/tests/ecc.phpt]
+openssl_decrypt() tests dependent on openssl_encrypt [ext/openssl/tests/openssl_decrypt_basic.phpt]
+openssl_error_string() tests [ext/openssl/tests/openssl_error_string_basic.phpt]
+openssl_open() tests [ext/openssl/tests/openssl_open_basic.phpt]
+openssl_pkcs12_read() tests [ext/openssl/tests/openssl_pkcs12_read_basic.phpt]
+openssl_pkcs7_decrypt() tests [ext/openssl/tests/openssl_pkcs7_decrypt_basic.phpt]
+openssl_pkcs7_encrypt() tests [ext/openssl/tests/openssl_pkcs7_encrypt_basic.phpt]
+openssl_private_decrypt() tests [ext/openssl/tests/openssl_private_decrypt_basic.phpt]
+openssl_seal() tests [ext/openssl/tests/openssl_seal_basic.phpt]
+openssl_spki_export() tests for exporting public key [ext/openssl/tests/openssl_spki_export_basic.phpt]
+openssl_spki_export_challenge() tests for exporting challenge [ext/openssl/tests/openssl_spki_export_challenge_basic.phpt]
+openssl_spki_new() test for creating SPKI string [ext/openssl/tests/openssl_spki_new_basic.phpt]
+openssl_spki_verify() tests for valid signature [ext/openssl/tests/openssl_spki_verify_basic.phpt]
+openssl_x509_parse() tests [ext/openssl/tests/openssl_x509_parse_basic.phpt]
+Capture SSL session meta array in stream context [ext/openssl/tests/session_meta_capture.phpt]
+sni_server [ext/openssl/tests/sni_server.phpt]
+sni_server with separate pk and cert [ext/openssl/tests/sni_server_key_cert.phpt]
+Basic bitwise stream crypto context flag assignment [ext/openssl/tests/stream_crypto_flags_001.phpt]
+TLSv1.1 and TLSv1.2 bitwise stream crypto flag assignment [ext/openssl/tests/stream_crypto_flags_002.phpt]
+Server bitwise stream crypto flag assignment [ext/openssl/tests/stream_crypto_flags_003.phpt]
+Specific protocol method specification [ext/openssl/tests/stream_crypto_flags_004.phpt]
+security_level setting to prohibit cert [ext/openssl/tests/stream_security_level.phpt]
+tls stream wrapper with min version 1.0 and max version 1.1 [ext/openssl/tests/tls_min_v1.0_max_v1.1_wrapper.phpt]
+tls stream wrapper [ext/openssl/tests/tls_wrapper.phpt]
+tls stream wrapper when TLS 1.3 available [ext/openssl/tests/tls_wrapper_with_tls_v1.3.phpt]
+tlsv1.0 stream wrapper [ext/openssl/tests/tlsv1.0_wrapper.phpt]
+tlsv1.1 stream wrapper [ext/openssl/tests/tlsv1.1_wrapper.phpt]
+session rfc1867 [ext/session/tests/rfc1867.phpt]
+session rfc1867 [ext/session/tests/rfc1867_inter.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_cookie.phpt]
+session rfc1867 sid get [ext/session/tests/rfc1867_sid_get.phpt]
+session rfc1867 sid get 2 [ext/session/tests/rfc1867_sid_get_2.phpt]
+session rfc1867 sid cookie [ext/session/tests/rfc1867_sid_invalid.phpt]
+session rfc1867 sid only cookie [ext/session/tests/rfc1867_sid_only_cookie.phpt]
+session rfc1867 sid post [ext/session/tests/rfc1867_sid_post.phpt]
+=====================================================================
+
+
+================================================================================
+/b/php-7.4.33/Zend/tests/bug74093.phpt
+================================================================================
+Fatal error: Maximum execution time of 1 second exceeded in /b/php-7.4.33/Zend/tests/bug74093.php on line 6
+================================================================================
+001+ Fatal error: Maximum execution time of 1 second exceeded in /b/php-7.4.33/Zend/tests/bug74093.php on line 6
+001- Fatal error: Maximum execution time of 1+1 seconds exceeded %s
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/bug28382.phpt
+================================================================================
+array(11) {
+  ["basicConstraints"]=>
+  string(8) "CA:FALSE"
+  ["nsComment"]=>
+  string(38) "For Grid use only; request tag userTag"
+  ["nsCertType"]=>
+  string(30) "SSL Client, SSL Server, S/MIME"
+  ["crlDistributionPoints"]=>
+  string(63) "Full Name:
+  URI:http://mobile.blue-software.ro:90/ca/crl.shtml"
+  ["nsCaPolicyUrl"]=>
+  string(38) "http://mobile.blue-software.ro:90/pub/"
+  ["subjectAltName"]=>
+  string(28) "email:sergiu@bluesoftware.ro"
+  ["subjectKeyIdentifier"]=>
+  string(59) "B0:A7:FF:F9:41:15:DE:23:39:BD:DD:31:0F:97:A0:B2:A2:74:E0:FC"
+  ["authorityKeyIdentifier"]=>
+  string(114) "DirName:/C=RO/ST=Romania/L=Craiova/O=Sergiu/OU=Sergiu SRL/CN=Sergiu CA/emailAddress=n_sergiu@hotmail.com
+serial:00"
+  ["keyUsage"]=>
+  string(71) "Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment"
+  ["nsBaseUrl"]=>
+  string(20) "http://62.231.98.52/"
+  ["1.2.3.4"]=>
+  string(4) ">çb4"
+}
+================================================================================
+009+   string(63) "Full Name:
+010+   URI:http://mobile.blue-software.ro:90/ca/crl.shtml"
+009-   string(%d) "%AURI:http://mobile.blue-software.ro:90/ca/crl.shtml
+010- "
+018+   string(114) "DirName:/C=RO/ST=Romania/L=Craiova/O=Sergiu/OU=Sergiu SRL/CN=Sergiu CA/emailAddress=n_sergiu@hotmail.com
+019+ serial:00"
+018-   string(115) "DirName:/C=RO/ST=Romania/L=Craiova/O=Sergiu/OU=Sergiu SRL/CN=Sergiu CA/emailAddress=n_sergiu@hotmail.com
+019- serial:00
+020- "
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/bug71917.phpt
+================================================================================
+bool(false)
+bool(false)
+================================================================================
+001+ bool(false)
+002+ bool(false)
+001- bool(true)
+002- bool(true)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/bug72362.phpt
+================================================================================
+string(0) ""
+string(0) ""
+================================================================================
+001+ string(0) ""
+002+ string(0) ""
+001- string(48) "e3214d1b16e574828c8a3e222202dde81afd1ad2cb165ab3"
+002- string(48) "e3214d1b16e574828c8a3e222202dde81afd1ad2cb165ab3"
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/bug73711.phpt
+================================================================================
+bool(false)
+bool(false)
+DONE
+================================================================================
+001+ bool(false)
+002+ bool(false)
+001- resource(%d) of type (OpenSSL key)
+002- resource(%d) of type (OpenSSL key)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/bug74022_2.phpt
+================================================================================
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/bug74022_2.php on line 5
+
+Warning: count(): Parameter must be an array or an object that implements Countable in /b/php-7.4.33/ext/openssl/tests/bug74022_2.php on line 5
+int(0)
+===DONE===
+================================================================================
+001+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/bug74022_2.php on line 5
+002+ 
+003+ Warning: count(): Parameter must be an array or an object that implements Countable in /b/php-7.4.33/ext/openssl/tests/bug74022_2.php on line 5
+004+ int(0)
+001- int(2)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/cve2013_4073.phpt
+================================================================================
+array (
+  'basicConstraints' => 'CA:FALSE',
+  'subjectKeyIdentifier' => '88:5A:55:C0:52:FF:61:CD:52:A3:35:0F:EA:5A:9C:24:38:22:F7:5C',
+  'keyUsage' => 'Digital Signature, Non Repudiation, Key Encipherment',
+  'subjectAltName' => 'DNS:altnull.python.org' . "\0" . 'example.com, email:null@python.org' . "\0" . 'user@example.org, URI:http://null.python.org' . "\0" . 'http://example.org, IP Address:192.0.2.1, IP Address:2001:DB8:0:0:0:0:0:1',
+)
+================================================================================
+005+   'subjectAltName' => 'DNS:altnull.python.org' . "\0" . 'example.com, email:null@python.org' . "\0" . 'user@example.org, URI:http://null.python.org' . "\0" . 'http://example.org, IP Address:192.0.2.1, IP Address:2001:DB8:0:0:0:0:0:1',
+005-   'subjectAltName' => 'DNS:altnull.python.org' . "\0" . 'example.com, email:null@python.org' . "\0" . 'user@example.org, URI:http://null.python.org' . "\0" . 'http://example.org, IP Address:192.0.2.1, IP Address:2001:DB8:0:0:0:0:0:1
+006- ',
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/ecc.phpt
+================================================================================
+Testing openssl_pkey_new
+resource(4) of type (OpenSSL key)
+
+Warning: openssl_pkey_new(): Unknown elliptic curve (short) name invalid_cuve_name in /b/php-7.4.33/ext/openssl/tests/ecc.php on line 15
+bool(false)
+int(384)
+int(215)
+string(9) "secp384r1"
+bool(true)
+resource(5) of type (OpenSSL key)
+bool(true)
+Testing openssl_csr_new with key generation
+NULL
+resource(7) of type (OpenSSL key)
+Testing openssl_csr_new with existing ecc key
+resource(8) of type (OpenSSL X.509 CSR)
+bool(false)
+array(0) {
+}
+resource(10) of type (OpenSSL X.509)
+Testing openssl_x509_check_private_key
+bool(true)
+bool(false)
+Testing openssl_get_curve_names
+bool(true)
+Found secp384r1 in curve names
+================================================================================
+018+ array(0) {
+018- array(1) {
+019-   ["d"]=>
+020-   string(%d) "%a"
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_decrypt_basic.phpt
+================================================================================
+string(45) "openssl_encrypt() and openssl_decrypt() tests"
+string(45) "openssl_encrypt() and openssl_decrypt() tests"
+string(45) "openssl_encrypt() and openssl_decrypt() tests"
+bool(false)
+NULL
+================================================================================
+004+ bool(false)
+004- string(45) "openssl_encrypt() and openssl_decrypt() tests"
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_error_string_basic.phpt
+================================================================================
+string(60) "error:03000082:digital envelope routines::invalid key length"
+bool(false)
+int(15)
+
+PKEY errors
+openssl_pkey_export_to_file opening: no error code 02001002
+openssl_pkey_export_to_file opening: no error code 2006D080
+openssl_pkey_export_to_file opening: uncaught errors
+	FFFFFFFF80000002: error:FFFFFFFF80000002:system library::No such file or directory
+	10000080: error:10000080:BIO routines::no such file
+openssl_pkey_export_to_file pem: no error code 0909006C
+openssl_pkey_export_to_file pem: uncaught errors
+	1E08010C: error:1E08010C:DECODER routines::unsupported
+openssl_pkey_export_to_file write: no error code 2006D002
+openssl_pkey_export_to_file write: uncaught errors
+	FFFFFFFF80000015: error:FFFFFFFF80000015:system library::Is a directory
+	10080002: error:10080002:BIO routines::system lib
+openssl_pkey_export: no error code 06065064
+openssl_pkey_export: no error code 0906A065
+openssl_pkey_export: uncaught errors
+	1C800064: error:1C800064:Provider routines::bad decrypt
+	04800065: error:04800065:PEM routines::bad decrypt
+openssl_pkey_get_public: no error code 0909006C
+openssl_pkey_get_public: uncaught errors
+	0480006C: error:0480006C:PEM routines::no start line
+	1E08010C: error:1E08010C:DECODER routines::unsupported
+openssl_private_encrypt: no error code 04066076
+openssl_private_encrypt: uncaught errors
+	02000076: error:02000076:rsa routines::unknown padding type
+openssl_private_decrypt: no error code 04065072
+openssl_private_decrypt: uncaught errors
+openssl_private_(en|de)crypt padding: no error code 0909006C
+openssl_private_(en|de)crypt padding: no error code 04068076
+openssl_private_(en|de)crypt padding: no error code 04067072
+openssl_private_(en|de)crypt padding: uncaught errors
+	0480006C: error:0480006C:PEM routines::no start line
+	02000076: error:02000076:rsa routines::unknown padding type
+	0200008A: error:0200008A:rsa routines::invalid padding
+	02000072: error:02000072:rsa routines::padding check failed
+X509 errors
+openssl_x509_export_to_file open: no error code 02001002
+openssl_x509_export_to_file open: uncaught errors
+	FFFFFFFF80000002: error:FFFFFFFF80000002:system library::No such file or directory
+	10000080: error:10000080:BIO routines::no such file
+openssl_x509_export_to_file pem: no error code 0909006C
+openssl_x509_export_to_file pem: uncaught errors
+	0480006C: error:0480006C:PEM routines::no start line
+openssl_x509_export_to_file write: no error code 2006D002
+openssl_x509_export_to_file write: uncaught errors
+	FFFFFFFF80000015: error:FFFFFFFF80000015:system library::Is a directory
+	10080002: error:10080002:BIO routines::system lib
+openssl_x509_checkpurpose purpose: no error code 0B086079
+openssl_x509_checkpurpose purpose: uncaught errors
+	FFFFFFFF80000002: error:FFFFFFFF80000002:system library::No such file or directory
+	10000080: error:10000080:BIO routines::no such file
+	05880002: error:05880002:x509 certificate routines::system lib
+	05800068: error:05800068:x509 certificate routines::loading defaults
+	05800079: error:05800079:x509 certificate routines::unknown purpose id
+CSR errors
+openssl_csr_get_subject open: no error code 02001002
+openssl_csr_get_subject open: no error code 2006D080
+openssl_csr_get_subject open: uncaught errors
+	FFFFFFFF80000002: error:FFFFFFFF80000002:system library::No such file or directory
+	10000080: error:10000080:BIO routines::no such file
+openssl_csr_get_subjec pem: no error code 0909006C
+openssl_csr_get_subjec pem: uncaught errors
+	0480006C: error:0480006C:PEM routines::no start line
+================================================================================
+001+ string(60) "error:03000082:digital envelope routines::invalid key length"
+001- string(89) "error:0607A082:digital envelope routines:EVP_CIPHER_CTX_set_key_length:invalid key length"
+006+ openssl_pkey_export_to_file opening: no error code 02001002
+007+ openssl_pkey_export_to_file opening: no error code 2006D080
+008+ openssl_pkey_export_to_file opening: uncaught errors
+009+ 	FFFFFFFF80000002: error:FFFFFFFF80000002:system library::No such file or directory
+010+ 	10000080: error:10000080:BIO routines::no such file
+011+ openssl_pkey_export_to_file pem: no error code 0909006C
+012+ openssl_pkey_export_to_file pem: uncaught errors
+013+ 	1E08010C: error:1E08010C:DECODER routines::unsupported
+014+ openssl_pkey_export_to_file write: no error code 2006D002
+015+ openssl_pkey_export_to_file write: uncaught errors
+016+ 	FFFFFFFF80000015: error:FFFFFFFF80000015:system library::Is a directory
+017+ 	10080002: error:10080002:BIO routines::system lib
+018+ openssl_pkey_export: no error code 06065064
+019+ openssl_pkey_export: no error code 0906A065
+020+ openssl_pkey_export: uncaught errors
+021+ 	1C800064: error:1C800064:Provider routines::bad decrypt
+006- openssl_pkey_export_to_file opening: ok
+007- openssl_pkey_export_to_file pem: ok
+008- openssl_pkey_export_to_file write: ok
+009- openssl_pkey_export: ok
+010- openssl_pkey_get_public: ok
+011- openssl_private_encrypt: ok
+012- openssl_private_decrypt: ok
+013- openssl_private_(en|de)crypt padding: ok
+014- X509 errors
+015- openssl_x509_export_to_file open: ok
+016- openssl_x509_export_to_file pem: ok
+017- openssl_x509_export_to_file write: ok
+018- openssl_x509_checkpurpose purpose: ok
+019- CSR errors
+020- openssl_csr_get_subject open: ok
+021- openssl_csr_get_subjec pem: ok
+022+ 	04800065: error:04800065:PEM routines::bad decrypt
+023+ openssl_pkey_get_public: no error code 0909006C
+024+ openssl_pkey_get_public: uncaught errors
+025+ 	0480006C: error:0480006C:PEM routines::no start line
+026+ 	1E08010C: error:1E08010C:DECODER routines::unsupported
+027+ openssl_private_encrypt: no error code 04066076
+028+ openssl_private_encrypt: uncaught errors
+029+ 	02000076: error:02000076:rsa routines::unknown padding type
+030+ openssl_private_decrypt: no error code 04065072
+031+ openssl_private_decrypt: uncaught errors
+032+ openssl_private_(en|de)crypt padding: no error code 0909006C
+033+ openssl_private_(en|de)crypt padding: no error code 04068076
+034+ openssl_private_(en|de)crypt padding: no error code 04067072
+035+ openssl_private_(en|de)crypt padding: uncaught errors
+036+ 	0480006C: error:0480006C:PEM routines::no start line
+037+ 	02000076: error:02000076:rsa routines::unknown padding type
+038+ 	0200008A: error:0200008A:rsa routines::invalid padding
+039+ 	02000072: error:02000072:rsa routines::padding check failed
+040+ X509 errors
+041+ openssl_x509_export_to_file open: no error code 02001002
+042+ openssl_x509_export_to_file open: uncaught errors
+043+ 	FFFFFFFF80000002: error:FFFFFFFF80000002:system library::No such file or directory
+044+ 	10000080: error:10000080:BIO routines::no such file
+045+ openssl_x509_export_to_file pem: no error code 0909006C
+046+ openssl_x509_export_to_file pem: uncaught errors
+047+ 	0480006C: error:0480006C:PEM routines::no start line
+048+ openssl_x509_export_to_file write: no error code 2006D002
+049+ openssl_x509_export_to_file write: uncaught errors
+050+ 	FFFFFFFF80000015: error:FFFFFFFF80000015:system library::Is a directory
+051+ 	10080002: error:10080002:BIO routines::system lib
+052+ openssl_x509_checkpurpose purpose: no error code 0B086079
+053+ openssl_x509_checkpurpose purpose: uncaught errors
+054+ 	FFFFFFFF80000002: error:FFFFFFFF80000002:system library::No such file or directory
+055+ 	10000080: error:10000080:BIO routines::no such file
+056+ 	05880002: error:05880002:x509 certificate routines::system lib
+057+ 	05800068: error:05800068:x509 certificate routines::loading defaults
+058+ 	05800079: error:05800079:x509 certificate routines::unknown purpose id
+059+ CSR errors
+060+ openssl_csr_get_subject open: no error code 02001002
+061+ openssl_csr_get_subject open: no error code 2006D080
+062+ openssl_csr_get_subject open: uncaught errors
+063+ 	FFFFFFFF80000002: error:FFFFFFFF80000002:system library::No such file or directory
+064+ 	10000080: error:10000080:BIO routines::no such file
+065+ openssl_csr_get_subjec pem: no error code 0909006C
+066+ openssl_csr_get_subjec pem: uncaught errors
+067+ 	0480006C: error:0480006C:PEM routines::no start line
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_open_basic.phpt
+================================================================================
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/openssl_open_basic.php on line 8
+NULL
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/openssl_open_basic.php on line 10
+
+Warning: openssl_open(): unable to coerce parameter 4 into a private key in /b/php-7.4.33/ext/openssl/tests/openssl_open_basic.php on line 10
+NULL
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/openssl_open_basic.php on line 12
+NULL
+NULL
+================================================================================
+001+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/openssl_open_basic.php on line 8
+002+ NULL
+003+ 
+004+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/openssl_open_basic.php on line 10
+001- string(19) "openssl_open() test"
+005- string(19) "openssl_open() test"
+008+ 
+009+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/openssl_open_basic.php on line 12
+010+ NULL
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_pkcs12_read_basic.phpt
+================================================================================
+bool(false)
+bool(false)
+bool(false)
+array(0) {
+}
+================================================================================
+003+ bool(false)
+004+ array(0) {
+005+ }
+003- bool(true)
+004- array(3) {
+005-   ["cert"]=>
+006-   string(1111) "-----BEGIN CERTIFICATE-----
+007- MIIDBjCCAe4CCQCS/had1ITjDjANBgkqhkiG9w0BAQsFADBFMQswCQYDVQQGEwJQ
+008- TDETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0
+009- cyBQdHkgTHRkMB4XDTE1MDYxMDEyMTI0N1oXDTE2MDYwOTEyMTI0N1owRTELMAkG
+010- A1UEBhMCUEwxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0
+011- IFdpZGdpdHMgUHR5IEx0ZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
+012- ANHezJRoGMbtDzSwK7WPjj6+Yhj7R9LJyR7TjvxH01ZVA+sHUrcXs3tDXukIQcH1
+013- rsnf4WbBjGbQT3jlLicsll6gMOh8oaCdi6863cvw1XRUmlezpAs2V5MZOEgqkWvU
+014- 8OKHqjt8o9F07T3n1zYeeBjiUsr6UWqX4+Znwa25UF0Fid1R4BxmX7GpDoq0Weuv
+015- WQafbM9qs3Qrd7Ea3Lqz9pGkWx1BmOv49XorAhQadxCT32GbUdhmhxgrDgyW5M7m
+016- ECz4DngZLhZvLC8Juf/Q6R5SjhN5/f/TBq//QpKaCjBAamhZDJtWMv80IDKJO7Ir
+017- fQMnPEq4vCnHdKvG7N6ZjsECAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAHGAiEN0o
+018- tOV2tbK0Qm/mWlyuRKtxqnP3y/2Q5SFMmRpkOS54hFf9YBNgT7nWK3Z5fPKor17t
+019- rGthXPSZU8hxY5iHFhELurp23qGmJftdcYL2mF7IyoGOiZ1Q6Vt9LnRTDtgrHh/f
+020- ZziI+gaPpmAfEAh48xQrlviHqaR9F63d0UN1jz9cF1kIj1H21PAGC0tmAIxxb4ee
+021- hjipL+JLH0iRoBQE83cF2BOQCfRzRekotnDYon6v7mTjYu7kwl8paRIEMNrBckby
+022- IL3CJOZFesaFO7suK7oP7r6BIATpVcg2m0V25mVMVFRm4F/JOvSkB381Pte/Ccuv
+023- dxPWHER13ptIVg==
+024- -----END CERTIFICATE-----
+025- "
+026-   ["pkey"]=>
+027-   string(1704) "-----BEGIN PRIVATE KEY-----
+028- MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDR3syUaBjG7Q80
+029- sCu1j44+vmIY+0fSycke0478R9NWVQPrB1K3F7N7Q17pCEHB9a7J3+FmwYxm0E94
+030- 5S4nLJZeoDDofKGgnYuvOt3L8NV0VJpXs6QLNleTGThIKpFr1PDih6o7fKPRdO09
+031- 59c2HngY4lLK+lFql+PmZ8GtuVBdBYndUeAcZl+xqQ6KtFnrr1kGn2zParN0K3ex
+032- Gty6s/aRpFsdQZjr+PV6KwIUGncQk99hm1HYZocYKw4MluTO5hAs+A54GS4Wbywv
+033- Cbn/0OkeUo4Tef3/0wav/0KSmgowQGpoWQybVjL/NCAyiTuyK30DJzxKuLwpx3Sr
+034- xuzemY7BAgMBAAECggEAbdYX5ZexV/LbYWzOA2CVRnsnJgHkrgnTS2HXVGtWzLkD
+035- qu6TOKWb1mgE9RrQJ22oQ5j7A2dKTsi4vwHarL/mFrHpxtLrV/78CwJY8BIj9JUO
+036- jdXDheaz4JVzYjl9EB1K0JPF4QozRjzWqO58MKOzoPpZ8EcfcxT5Pi2RLJVu3K9F
+037- DR3cUNa9h66j84sDJARzvxMfgR6VysHVmgN1aR78Mye0dFVYeL7wCXFJmJXa2AYw
+038- TQR5FcFRa0h8t40EOJdXcoWu63TUd7rvDgebHXJeKax8W2pGREHZfeEw5wWpFQn8
+039- j+znHSISe7eM9wmW6ombab7zcJsCwXDYgtY/6OqRAQKBgQD6EXKfXThfnrN/od/Y
+040- jF8mfKdJ67HOc8WVPlB9vHDsduFyX914ahJHeCVQPkV1a2nx+bv3PviWbrKreEKl
+041- b7aAAAkbxy/FakcxE9b0wC5JsSW9vByXQiRn0iDqDNl9iwzX/LLW6wE7SruCPp+z
+042- mzCHArp6mvJmRFooR8e3IXiA0QKBgQDW2T9xXFBpumSOBRpn7Zc9SGiQ9qZTSKKb
+043- boVSDd2cod8O1aow3gnQNid/cNnt54Yh5Z3KlYfFWkmrV+0/yQZ/SThZ1uHAaZVy
+044- OnWKVELykpYLnKGlHoQpOYTCfdYan5xOfkw55em3TTeQq5tETYWMdhS/9VVxeLKZ
+045- k2xr+CYq8QKBgQCzHpJK4nwByexq7KkpNIrnR3yQb1oiNjz9xO/k0HjWd+TOhypd
+046- GSVUuhOIIcKg87qkj6x60kk/f7VNK0wZsiY4E05y7j8imhi6Z6qeD5ZYRKJzAG4+
+047- TitDjnjzDRcwXMxrXV9AoH52WPZsuays+ulMm8C1F42vgSBPH/NHEpt9MQKBgAIw
+048- nLDvG/K376Zy7t34Uf5R6p7vpKpcpyumaL15XrTmAXwJOX7eBIOWybhG0jHWlktq
+049- J72U4JlmXjHc55Iq3mIVwPlJc2uep+NOLTyHt1b5n4Xmxs8EDJzO9Ud2OOR0lAdI
+050- ykYczdEMfHCBD0gW8jGIUpXSTlilvkxKcGR5VwpBAoGBANdAWL3lw+/P43x6Rxth
+051- GJN8QzWe5vRFJYS5mkeaa/6jrFrsvk176WudopropFGtRc/44E1IDOZULJM80Xgb
+052- JTeUFyb+ZjYLrHUp1yir+oZIm5DBZDZjYclanrPPHg9YwVxcHtunPeCFy3iC+W+F
+053- MK80GEnRQIkB7uZVk+r0HusK
+054- -----END PRIVATE KEY-----
+055- "
+056-   ["extracerts"]=>
+057-   array(1) {
+058-     [0]=>
+059-     string(1111) "-----BEGIN CERTIFICATE-----
+060- MIIDBjCCAe4CCQDaL5/+UVeXuTANBgkqhkiG9w0BAQsFADBFMQswCQYDVQQGEwJB
+061- VTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0
+062- cyBQdHkgTHRkMB4XDTE1MDYxMDEyNDAwNVoXDTE2MDYwOTEyNDAwNVowRTELMAkG
+063- A1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0
+064- IFdpZGdpdHMgUHR5IEx0ZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
+065- AL/IF7bW0vpEg5A054SDqTi5pkSeie6nyIT77qCAVI5PMlhNjxuqDIlLpCWonvKb
+066- LMRtp7t24BsQBRgQgps8mtfRr0gV1qq9HMfDj2bZdGcTShZN/M/BFATwxaNRTHl9
+067- ey8zxGcLd4aFFBlVhXHYdBXg/PG/oxJMAFuMwa+KxSP6Mqp1FlOZtvUUieQcToMf
+068- Mh8Lbr4g/yHFj5lgWIJ2fmJjHJZ4wf9QBeGUrVqqxzSDEL9f0PGy+grqSHoIzLr3
+069- +uhvhoI85nCyZs9+lrELuQKqbiZ8Q6Vmj6JGt3miNBFVTbBpP9GK8sVuVQwgqd8p
+070- C3e8hHqv7vwF+s0zjiZ+rCcCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAdpTtiyDJ
+071- 0wLB18iunXCMUJpjc/HVYEp5P9vl2E/bcZfGns/8KxNHoe9mgJycr3mwjCjMjVx2
+072- L/9q/8XoT02aBncwAx4oZ2H0qfjZppaUSnSc1Uv+dsldDC2mZvJgwXN7jtQmU5P3
+073- cspFHuJoYK8AqYJqlO6E4L9uRF7dLEliUnrBpF4BxziwskTquRX+zgD+fmk0L5O8
+074- qqvm8btWCxfng+qD7UHFWbUQ2IegZ3VrBWJ2XsxOvokMM4HoHVb0BZgq8Dvu0XJ9
+075- EriEQkcydtrRKtlcWHLKcJuNUnkw2qfj+F8mmdaZib8Apa1UCkt0ZlpyYO3V2ejY
+076- WIjafwJYrv6f5g==
+077- -----END CERTIFICATE-----
+078- "
+079-   }
+080- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_decrypt_basic.phpt
+================================================================================
+bool(false)
+bool(false)
+
+Warning: openssl_pkcs7_decrypt(): unable to get private key in /b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_decrypt_basic.php on line 21
+bool(false)
+
+Warning: openssl_pkcs7_decrypt(): unable to coerce parameter 3 to x509 cert in /b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_decrypt_basic.php on line 22
+bool(false)
+
+Warning: openssl_pkcs7_decrypt(): unable to coerce parameter 3 to x509 cert in /b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_decrypt_basic.php on line 23
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+
+Warning: openssl_pkcs7_decrypt(): unable to coerce parameter 3 to x509 cert in /b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_decrypt_basic.php on line 27
+bool(false)
+
+Warning: openssl_pkcs7_decrypt(): unable to get private key in /b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_decrypt_basic.php on line 28
+bool(false)
+true
+true
+================================================================================
+001+ bool(false)
+002+ bool(false)
+001- bool(true)
+002- bool(true)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_encrypt_basic.phpt
+================================================================================
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+
+Warning: openssl_pkcs7_encrypt() expects parameter 4 to be array, string given in /b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_encrypt_basic.php on line 24
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+
+Warning: openssl_pkcs7_encrypt() expects parameter 4 to be array, string given in /b/php-7.4.33/ext/openssl/tests/openssl_pkcs7_encrypt_basic.php on line 30
+bool(false)
+bool(false)
+bool(false)
+true
+true
+================================================================================
+001+ bool(false)
+002+ bool(false)
+003+ bool(false)
+004+ bool(false)
+005+ bool(false)
+001- bool(true)
+002- bool(true)
+003- bool(true)
+004- bool(true)
+005- bool(true)
+017+ bool(false)
+018+ bool(false)
+017- bool(true)
+018- bool(true)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_private_decrypt_basic.phpt
+================================================================================
+bool(true)
+string(32) "Testing openssl_public_decrypt()"
+
+Warning: openssl_private_decrypt(): key parameter is not a valid private key in /b/php-7.4.33/ext/openssl/tests/openssl_private_decrypt_basic.php on line 10
+bool(false)
+NULL
+bool(true)
+string(110) "çb,s#­&59LÍ<ÔM™M˜ë/	F9—Éƒ¹‘—ûÔÊ‰n:š+¯¾f Ë®½–ug#·¡Oãæ<ª`žnÑÓ¹¤º!¡ž,./ë•WO	DÔè—ÿïˆV¦P_A÷«õ’"
+
+Warning: openssl_private_decrypt(): key array must be of the form array(0 => key, 1 => phrase) in /b/php-7.4.33/ext/openssl/tests/openssl_private_decrypt_basic.php on line 14
+
+Warning: openssl_private_decrypt(): key parameter is not a valid private key in /b/php-7.4.33/ext/openssl/tests/openssl_private_decrypt_basic.php on line 14
+bool(false)
+NULL
+bool(true)
+string(32) "Testing openssl_public_decrypt()"
+================================================================================
+007+ bool(true)
+008+ string(110) "çb,s#­&59LÍ<ÔM™M˜ë/	F9—Éƒ¹‘—ûÔÊ‰n:š+¯¾f Ë®½–ug#·¡Oãæ<ª`žnÑÓ¹¤º!¡ž,./ë•WO	DÔè—ÿïˆV¦P_A÷«õ’"
+007- bool(false)
+008- NULL
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.phpt
+================================================================================
+Warning: openssl_seal(): not a public key (1th member of pubkeys) in /b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.php on line 8
+bool(false)
+
+Warning: openssl_seal(): Fourth argument to openssl_seal() must be a non-empty array in /b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.php on line 9
+bool(false)
+
+Warning: openssl_seal() expects parameter 1 to be string, array given in /b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.php on line 10
+NULL
+
+Warning: openssl_seal() expects parameter 1 to be string, array given in /b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.php on line 11
+NULL
+bool(false)
+bool(false)
+
+Warning: openssl_seal(): not a public key (2th member of pubkeys) in /b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.php on line 20
+bool(false)
+
+Warning: openssl_seal() expects parameter 4 to be array, string given in /b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.php on line 21
+NULL
+
+Warning: openssl_seal(): Fourth argument to openssl_seal() must be a non-empty array in /b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.php on line 22
+bool(false)
+
+Warning: openssl_seal(): not a public key (1th member of pubkeys) in /b/php-7.4.33/ext/openssl/tests/openssl_seal_basic.php on line 23
+bool(false)
+Done
+================================================================================
+012+ bool(false)
+013+ bool(false)
+012- int(19)
+013- int(19)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.phpt
+================================================================================
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+
+Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+/oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+kUtXfimz2qgkeUcPpQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+/oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+kUtXfimz2qgkeUcPpQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+/oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+kUtXfimz2qgkeUcPpQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+/oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+kUtXfimz2qgkeUcPpQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+/oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+kUtXfimz2qgkeUcPpQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+/oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+kUtXfimz2qgkeUcPpQIDAQAB
+-----END PUBLIC KEY-----
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+
+Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+
+Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+dQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+dQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+dQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+dQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+dQIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+dQIDAQAB
+-----END PUBLIC KEY-----
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+
+Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+
+Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+-----END PUBLIC KEY-----
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+-----END PUBLIC KEY-----
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+
+Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+================================================================================
+001+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+002+ 
+003+ Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+004+ -----BEGIN PUBLIC KEY-----
+005+ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+006+ 83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+007+ /oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+008+ kUtXfimz2qgkeUcPpQIDAQAB
+001- \-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-.*\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
+002- \-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-.*\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
+003- \-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-.*\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
+004- \-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-.*\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
+005- \-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-.*\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
+006- \-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-.*\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
+007- \-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-.*\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
+008- \-\-\-\-\-BEGIN PUBLIC KEY\-\-\-\-\-.*\-\-\-\-\-END PUBLIC KEY\-\-\-\-\-
+009+ -----END PUBLIC KEY-----
+010+ -----BEGIN PUBLIC KEY-----
+011+ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+012+ 83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+013+ /oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+014+ kUtXfimz2qgkeUcPpQIDAQAB
+015+ -----END PUBLIC KEY-----
+016+ -----BEGIN PUBLIC KEY-----
+017+ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+018+ 83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+019+ /oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+020+ kUtXfimz2qgkeUcPpQIDAQAB
+021+ -----END PUBLIC KEY-----
+022+ -----BEGIN PUBLIC KEY-----
+023+ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+024+ 83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+025+ /oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+026+ kUtXfimz2qgkeUcPpQIDAQAB
+027+ -----END PUBLIC KEY-----
+028+ -----BEGIN PUBLIC KEY-----
+029+ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+030+ 83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+031+ /oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+032+ kUtXfimz2qgkeUcPpQIDAQAB
+033+ -----END PUBLIC KEY-----
+034+ -----BEGIN PUBLIC KEY-----
+035+ MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDLXp6PkCtbpV+P1gwFQWH6Ez0U
+036+ 83uEmS8IGnpeI8Fk8rY/vHOZzZZaxRCw+loyc342qCDIQheMOCNm5Fkevz06q757
+037+ /oooiLR3yryYGKiKG1IZIiplmtsC95oKrzUSKk60wuI1mbgpMUP5LKi/Tvxes5Pm
+038+ kUtXfimz2qgkeUcPpQIDAQAB
+039+ -----END PUBLIC KEY-----
+040+ 
+041+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+042+ 
+043+ Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+044+ 
+045+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+046+ 
+047+ Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+048+ -----BEGIN PUBLIC KEY-----
+049+ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+050+ kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+051+ dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+052+ hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+053+ hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+054+ 3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+055+ dQIDAQAB
+056+ -----END PUBLIC KEY-----
+057+ -----BEGIN PUBLIC KEY-----
+058+ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+059+ kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+060+ dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+061+ hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+062+ hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+063+ 3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+064+ dQIDAQAB
+065+ -----END PUBLIC KEY-----
+066+ -----BEGIN PUBLIC KEY-----
+067+ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+068+ kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+069+ dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+070+ hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+071+ hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+072+ 3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+073+ dQIDAQAB
+074+ -----END PUBLIC KEY-----
+075+ -----BEGIN PUBLIC KEY-----
+076+ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+077+ kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+078+ dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+079+ hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+080+ hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+081+ 3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+082+ dQIDAQAB
+083+ -----END PUBLIC KEY-----
+084+ -----BEGIN PUBLIC KEY-----
+085+ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+086+ kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+087+ dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+088+ hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+089+ hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+090+ 3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+091+ dQIDAQAB
+092+ -----END PUBLIC KEY-----
+093+ -----BEGIN PUBLIC KEY-----
+094+ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArbUmVW1Y+rJzZRC3DYB0
+095+ kdIgvk7MAday78ybGPPDhVlbAb4CjWbaPs4nyUCTEt9KVG0H7pXHxDbWSsC2974z
+096+ dvqlP0L2op1/M2SteTcGCBOdwGH2jORVAZL8/WbTOf9IpKAM77oN14scsyOlQBJq
+097+ hh+xrLg8ksB2dOos54yDqo0Tq7R5tldV+alKZXWlJnqRCfFuxvqtfWI5nGTAedVZ
+098+ hvjQfLQQgujfXHoFWoGbXn2buzfwKGJEeqWPbQOZF/FeOJPlgOBhhDb3BAFNVCtM
+099+ 3k71Rblj54pNd3yvq152xsgFd0o3s15fuSwZgerUjeEuw/wTK9k7vyp+MrIQHQmP
+100+ dQIDAQAB
+101+ -----END PUBLIC KEY-----
+102+ 
+103+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+104+ 
+105+ Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+106+ 
+107+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+108+ 
+109+ Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+110+ -----BEGIN PUBLIC KEY-----
+111+ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+112+ qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+113+ 2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+114+ e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+115+ aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+116+ 8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+117+ tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+118+ UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+119+ sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+120+ oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+121+ aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+122+ cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+123+ -----END PUBLIC KEY-----
+124+ -----BEGIN PUBLIC KEY-----
+125+ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+126+ qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+127+ 2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+128+ e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+129+ aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+130+ 8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+131+ tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+132+ UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+133+ sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+134+ oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+135+ aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+136+ cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+137+ -----END PUBLIC KEY-----
+138+ -----BEGIN PUBLIC KEY-----
+139+ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+140+ qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+141+ 2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+142+ e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+143+ aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+144+ 8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+145+ tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+146+ UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+147+ sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+148+ oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+149+ aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+150+ cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+151+ -----END PUBLIC KEY-----
+152+ -----BEGIN PUBLIC KEY-----
+153+ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+154+ qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+155+ 2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+156+ e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+157+ aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+158+ 8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+159+ tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+160+ UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+161+ sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+162+ oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+163+ aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+164+ cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+165+ -----END PUBLIC KEY-----
+166+ -----BEGIN PUBLIC KEY-----
+167+ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+168+ qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+169+ 2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+170+ e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+171+ aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+172+ 8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+173+ tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+174+ UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+175+ sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+176+ oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+177+ aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+178+ cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+179+ -----END PUBLIC KEY-----
+180+ -----BEGIN PUBLIC KEY-----
+181+ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtlmPieG4yL/HQ1j98U+V
+182+ qlAzO55+aSHKXOV9q5+uTevtzXVVs+rOPUAlPkUi7kcp3Yrum+Y0rNCnTNpSmpFB
+183+ 2f/Y1rHb6Rxn8SXzWSq8BM0BhbCmyE+PY3DyIBizX6isb13vJyvU7f8Ayv4xAQ/v
+184+ e8ytFAnBXUdIhtQNygraxvr8aoZw81cBRQ8NhBkk/qDZWVkOiePC9voZ05sENhL4
+185+ aUZw3Xew2JtZyw+lRxheczkYYc71OQuOKoU06j3ZpLhdhtdjpOVC6csIk9qyq8ki
+186+ 8t9m66a2BdiPaz1cWGZGqQg4SDrJ0XKG6/wdSWgdUKMp0wB2Kwph2SWwLm7BQEpd
+187+ tMtXnNGB2dT+lffjtqRvyT4HKO03R9b7ZxUVA34Tzi+kX04g3e4qI4eD0bsHYwio
+188+ UlkKf/q7E1+WjwaQ2LLbOUnWeKqbwGBsZYMWeWGTc/FO4oyDJBG9gnsqmSHasAsx
+189+ sW6ojsGnz9IXywpwInlz+R4pB+uadXHiUZEuT8lCdBUWKAtCIb/F9cNEJg/Vq0iV
+190+ oWFaOYd5D4PHXV5aXjEx18ez7GvN98XPYNXQmVBmsIlOHQpytz0RdrlstksxBqWh
+191+ aBUT3ZJU6czchNgYeFsEuYKkUNK+fwQLhA9aeT6RBdet2efhyaf4y3vQFb5kxx4J
+192+ cljXjIYVR3yB9iZnD0WGQxkCAwEAAQ==
+193+ -----END PUBLIC KEY-----
+194+ 
+195+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 29
+196+ 
+197+ Warning: openssl_spki_export(): Invalid SPKAC in /b/php-7.4.33/ext/openssl/tests/openssl_spki_export_basic.php on line 30
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_spki_export_challenge_basic.phpt
+================================================================================
+bool(false)
+bool(false)
+string(36) "43087001-edb7-442e-9e96-021e1990b9d6"
+bool(false)
+string(36) "66cc08e4-459a-45e1-86a4-558e9f8a981b"
+bool(false)
+string(36) "9e7e98d6-d0e8-4560-b63a-209b7f969345"
+bool(false)
+string(36) "c944a5e0-1058-4a10-923f-9d2474e5f7b9"
+bool(false)
+string(36) "7b0ba426-00af-42e0-a15a-3e9f7c505c2c"
+bool(false)
+string(36) "69be4454-a3e4-41e9-9a4c-4c0e662729f9"
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+string(36) "5fc2bf01-bcb6-4ff9-a454-41085fee1547"
+bool(false)
+string(36) "be65ce5b-15cc-4172-8a13-8ee84d6855fe"
+bool(false)
+string(36) "7458c509-93db-4a4d-bb34-725953fd0327"
+bool(false)
+string(36) "4c70e37f-bd54-47bb-84fe-573addace763"
+bool(false)
+string(36) "e5cd2e20-c8f4-44ed-97d8-37c1799bd33b"
+bool(false)
+string(36) "9c42189a-4e34-4394-848d-f296bca9849b"
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+string(36) "126fa3bd-b161-48ce-8623-bc754f53f245"
+bool(false)
+string(36) "c0027e43-02c3-4c71-b6c4-f42824b72dbf"
+bool(false)
+string(36) "5adeffb5-0694-4449-95c7-e97c1ab500e2"
+bool(false)
+string(36) "c1aad26f-5034-4715-91ec-695f78cdcdde"
+bool(false)
+string(36) "be54d753-b4b1-4a8b-a330-c57c1960f5f1"
+bool(false)
+string(36) "b02afb18-d312-4b90-89e2-24ff2b7db7c6"
+bool(false)
+bool(false)
+bool(false)
+================================================================================
+001- string\(36\) \"[0-9a-f]{8}\-([0-9a-f]{4}\-){3}[0-9a-f]{12}\"
+003- string\(36\) \"[0-9a-f]{8}\-([0-9a-f]{4}\-){3}[0-9a-f]{12}\"
+015+ bool(false)
+017- string\(36\) \"[0-9a-f]{8}\-([0-9a-f]{4}\-){3}[0-9a-f]{12}\"
+019- string\(36\) \"[0-9a-f]{8}\-([0-9a-f]{4}\-){3}[0-9a-f]{12}\"
+021- string\(36\) \"[0-9a-f]{8}\-([0-9a-f]{4}\-){3}[0-9a-f]{12}\"
+031+ bool(false)
+032+ bool(false)
+033+ bool(false)
+035- string\(36\) \"[0-9a-f]{8}\-([0-9a-f]{4}\-){3}[0-9a-f]{12}\"
+047+ bool(false)
+048+ bool(false)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.phpt
+================================================================================
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+bool(false)
+string(478) "SPKAC=MIIBXjCByDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAy16ej5ArW6Vfj9YMBUFh+hM9FPN7hJkvCBp6XiPBZPK2P7xzmc2WWsUQsPpaMnN+NqggyEIXjDgjZuRZHr89Oqu+e/6KKIi0d8q8mBioihtSGSIqZZrbAveaCq81EipOtMLiNZm4KTFD+Syov078XrOT5pFLV34ps9qoJHlHD6UCAwEAARYkNzJmOTRkY2MtYzI0Ni00MWJiLWI3ZWItZmJlNTQwY2I2MDQyMA0GCSqGSIb3DQEBBAUAA4GBAIupcqTCpzK5z0WYadutLxA5KSYSfbVQDh09JsMczWPsozeisfIuv8Ei5arG626Rurk6O+vIfkn03/2HJ38g4o20f2tVrg6eKXz/d/Oht0NEmoJVMX0aMFWeWKiAKR5204GdEYej/cIvtCudlxJ9YlqYwgSSdKDKh0WtR3cqpC2p"
+string(478) "SPKAC=MIIBXjCByDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAy16ej5ArW6Vfj9YMBUFh+hM9FPN7hJkvCBp6XiPBZPK2P7xzmc2WWsUQsPpaMnN+NqggyEIXjDgjZuRZHr89Oqu+e/6KKIi0d8q8mBioihtSGSIqZZrbAveaCq81EipOtMLiNZm4KTFD+Syov078XrOT5pFLV34ps9qoJHlHD6UCAwEAARYkYWYyMjE3ZTYtOTlkZS00ZDMyLTliNzMtYzdjODAyNWNkZjY3MA0GCSqGSIb3DQEBBQUAA4GBAGhwrGXAVSODD2msmUiI9eY+BSJmE0K3F8Qun64uSw2A/VsOJpmdy/4VHwN+z1IJUHG6AZ13wS1oM0XB7d5z+Yqu72dv+0ZbqDCUsQ1r6K8oPap5n0wAH2Vqy4bxr3Oiel/ufawTeAfNWHDfQR0GPr5VxKix9BjqX2IjdRBi/M8T"
+string(478) "SPKAC=MIIBXjCByDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAy16ej5ArW6Vfj9YMBUFh+hM9FPN7hJkvCBp6XiPBZPK2P7xzmc2WWsUQsPpaMnN+NqggyEIXjDgjZuRZHr89Oqu+e/6KKIi0d8q8mBioihtSGSIqZZrbAveaCq81EipOtMLiNZm4KTFD+Syov078XrOT5pFLV34ps9qoJHlHD6UCAwEAARYkMGVkYTVjNWYtOTlmNy00Y2RhLWJjODYtY2YyYjg0YzEzZTU0MA0GCSqGSIb3DQEBDgUAA4GBAJNHv3IVngzdUgAQ0p5OXXVXLtUJ3cnyevo2Tme1Qd6OHLpIFsVWtQGybkqDAnZhb4UBYCcdh8SEoB+gLRmSABN2Vig4ZsPmlfa0m6w9BN6dsCROu1sU45YSgABbuXOJI+yUcCrqEiY5YMj0Bhv/Z1RRb48sCiUqDshjPPee8hFr"
+string(478) "SPKAC=MIIBXjCByDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAy16ej5ArW6Vfj9YMBUFh+hM9FPN7hJkvCBp6XiPBZPK2P7xzmc2WWsUQsPpaMnN+NqggyEIXjDgjZuRZHr89Oqu+e/6KKIi0d8q8mBioihtSGSIqZZrbAveaCq81EipOtMLiNZm4KTFD+Syov078XrOT5pFLV34ps9qoJHlHD6UCAwEAARYkODhkYjZmMTMtZGI5MS00OTI1LWFmODgtMWE4NDUzOTUyNDY1MA0GCSqGSIb3DQEBCwUAA4GBAJxoKetzltit5+8Tbq/5r3MaxHT+MaR3jCZKQof7Qc2emrHovT6CXD659xUdHqFkSwWKkdsMhCl5X3nwsbhZZKq2S76D60UZCvgD9EF8aOI+cJzbQBV/i2hYrC/Tzn/Mt9PFBSH3SedUArx6uLdHT65UdnosHN1LHy0zE7Bv0lFQ"
+string(478) "SPKAC=MIIBXjCByDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAy16ej5ArW6Vfj9YMBUFh+hM9FPN7hJkvCBp6XiPBZPK2P7xzmc2WWsUQsPpaMnN+NqggyEIXjDgjZuRZHr89Oqu+e/6KKIi0d8q8mBioihtSGSIqZZrbAveaCq81EipOtMLiNZm4KTFD+Syov078XrOT5pFLV34ps9qoJHlHD6UCAwEAARYkNDBlNDkyYzEtYTk2YS00ZjE5LWIyOTMtZjAzMzRmNWY4MjlkMA0GCSqGSIb3DQEBDAUAA4GBAFfdKRtL98zAEDjONsLrzKO4/cRfBrEpt8vjX/SDvj449ifP/naXI0fQxPxW8HxAXn5fjSp6XdTc3Zko9sfH8ssqSvV6Mk5sqiaPh5mUNVm5a3mX3r7sVvHZ2NSixpxfpi139WDKYtzg9/5Rl3CZKtZANToIK61KYFrSliaukgwA"
+string(478) "SPKAC=MIIBXjCByDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAy16ej5ArW6Vfj9YMBUFh+hM9FPN7hJkvCBp6XiPBZPK2P7xzmc2WWsUQsPpaMnN+NqggyEIXjDgjZuRZHr89Oqu+e/6KKIi0d8q8mBioihtSGSIqZZrbAveaCq81EipOtMLiNZm4KTFD+Syov078XrOT5pFLV34ps9qoJHlHD6UCAwEAARYkMThmY2ZmNTItZjMwMS00MDExLWExMTQtZjM3NDk3NTZiNzczMA0GCSqGSIb3DQEBDQUAA4GBAA0QJU1yZkRq2s++GKwzRtb/6AUJ7r2G4aqYSDRqMTWTo6nt+Ivppon5oe+KA7E+wZksJ96Hq8nnsUKZEvbeBbddCJbXZl0VSdSHL4JCMCgVau2bafoTcN4yv7BsVngK3DNv2cCJsbRenLYrNvI6O3UeZRTabmbnBFQ7DQtWXBXb"
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+bool(false)
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+bool(false)
+string(830) "SPKAC=MIICZDCCAUwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCttSZVbVj6snNlELcNgHSR0iC+TswB1rLvzJsY88OFWVsBvgKNZto+zifJQJMS30pUbQfulcfENtZKwLb3vjN2+qU/QvainX8zZK15NwYIE53AYfaM5FUBkvz9ZtM5/0ikoAzvug3XixyzI6VAEmqGH7GsuDySwHZ06iznjIOqjROrtHm2V1X5qUpldaUmepEJ8W7G+q19YjmcZMB51VmG+NB8tBCC6N9cegVagZtefZu7N/AoYkR6pY9tA5kX8V44k+WA4GGENvcEAU1UK0zeTvVFuWPnik13fK+rXnbGyAV3SjezXl+5LBmB6tSN4S7D/BMr2Tu/Kn4yshAdCY91AgMBAAEWJDE1NjhkZDY4LTI1NzAtNDU3ZC1hNWMxLTc2NGVlYTY4YThkNjANBgkqhkiG9w0BAQQFAAOCAQEAAPiIHd/kp4vQXvfeckd8wkIxOxaqI2/+4WDDC8dAaFXRGeZJzOE4KcygJfmWxp1WjBSxV503pZviFOtcgQDHDcXIFbSmOYyXrbu8hWIEmV5/J8LFn42ege0U7ldmioQfPwjahiVBVHTPxqCAXFg7INWEbmu+QieUgfTRlzARRsvXyYw56Fe0pizCVNykLHhZTmrhHvE9pRJhRTaY2r4jb+S8kqqUcaXj2vekxc3wrZ+9f+xD+euIzUG1x69WBGMBxWHiOIHbuePLVhLOoK6bd+GD7o1CVdbxC8gO9iBTZfRkIenWHJ8JMHlUupyRZVotINiLp7i9KMuWNQJc0wYcog=="
+string(830) "SPKAC=MIICZDCCAUwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCttSZVbVj6snNlELcNgHSR0iC+TswB1rLvzJsY88OFWVsBvgKNZto+zifJQJMS30pUbQfulcfENtZKwLb3vjN2+qU/QvainX8zZK15NwYIE53AYfaM5FUBkvz9ZtM5/0ikoAzvug3XixyzI6VAEmqGH7GsuDySwHZ06iznjIOqjROrtHm2V1X5qUpldaUmepEJ8W7G+q19YjmcZMB51VmG+NB8tBCC6N9cegVagZtefZu7N/AoYkR6pY9tA5kX8V44k+WA4GGENvcEAU1UK0zeTvVFuWPnik13fK+rXnbGyAV3SjezXl+5LBmB6tSN4S7D/BMr2Tu/Kn4yshAdCY91AgMBAAEWJDUxZWRmY2YwLTE3MzctNDQxMS04NGNlLTM1ZmFlYjRjYzdlMjANBgkqhkiG9w0BAQUFAAOCAQEAk84VuDNdCmf0xlbivIbhVkRaHQsaE0yHTnoIt/oBsL4XSEOhp5z9tVpuesdXk0snTuQ9sUsj8dR+/OJwAOOjHN8aYCW0FZkeM6buQpW41snN5HrIKvH8kPyNP4VVR1yu6EIbUN0zYoXFZDOxZcKENtBopCd4cWIJV5TOR7+HCPqfppmJLXnEKlj90DGR0OTMKiXOTl8DF8W2ZhOBKuMsOR5qstBbcODBrvptPBrr1nKVdjnUtq4Q1eqtIbaWDh1frmjrrrJCIVfVT37S9R+gjAc79oj3/VAU2Ig8gcxADbYmAaRSEv8gbmskKjbPLC5hTVH04CEjJpsW3hsc0Hy81A=="
+string(830) "SPKAC=MIICZDCCAUwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCttSZVbVj6snNlELcNgHSR0iC+TswB1rLvzJsY88OFWVsBvgKNZto+zifJQJMS30pUbQfulcfENtZKwLb3vjN2+qU/QvainX8zZK15NwYIE53AYfaM5FUBkvz9ZtM5/0ikoAzvug3XixyzI6VAEmqGH7GsuDySwHZ06iznjIOqjROrtHm2V1X5qUpldaUmepEJ8W7G+q19YjmcZMB51VmG+NB8tBCC6N9cegVagZtefZu7N/AoYkR6pY9tA5kX8V44k+WA4GGENvcEAU1UK0zeTvVFuWPnik13fK+rXnbGyAV3SjezXl+5LBmB6tSN4S7D/BMr2Tu/Kn4yshAdCY91AgMBAAEWJDZjMzc0YjkzLWRiNDctNDlmMi05ZDE2LWY3ZmRkZTIwOWFlYjANBgkqhkiG9w0BAQ4FAAOCAQEAVcE21M80UyT1PWuIlSj5eRuorbAQwpz4fSBzgzO3yIizN5iB3J0lsM2scJAABeUWkFXaMr3KDGXzFiegGx3VzRQ2L/HaUo8Pt7FsPkGjyxqmLHulisV7elEYQBPsY5nBSh3BDpf3DhMHKPtvEP5jnchUfOk5+M2LTGl3/3URB4mG0+d3Bxum2v16RtND+W1mZK+r6WBJVY04PYnG7MrMpzBZL97FkNWtwEGgW88B7FYqUE77D3wRjTtxs8qZbVs0qtSZvRcHmbayA61smTJn2d0j0btHxECoU6vIt5gWpXePH4QyTNjrfip3N4Tt6Qnid5KLoWm+9cIr/3ARmO4rFw=="
+string(830) "SPKAC=MIICZDCCAUwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCttSZVbVj6snNlELcNgHSR0iC+TswB1rLvzJsY88OFWVsBvgKNZto+zifJQJMS30pUbQfulcfENtZKwLb3vjN2+qU/QvainX8zZK15NwYIE53AYfaM5FUBkvz9ZtM5/0ikoAzvug3XixyzI6VAEmqGH7GsuDySwHZ06iznjIOqjROrtHm2V1X5qUpldaUmepEJ8W7G+q19YjmcZMB51VmG+NB8tBCC6N9cegVagZtefZu7N/AoYkR6pY9tA5kX8V44k+WA4GGENvcEAU1UK0zeTvVFuWPnik13fK+rXnbGyAV3SjezXl+5LBmB6tSN4S7D/BMr2Tu/Kn4yshAdCY91AgMBAAEWJGVmMDVmOTdiLTYyMjctNDcxMS04M2JmLTJkYzEwNTc0NjIzNTANBgkqhkiG9w0BAQsFAAOCAQEASonVHEbVpaqxSLo8CAmKYwIw1kYL3nK8UY452/QDSCKcSp24KkDQKFg3Xjfs4i3NXP4ics6q8ejrDIH/Rl3V+hT6ZzAN7Pt67CdPWslbfuoAKlF0Zp1UH5vjYVW0vxjQLR6AQzwifBu5t0U7bJsyXpUQMH3ULGIOLSahu+7sHXkmMImx8sPk+Pl+JKPAwzZsn1D3D3Jl4ucah4FcBZ7NVpePg/Kf/bvXYqTps4huGXB31PXR0avzeOriatSlnAbjcW6jGHJPQEYGKC8XISCqjIqSO9Lb34ey554Opj27LP002PZKXJL9chUF/OZIppUK8324WzkNh60J094VNkyWRQ=="
+string(830) "SPKAC=MIICZDCCAUwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCttSZVbVj6snNlELcNgHSR0iC+TswB1rLvzJsY88OFWVsBvgKNZto+zifJQJMS30pUbQfulcfENtZKwLb3vjN2+qU/QvainX8zZK15NwYIE53AYfaM5FUBkvz9ZtM5/0ikoAzvug3XixyzI6VAEmqGH7GsuDySwHZ06iznjIOqjROrtHm2V1X5qUpldaUmepEJ8W7G+q19YjmcZMB51VmG+NB8tBCC6N9cegVagZtefZu7N/AoYkR6pY9tA5kX8V44k+WA4GGENvcEAU1UK0zeTvVFuWPnik13fK+rXnbGyAV3SjezXl+5LBmB6tSN4S7D/BMr2Tu/Kn4yshAdCY91AgMBAAEWJGQ4NzBjMjI0LWQ5ZGUtNDE5My04MjJmLTM1MWVmNDc4YzcwYTANBgkqhkiG9w0BAQwFAAOCAQEAMQY0n/IVwsDQ+v5+Zc32p7ilTqx3Fa0w38MVYQsWfXPme/8OomnwEzwSy9/AvNTQu51Sjvcs0n8KnlR7UlqZfP/rqG/fG+MLr3pS07yabUuT8WRK9VeXgUIZj4/uJhpmZsX3ftvOwZdDukLR+UvcALsCyAwcF80E8vO5RSr54u601r6Gvyq3/uvnw+uSdfB/SdEjDt4Ny3JCWMxfZzf4UoUAi/0r/qCEwngr1v49BoKjcH9UY1L6H/FG+68mpyXm253kTgcd8euXgVP+WeFFZOIulycKNpinyHbD2dKVlvNEj90/h9Nh6CxpfbadoS5SKmvPP0LPmeogUnM8M5lytA=="
+string(830) "SPKAC=MIICZDCCAUwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCttSZVbVj6snNlELcNgHSR0iC+TswB1rLvzJsY88OFWVsBvgKNZto+zifJQJMS30pUbQfulcfENtZKwLb3vjN2+qU/QvainX8zZK15NwYIE53AYfaM5FUBkvz9ZtM5/0ikoAzvug3XixyzI6VAEmqGH7GsuDySwHZ06iznjIOqjROrtHm2V1X5qUpldaUmepEJ8W7G+q19YjmcZMB51VmG+NB8tBCC6N9cegVagZtefZu7N/AoYkR6pY9tA5kX8V44k+WA4GGENvcEAU1UK0zeTvVFuWPnik13fK+rXnbGyAV3SjezXl+5LBmB6tSN4S7D/BMr2Tu/Kn4yshAdCY91AgMBAAEWJDk1ZjFiZGZjLTQxYTYtNDYyMy1iZGIzLWEzOWE0ZGY4ZDg1YjANBgkqhkiG9w0BAQ0FAAOCAQEAbYc3JU4nH+NebDnb0xEnbPUd7kqcVI2+b59eKlrHe+g6CMcfwn8icZpydsyeWV4/uwKkI+AU3gphhw7MS/NiWon5pxg6RK3yF4ZOh7HITMVqkMB7YwkqtagyYPFRt5FUa1hlGjn/n8bdn5Cl5lhmBE5+5kPckkB3uI6FMk/iopqCd3cyQ2vOSfJTwoarE5MQM1xDtLBfPt6PHzST7mks3sga7y7kjpVr7hAnL6X4eSibJExbvQSZAGWFA8N1xOiATL0RPFjbyKN+3xo0f6/A/myxy09O5+l2MMl2KE1a9fBG24RGHI3K1XRxM7AvHI2kWU97AJKAiksTe9FhTRKUiw=="
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+bool(false)
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+bool(false)
+string(1510) "SPKAC=MIIEZDCCAkwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC2WY+J4bjIv8dDWP3xT5WqUDM7nn5pIcpc5X2rn65N6+3NdVWz6s49QCU+RSLuRyndiu6b5jSs0KdM2lKakUHZ/9jWsdvpHGfxJfNZKrwEzQGFsKbIT49jcPIgGLNfqKxvXe8nK9Tt/wDK/jEBD+97zK0UCcFdR0iG1A3KCtrG+vxqhnDzVwFFDw2EGST+oNlZWQ6J48L2+hnTmwQ2EvhpRnDdd7DYm1nLD6VHGF5zORhhzvU5C44qhTTqPdmkuF2G12Ok5ULpywiT2rKrySLy32brprYF2I9rPVxYZkapCDhIOsnRcobr/B1JaB1QoynTAHYrCmHZJbAubsFASl20y1ec0YHZ1P6V9+O2pG/JPgco7TdH1vtnFRUDfhPOL6RfTiDd7iojh4PRuwdjCKhSWQp/+rsTX5aPBpDYsts5SdZ4qpvAYGxlgxZ5YZNz8U7ijIMkEb2CeyqZIdqwCzGxbqiOwafP0hfLCnAieXP5HikH65p1ceJRkS5PyUJ0FRYoC0Ihv8X1w0QmD9WrSJWhYVo5h3kPg8ddXlpeMTHXx7Psa833xc9g1dCZUGawiU4dCnK3PRF2uWy2SzEGpaFoFRPdklTpzNyE2Bh4WwS5gqRQ0r5/BAuED1p5PpEF163Z5+HJp/jLe9AVvmTHHglyWNeMhhVHfIH2JmcPRYZDGQIDAQABFiQwZGZhZmZmMi1lZTY4LTQ3ZWYtOGFiZS01ZmI4ZjJhYTA1NzkwDQYJKoZIhvcNAQEEBQADggIBAFDMQZSNKpBoplhD+alBfg0VsDbvN06v8Dl+KtaO0ibYszWnCWvtS/4mYmkvl7b0T1DgTu2oohxho2Tl9PNsOb9T4+qksMA9wLV/neFvfuJ6kn4V/kARA2Ec0b6AklD9FVTPnPNv3OBAYFneBUJ1s5wFbfQL7pWcmUhZAeeCpsCNQbt3Bjy/bhZsj9rCJXzflmSLTEw/e4NU4qU8uwKFNfOLURn0rOPoWr/I29B76c8lz81/7uz6TCtdjteBIpqlQuAxIwssELD0mWzqXJZ77dCkvij+CobGn8QyqrWwC5pOyOZPyHwT4JiFz9vzSGNhQR3w7ZDKVKTZ5aPduKpRhqUz/0Mt/bB/QjTXtA1TkxGNUzchUS2fzI1vU6Cc+HsWVZcxNLHPwHOXmUp/HgJTHoTJe1cqoqndOQzTlbZ7h9YxizLKMZRBTEFCAgBa+la4fE1mHmCFBpGjBaNkPjIVRSXgalkPz9gFLeKIk7eiDYgDC+HrDWI4LhzOu6eQihrlheZKNq7rHdeMConFGY53pchJltsmGFdOcNKvBy4tkGZYI9ZHpCNhNeJO6INq+3ArHFnc5kyccrKgLgT72yedSvZR7uiLyTBEYdWGahkBjZAo7f2XVfrifhl9P6IEpq29l9VmoRwjfcDft+DZbCtS2vXH8qTh6KVtEacOy6VO8FJx"
+string(1510) "SPKAC=MIIEZDCCAkwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC2WY+J4bjIv8dDWP3xT5WqUDM7nn5pIcpc5X2rn65N6+3NdVWz6s49QCU+RSLuRyndiu6b5jSs0KdM2lKakUHZ/9jWsdvpHGfxJfNZKrwEzQGFsKbIT49jcPIgGLNfqKxvXe8nK9Tt/wDK/jEBD+97zK0UCcFdR0iG1A3KCtrG+vxqhnDzVwFFDw2EGST+oNlZWQ6J48L2+hnTmwQ2EvhpRnDdd7DYm1nLD6VHGF5zORhhzvU5C44qhTTqPdmkuF2G12Ok5ULpywiT2rKrySLy32brprYF2I9rPVxYZkapCDhIOsnRcobr/B1JaB1QoynTAHYrCmHZJbAubsFASl20y1ec0YHZ1P6V9+O2pG/JPgco7TdH1vtnFRUDfhPOL6RfTiDd7iojh4PRuwdjCKhSWQp/+rsTX5aPBpDYsts5SdZ4qpvAYGxlgxZ5YZNz8U7ijIMkEb2CeyqZIdqwCzGxbqiOwafP0hfLCnAieXP5HikH65p1ceJRkS5PyUJ0FRYoC0Ihv8X1w0QmD9WrSJWhYVo5h3kPg8ddXlpeMTHXx7Psa833xc9g1dCZUGawiU4dCnK3PRF2uWy2SzEGpaFoFRPdklTpzNyE2Bh4WwS5gqRQ0r5/BAuED1p5PpEF163Z5+HJp/jLe9AVvmTHHglyWNeMhhVHfIH2JmcPRYZDGQIDAQABFiRlMDZhNTc3Ny0yOGJmLTQwOTUtOTMzOS1jYjdkMmZhNTVhMTcwDQYJKoZIhvcNAQEFBQADggIBAIENqEZOcD3Pv66CcYdFQLMki825o+jLo1qfnWpWZbtlBZPYD+qwggf1hyZJvCmGuIa7IifuIoUE3URNvK925IguClFaXDo5TdpAb7MNP6cujcC9VrUJtJgTVk6hI5hBDc3hB1RFsWytmT5ezkIRjvL+Z22pAXGZfy8OZZfZ/GhjSBnQw2tUF4NoA81MmaWlT5Y4CDVJbIc0zKCiaNCimTi4xMT13EoV7TnaE6DKFDmYkqzCnHaWN/a7ZHFVnDlgA98MUe3sPAscJnHkvI92xgZ9jtEQuNyx2vb4onVQ4PGiemEs+kZ4cgnPUW0Aa4qGCEW+I9DNeCXI/NdtqvEWdI0GQec+izyloMmd7AtM0DEeTQ1QmIg3M1M8Ky5UiZitPHXnTs9OobNy7futSj/EVyV3rUpxCBvtZx2zObR5ilYHvErJv1IxzPzwL/h8n4qQhJVJVBZ71FD0tbKHdoQozuZhNsrhugUuiB+QHqhlf87k/qctB8Z0+TmLJWht/z6nPpwy5jROxffyDuYQO6psGcDow/aAHEN07mKUKNGOBtbIPMuxJoZ1WWz88471bsHhcG9iILutqdcwmLWi7vTNT5ybXzCxnF/gXxGbuGgnIdNyp/IvCT3QBeEsKWDJEL6a/PHB0caAV8it40R+Xb9V9GgunOu/Ptjkx7f3/XgqPe8e"
+string(1510) "SPKAC=MIIEZDCCAkwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC2WY+J4bjIv8dDWP3xT5WqUDM7nn5pIcpc5X2rn65N6+3NdVWz6s49QCU+RSLuRyndiu6b5jSs0KdM2lKakUHZ/9jWsdvpHGfxJfNZKrwEzQGFsKbIT49jcPIgGLNfqKxvXe8nK9Tt/wDK/jEBD+97zK0UCcFdR0iG1A3KCtrG+vxqhnDzVwFFDw2EGST+oNlZWQ6J48L2+hnTmwQ2EvhpRnDdd7DYm1nLD6VHGF5zORhhzvU5C44qhTTqPdmkuF2G12Ok5ULpywiT2rKrySLy32brprYF2I9rPVxYZkapCDhIOsnRcobr/B1JaB1QoynTAHYrCmHZJbAubsFASl20y1ec0YHZ1P6V9+O2pG/JPgco7TdH1vtnFRUDfhPOL6RfTiDd7iojh4PRuwdjCKhSWQp/+rsTX5aPBpDYsts5SdZ4qpvAYGxlgxZ5YZNz8U7ijIMkEb2CeyqZIdqwCzGxbqiOwafP0hfLCnAieXP5HikH65p1ceJRkS5PyUJ0FRYoC0Ihv8X1w0QmD9WrSJWhYVo5h3kPg8ddXlpeMTHXx7Psa833xc9g1dCZUGawiU4dCnK3PRF2uWy2SzEGpaFoFRPdklTpzNyE2Bh4WwS5gqRQ0r5/BAuED1p5PpEF163Z5+HJp/jLe9AVvmTHHglyWNeMhhVHfIH2JmcPRYZDGQIDAQABFiQ0MDYyODBhZC04ZTk5LTRjNzYtOTlmMy0yYWI0ODM4NjFjODQwDQYJKoZIhvcNAQEOBQADggIBAAVd+tRsXeDZ68NcgH0KmTu02dfGWRjZq0IE5FxhqA7tnwY9NPEq7f/3yWYRpjRSA8gVMzpWZTCv8uYHcqEHFaFqGR6YlnTalOpe40V/jUVVCbi44mV7quQlsgPMFOC4Hw7qVVtbDfQrpOhXvX5QxcEEMCZQB76MBTwp+TxxzqEcNsqXhnCd4p2w6quOG6x6IXQ5vtcIyugbr6+5HgHtbHyhM5tMWngS/2A7ePMJ5kLZOvdYlKLaBNfKhrIyiYO4rn61cFQSm4ePQr+37E5TcoJKGjDCw2lTB3V84mMD/2nD1QaUXno+iXkC6v78jfV6JBYeU2fUbDMD3VMI7/jg8B5pt7Clhflna8AqXsXoK68HYOrKhe7/676tRHs0vG1oQinMU25ZKP87/U2AO8MHpsh+swVYZ1Dy4XIemDgpDeR9jZbB4hlZ6JGI5wvY4M3rnRH2KD8f7cT6W0yLfwqNdEHe0ZkhMsbXIbNpXhHxLxjNYI9pOcnZUQTeTrDv1WPHv5azVRVT2U/stAvqtXs5PYl0IPb+gdlsPRm8tpVoI+bwDigzHqsX5DcOKN8ywdwtiZcWe5EtLzR5ZOdl77IjczlB7xBZvRUhjNa8CCWBKUTiXROF1L0CJnDZMonU/kV7tkPseGoKipbhRJTiaQC6EaesQrayqeMRUHQc0B3gxQaL"
+string(1510) "SPKAC=MIIEZDCCAkwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC2WY+J4bjIv8dDWP3xT5WqUDM7nn5pIcpc5X2rn65N6+3NdVWz6s49QCU+RSLuRyndiu6b5jSs0KdM2lKakUHZ/9jWsdvpHGfxJfNZKrwEzQGFsKbIT49jcPIgGLNfqKxvXe8nK9Tt/wDK/jEBD+97zK0UCcFdR0iG1A3KCtrG+vxqhnDzVwFFDw2EGST+oNlZWQ6J48L2+hnTmwQ2EvhpRnDdd7DYm1nLD6VHGF5zORhhzvU5C44qhTTqPdmkuF2G12Ok5ULpywiT2rKrySLy32brprYF2I9rPVxYZkapCDhIOsnRcobr/B1JaB1QoynTAHYrCmHZJbAubsFASl20y1ec0YHZ1P6V9+O2pG/JPgco7TdH1vtnFRUDfhPOL6RfTiDd7iojh4PRuwdjCKhSWQp/+rsTX5aPBpDYsts5SdZ4qpvAYGxlgxZ5YZNz8U7ijIMkEb2CeyqZIdqwCzGxbqiOwafP0hfLCnAieXP5HikH65p1ceJRkS5PyUJ0FRYoC0Ihv8X1w0QmD9WrSJWhYVo5h3kPg8ddXlpeMTHXx7Psa833xc9g1dCZUGawiU4dCnK3PRF2uWy2SzEGpaFoFRPdklTpzNyE2Bh4WwS5gqRQ0r5/BAuED1p5PpEF163Z5+HJp/jLe9AVvmTHHglyWNeMhhVHfIH2JmcPRYZDGQIDAQABFiQ4NjY2MzhhMC1jN2FiLTQ1ZWItOTE4MC02NmQ3ODkzY2Q3YjgwDQYJKoZIhvcNAQELBQADggIBAGa3F/w1ul+VfNKP+Ki61FKc87s6TYwa8rSw5NRghVtEVIg102J0EUMQPIisL2L8bprg/UmDTfNg6w3UnRMyS9Lhg3EDSaf1uVJFkMpG58MccF1tqquCnFCd6Od+DCrfgaxlSwvOvZ79TjfjWkR5IBvYyUgpxFu4LASf28ivx3CHo2cCzx+x95zKYvFTbqPNxknx+WJqp0erMV/yck+6ykiNsL0DCjcMq+ZcQlEzvVjCJGpeZk36uxUBMa7WwRg3MXyQYDiWLrH+jfyjuGwNnH43miIOWvbqX8r5yz5fp4dV2p0BgAEByaQH58kwGD3AxsMoD0W6EeS3VwplMnVQiYyO7SygmX23FCuQckDId+iSpced0mxP9NEAAXx8E720XSL/M/o+RomkcnlBV7Rs9qliYs6NtpzejqvhzdNndD5d2vd6F0nRVL18gsINsQDA7gdKoNhv0NsjBpVTbrkGZysgpjJIzGiVqd2Qu6V7Q2jp0e7R1Nd3R0CCCLL0UWDmpqZ3ZPBXodCQHKc/neJrAX8lG5jpj//KHfZQ8YVeskMxzKj6vZhPyI9ZcPy8REyfAUlAjetfrUsGxQubsU2KO+d5l5Em8JPv/SykWUXqvu3vZgXWDDLs+Ei96npvptDsBQpF2cIUquUmVz5jaKLs7J7WcqlYLNC4Dfs3jwldyrhZ"
+string(1510) "SPKAC=MIIEZDCCAkwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC2WY+J4bjIv8dDWP3xT5WqUDM7nn5pIcpc5X2rn65N6+3NdVWz6s49QCU+RSLuRyndiu6b5jSs0KdM2lKakUHZ/9jWsdvpHGfxJfNZKrwEzQGFsKbIT49jcPIgGLNfqKxvXe8nK9Tt/wDK/jEBD+97zK0UCcFdR0iG1A3KCtrG+vxqhnDzVwFFDw2EGST+oNlZWQ6J48L2+hnTmwQ2EvhpRnDdd7DYm1nLD6VHGF5zORhhzvU5C44qhTTqPdmkuF2G12Ok5ULpywiT2rKrySLy32brprYF2I9rPVxYZkapCDhIOsnRcobr/B1JaB1QoynTAHYrCmHZJbAubsFASl20y1ec0YHZ1P6V9+O2pG/JPgco7TdH1vtnFRUDfhPOL6RfTiDd7iojh4PRuwdjCKhSWQp/+rsTX5aPBpDYsts5SdZ4qpvAYGxlgxZ5YZNz8U7ijIMkEb2CeyqZIdqwCzGxbqiOwafP0hfLCnAieXP5HikH65p1ceJRkS5PyUJ0FRYoC0Ihv8X1w0QmD9WrSJWhYVo5h3kPg8ddXlpeMTHXx7Psa833xc9g1dCZUGawiU4dCnK3PRF2uWy2SzEGpaFoFRPdklTpzNyE2Bh4WwS5gqRQ0r5/BAuED1p5PpEF163Z5+HJp/jLe9AVvmTHHglyWNeMhhVHfIH2JmcPRYZDGQIDAQABFiRmODQ1ZDBkNS1iODc3LTQ4MGMtODY0MC00MjE1ZGY4N2JhOTIwDQYJKoZIhvcNAQEMBQADggIBAH0OjFUalWl40epTpoVqlyH+kwHiatIA6KOj8uiTEV0gmL+m/4W68HP8SnRSsuuBOkQ8N4GBT9XtdAYuRPl5ZtcXSv8nKfo+3voMFPGSQesu22TpNmNgph++wLSqnr+PnpClP29B+eMQ8bjCYu8OwzzebCBvzFD356PmfnDWWhG682uRRRiRQjsYObSvpYsU/iUpX2X7F3s44vP/w1gVEepdGl7JU2RARXyxNK4I9fi5DHsINhTrSyGYjwzAj+JHM99kA2FvhhBZMIasqI7RtA+vrC8E29mljk4yULc81c8jNR63wav3z+Fk3njL2m+aWJc8lH8LuQbPL4l+cWUhtgbyZpi5EQYOS9A2FKNXwiY41b0UJjbykjA8kUj69WW7d4i0Wyv8bHEP2cu9jhS2aqDl72CfDh3gkpNW3m9Wc+27eHrTM0MH0xxevRxmMHbKAsehLYXSjvUSzNi3mKbd5nWPgATpaCLuiScXTYJ/5Sh/Byc64yDUBu21DPiUnYpLTMzZa5Oymli70w6gPWBFtax34xctMzBT9TuQBTdO9+0QuQ3rbUlYCoQPW8ALEScdhBjWNnN7uBR3aLJeBrd8jRnQFHnCIu8jQY7RN0sNzZXpdCmZKWG57RO8RhXl7LaxEAcCCaDPZPYqBcIueXOmEmedmgZfVwjugTGOwm83Tdqy"
+string(1510) "SPKAC=MIIEZDCCAkwwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC2WY+J4bjIv8dDWP3xT5WqUDM7nn5pIcpc5X2rn65N6+3NdVWz6s49QCU+RSLuRyndiu6b5jSs0KdM2lKakUHZ/9jWsdvpHGfxJfNZKrwEzQGFsKbIT49jcPIgGLNfqKxvXe8nK9Tt/wDK/jEBD+97zK0UCcFdR0iG1A3KCtrG+vxqhnDzVwFFDw2EGST+oNlZWQ6J48L2+hnTmwQ2EvhpRnDdd7DYm1nLD6VHGF5zORhhzvU5C44qhTTqPdmkuF2G12Ok5ULpywiT2rKrySLy32brprYF2I9rPVxYZkapCDhIOsnRcobr/B1JaB1QoynTAHYrCmHZJbAubsFASl20y1ec0YHZ1P6V9+O2pG/JPgco7TdH1vtnFRUDfhPOL6RfTiDd7iojh4PRuwdjCKhSWQp/+rsTX5aPBpDYsts5SdZ4qpvAYGxlgxZ5YZNz8U7ijIMkEb2CeyqZIdqwCzGxbqiOwafP0hfLCnAieXP5HikH65p1ceJRkS5PyUJ0FRYoC0Ihv8X1w0QmD9WrSJWhYVo5h3kPg8ddXlpeMTHXx7Psa833xc9g1dCZUGawiU4dCnK3PRF2uWy2SzEGpaFoFRPdklTpzNyE2Bh4WwS5gqRQ0r5/BAuED1p5PpEF163Z5+HJp/jLe9AVvmTHHglyWNeMhhVHfIH2JmcPRYZDGQIDAQABFiQ3NjRlMTQyNC1iMWU5LTRiMWItYTZlMy1mMzE3MjYxOTg4YjAwDQYJKoZIhvcNAQENBQADggIBAKFcXZ0GwjGf8pEbke+gvsOEdKtnC4q3OtPrqs4TvQCMyGHSvYU7umlJ5qXIuWSABZeJNKDSCBwSHRMsJeigJAyie38kR9piLVINFEH6O7vZFCSr+GyiKQ2dx2hC9xSA8eO9f9FQ2Og7jKQQsqq8p0YdB0Sz7EI1Q99uURH61qRahXL56oxHdIS4bQwE+rryVQWyoag8JeV/kqkjKo/UPDUpx0AYyqe8wYa1EFVCqShRz3TPAiyQKWXFQ9yR7PzNDrsSnjFBz2CLpNETAOkhm5BB/X+lM7MqLCL6NW5QYwuEg5CP0mtpR4m+79DdcMvC6q/cwZavaB/SRbTboHb83diCtNUDKN/47OeIVlTnXVV+vRK/mOlyWqOJXICqZzsKPLqc+isUAZgecSbb+RcS/fzPXVos8Cr19YPDuhin+g4gVjlhM9xlU6LV/nAYHBjOTV/6cSQ4Uie5wlGXiBMK2pb6Bi70j13rOs0Gz/TQndzXhCDmtMFWcyYmGrzC6tX7PosQVj+dnjS51+Z77nqpsSZgnSfTAtq8hStNZjwLdccy7ZPhd56QibjBA/EnVCnGu7oyRRNdvpd9V0pt8oxFirn510BWEt4FKelafk+6ugReKi5RC8B8uShSAkeCyivJ01rEeAG2PlcYDt5PPmZ4ZyGprxVQ2k4VoTkoqP+1dBIc"
+
+Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+bool(false)
+================================================================================
+001+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+002+ bool(false)
+007- string(478) "%s"
+008- string(474) "%s"
+009+ 
+010+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+011+ bool(false)
+012+ 
+013+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+014+ bool(false)
+015- string(830) "%s"
+016- string(826) "%s"
+021+ 
+022+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+023+ bool(false)
+024+ 
+025+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+026+ bool(false)
+023- string(1510) "%s"
+024- string(1506) "%s"
+033+ 
+034+ Warning: openssl_spki_new(): Unable to sign with specified algorithm in /b/php-7.4.33/ext/openssl/tests/openssl_spki_new_basic.php on line 29
+035+ bool(false)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_spki_verify_basic.phpt
+================================================================================
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(false)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(false)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(true)
+bool(false)
+bool(false)
+bool(false)
+================================================================================
+011- bool(true)
+013- bool(true)
+023+ bool(false)
+025- bool(true)
+035+ bool(false)
+036+ bool(false)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/openssl_x509_parse_basic.phpt
+================================================================================
+bool(true)
+array(16) {
+  ["name"]=>
+  string(96) "/C=BR/ST=Rio Grande do Sul/L=Porto Alegre/CN=Henrique do N. Angelo/emailAddress=hnangelo@php.net"
+  ["subject"]=>
+  array(5) {
+    ["C"]=>
+    string(2) "BR"
+    ["ST"]=>
+    string(17) "Rio Grande do Sul"
+    ["L"]=>
+    string(12) "Porto Alegre"
+    ["CN"]=>
+    string(21) "Henrique do N. Angelo"
+    ["emailAddress"]=>
+    string(16) "hnangelo@php.net"
+  }
+  ["hash"]=>
+  string(8) "0f3c1241"
+  ["issuer"]=>
+  array(5) {
+    ["C"]=>
+    string(2) "BR"
+    ["ST"]=>
+    string(17) "Rio Grande do Sul"
+    ["L"]=>
+    string(12) "Porto Alegre"
+    ["CN"]=>
+    string(21) "Henrique do N. Angelo"
+    ["emailAddress"]=>
+    string(16) "hnangelo@php.net"
+  }
+  ["version"]=>
+  int(2)
+  ["serialNumber"]=>
+  string(20) "12593567369101004962"
+  ["serialNumberHex"]=>
+  string(16) "AEC556CC723750A2"
+  ["validFrom"]=>
+  string(13) "080630102843Z"
+  ["validTo"]=>
+  string(13) "080730102843Z"
+  ["validFrom_time_t"]=>
+  int(1214821723)
+  ["validTo_time_t"]=>
+  int(1217413723)
+  ["signatureTypeSN"]=>
+  string(8) "RSA-SHA1"
+  ["signatureTypeLN"]=>
+  string(21) "sha1WithRSAEncryption"
+  ["signatureTypeNID"]=>
+  int(65)
+  ["purposes"]=>
+  array(9) {
+    [1]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(9) "sslclient"
+    }
+    [2]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(9) "sslserver"
+    }
+    [3]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(11) "nssslserver"
+    }
+    [4]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(9) "smimesign"
+    }
+    [5]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(12) "smimeencrypt"
+    }
+    [6]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(7) "crlsign"
+    }
+    [7]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(3) "any"
+    }
+    [8]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(10) "ocsphelper"
+    }
+    [9]=>
+    array(3) {
+      [0]=>
+      bool(false)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(13) "timestampsign"
+    }
+  }
+  ["extensions"]=>
+  array(3) {
+    ["subjectKeyIdentifier"]=>
+    string(59) "DB:7E:40:72:BD:5C:35:85:EC:29:29:81:12:E8:62:68:6A:B7:3F:7D"
+    ["authorityKeyIdentifier"]=>
+    string(201) "keyid:DB:7E:40:72:BD:5C:35:85:EC:29:29:81:12:E8:62:68:6A:B7:3F:7D
+DirName:/C=BR/ST=Rio Grande do Sul/L=Porto Alegre/CN=Henrique do N. Angelo/emailAddress=hnangelo@php.net
+serial:AE:C5:56:CC:72:37:50:A2"
+    ["basicConstraints"]=>
+    string(7) "CA:TRUE"
+  }
+}
+array(16) {
+  ["name"]=>
+  string(96) "/C=BR/ST=Rio Grande do Sul/L=Porto Alegre/CN=Henrique do N. Angelo/emailAddress=hnangelo@php.net"
+  ["subject"]=>
+  array(5) {
+    ["countryName"]=>
+    string(2) "BR"
+    ["stateOrProvinceName"]=>
+    string(17) "Rio Grande do Sul"
+    ["localityName"]=>
+    string(12) "Porto Alegre"
+    ["commonName"]=>
+    string(21) "Henrique do N. Angelo"
+    ["emailAddress"]=>
+    string(16) "hnangelo@php.net"
+  }
+  ["hash"]=>
+  string(8) "0f3c1241"
+  ["issuer"]=>
+  array(5) {
+    ["countryName"]=>
+    string(2) "BR"
+    ["stateOrProvinceName"]=>
+    string(17) "Rio Grande do Sul"
+    ["localityName"]=>
+    string(12) "Porto Alegre"
+    ["commonName"]=>
+    string(21) "Henrique do N. Angelo"
+    ["emailAddress"]=>
+    string(16) "hnangelo@php.net"
+  }
+  ["version"]=>
+  int(2)
+  ["serialNumber"]=>
+  string(20) "12593567369101004962"
+  ["serialNumberHex"]=>
+  string(16) "AEC556CC723750A2"
+  ["validFrom"]=>
+  string(13) "080630102843Z"
+  ["validTo"]=>
+  string(13) "080730102843Z"
+  ["validFrom_time_t"]=>
+  int(1214821723)
+  ["validTo_time_t"]=>
+  int(1217413723)
+  ["signatureTypeSN"]=>
+  string(8) "RSA-SHA1"
+  ["signatureTypeLN"]=>
+  string(21) "sha1WithRSAEncryption"
+  ["signatureTypeNID"]=>
+  int(65)
+  ["purposes"]=>
+  array(9) {
+    [1]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(10) "SSL client"
+    }
+    [2]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(10) "SSL server"
+    }
+    [3]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(19) "Netscape SSL server"
+    }
+    [4]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(14) "S/MIME signing"
+    }
+    [5]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(17) "S/MIME encryption"
+    }
+    [6]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(11) "CRL signing"
+    }
+    [7]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(11) "Any Purpose"
+    }
+    [8]=>
+    array(3) {
+      [0]=>
+      bool(true)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(11) "OCSP helper"
+    }
+    [9]=>
+    array(3) {
+      [0]=>
+      bool(false)
+      [1]=>
+      bool(true)
+      [2]=>
+      string(18) "Time Stamp signing"
+    }
+  }
+  ["extensions"]=>
+  array(3) {
+    ["subjectKeyIdentifier"]=>
+    string(59) "DB:7E:40:72:BD:5C:35:85:EC:29:29:81:12:E8:62:68:6A:B7:3F:7D"
+    ["authorityKeyIdentifier"]=>
+    string(201) "keyid:DB:7E:40:72:BD:5C:35:85:EC:29:29:81:12:E8:62:68:6A:B7:3F:7D
+DirName:/C=BR/ST=Rio Grande do Sul/L=Porto Alegre/CN=Henrique do N. Angelo/emailAddress=hnangelo@php.net
+serial:AE:C5:56:CC:72:37:50:A2"
+    ["basicConstraints"]=>
+    string(7) "CA:TRUE"
+  }
+}
+================================================================================
+142+     string(201) "keyid:DB:7E:40:72:BD:5C:35:85:EC:29:29:81:12:E8:62:68:6A:B7:3F:7D
+142-     string(202) "keyid:DB:7E:40:72:BD:5C:35:85:EC:29:29:81:12:E8:62:68:6A:B7:3F:7D
+144+ serial:AE:C5:56:CC:72:37:50:A2"
+144- serial:AE:C5:56:CC:72:37:50:A2
+145- "
+289+     string(201) "keyid:DB:7E:40:72:BD:5C:35:85:EC:29:29:81:12:E8:62:68:6A:B7:3F:7D
+290-     string(202) "keyid:DB:7E:40:72:BD:5C:35:85:EC:29:29:81:12:E8:62:68:6A:B7:3F:7D
+291+ serial:AE:C5:56:CC:72:37:50:A2"
+292- serial:AE:C5:56:CC:72:37:50:A2
+293- "
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/session_meta_capture.phpt
+================================================================================
+Notice: Undefined index: session_meta in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 15
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 16
+NULL
+
+Notice: Undefined index: session_meta in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 20
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 21
+NULL
+string(7) "TLSv1.2"
+================================================================================
+001+ Notice: Undefined index: session_meta in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 15
+002+ 
+003+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 16
+004+ NULL
+005+ 
+006+ Notice: Undefined index: session_meta in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 20
+007+ 
+008+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 21
+009+ NULL
+001- string(5) "TLSv1"
+002- string(7) "TLSv1.1"
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/sni_server.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000086:SSL routines::certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): unable to connect to tls://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 12
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+NULL
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 18
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+NULL
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 24
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+NULL
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000086:SSL routines::certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+003+ 
+001- string(%d) "cs.php.net"
+002- string(%d) "uk.php.net"
+003- string(%d) "us.php.net"
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tls://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+007+ 
+008+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 12
+009+ 
+010+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+011+ 
+012+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+013+ NULL
+014+ 
+015+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 18
+016+ 
+017+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+018+ 
+019+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+020+ NULL
+021+ 
+022+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 24
+023+ 
+024+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+025+ 
+026+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+027+ NULL
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/sni_server_key_cert.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000086:SSL routines::certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): unable to connect to tls://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 12
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+NULL
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 18
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+NULL
+
+Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 24
+
+Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+
+Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+NULL
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000086:SSL routines::certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+003+ 
+001- string(%d) "cs.php.net"
+002- string(%d) "uk.php.net"
+003- string(%d) "us.php.net"
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tls://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+007+ 
+008+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 12
+009+ 
+010+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+011+ 
+012+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+013+ NULL
+014+ 
+015+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 18
+016+ 
+017+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+018+ 
+019+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 19
+020+ NULL
+021+ 
+022+ Notice: Undefined index: peer_certificate in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 24
+023+ 
+024+ Notice: Trying to access array offset on value of type bool in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+025+ 
+026+ Notice: Trying to access array offset on value of type null in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 25
+027+ NULL
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/stream_crypto_flags_001.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+
+Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+bool(false)
+resource(20) of type (stream)
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+003+ 
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+007+ bool(false)
+002- resource(%d) of type (stream)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/stream_crypto_flags_002.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+
+Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+bool(false)
+
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 16
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 16
+
+Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 16
+bool(false)
+resource(21) of type (stream)
+resource(22) of type (stream)
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+003+ 
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+001- resource(%d) of type (stream)
+002- resource(%d) of type (stream)
+003- resource(%d) of type (stream)
+004- resource(%d) of type (stream)
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 13
+007+ bool(false)
+008+ 
+009+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+010+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 16
+011+ 
+012+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 16
+013+ 
+014+ Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 16
+015+ bool(false)
+016+ resource(21) of type (stream)
+017+ resource(22) of type (stream)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/stream_crypto_flags_003.phpt
+================================================================================
+resource(19) of type (stream)
+bool(false)
+bool(false)
+================================================================================
+002+ bool(false)
+003+ bool(false)
+002- resource(%d) of type (stream)
+003- resource(%d) of type (stream)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/stream_crypto_flags_004.phpt
+================================================================================
+bool(false)
+bool(false)
+bool(false)
+
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 26
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 26
+
+Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 26
+bool(false)
+================================================================================
+001+ bool(false)
+001- resource(%d) of type (stream)
+004+ 
+004- resource(%d) of type (stream)
+005+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+006+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 26
+007+ 
+008+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 26
+009+ 
+010+ Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 26
+011+ bool(false)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/stream_security_level.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000086:SSL routines::certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+
+Warning: stream_socket_client(): unable to connect to ssl://127.0.0.1:64322 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+bool(false)
+================================================================================
+002+ error:0A000086:SSL routines::certificate verify failed in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 11
+002- error:1416F086:SSL routines:tls_process_server_certificate:certificate verify failed in %s : eval()'d code on line %d
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/tls_min_v1.0_max_v1.1_wrapper.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): unable to connect to tlsv1.0://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+003+ 
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tlsv1.0://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+001- resource(%d) of type (stream)
+003- resource(%d) of type (stream)
+008+ bool(false)
+009+ bool(false)
+010+ bool(false)
+011+ bool(false)
+005- resource(%d) of type (stream)
+006- resource(%d) of type (stream)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/tls_wrapper.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): unable to connect to tlsv1.0://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+bool(false)
+bool(false)
+bool(false)
+resource(21) of type (stream)
+resource(22) of type (stream)
+resource(23) of type (stream)
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+003+ 
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tlsv1.0://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+007+ bool(false)
+008+ bool(false)
+001- resource(%d) of type (stream)
+006- resource(%d) of type (stream)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/tls_wrapper_with_tls_v1.3.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): unable to connect to tlsv1.0://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+bool(false)
+bool(false)
+bool(false)
+resource(21) of type (stream)
+resource(22) of type (stream)
+resource(23) of type (stream)
+resource(24) of type (stream)
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+003+ 
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tlsv1.0://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+007+ bool(false)
+008+ bool(false)
+001- resource(%d) of type (stream)
+007- resource(%d) of type (stream)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/tlsv1.0_wrapper.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): unable to connect to tlsv1.0://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+bool(false)
+bool(false)
+bool(false)
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+003+ 
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tlsv1.0://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+007+ bool(false)
+001- resource(%d) of type (stream)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/openssl/tests/tlsv1.1_wrapper.phpt
+================================================================================
+Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+
+Warning: stream_socket_client(): unable to connect to tlsv1.1://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+bool(false)
+bool(false)
+bool(false)
+================================================================================
+001+ Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:
+002+ error:0A000438:SSL routines::tlsv1 alert internal error in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+003+ 
+004+ Warning: stream_socket_client(): Failed to enable crypto in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+005+ 
+006+ Warning: stream_socket_client(): unable to connect to tlsv1.1://127.0.0.1:64321 (Unknown error) in /b/php-7.4.33/ext/openssl/tests/ServerClientTestCase.inc(130) : eval()'d code on line 10
+007+ bool(false)
+001- resource(%d) of type (stream)
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/php24m0WZ"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/php3jda4b"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_inter.phpt
+================================================================================
+string(13) "rfc1867-tests"
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/php9yG3XG"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpubA2mH"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+NULL
+================================================================================
+030+ NULL
+031+ NULL
+030- array(5) {
+031-   ["start_time"]=>
+032-   int(%d)
+033-   ["content_length"]=>
+034-   int(%d)
+035-   ["bytes_processed"]=>
+036-   int(%d)
+037-   ["done"]=>
+038-   bool(true)
+039-   ["files"]=>
+040-   array(2) {
+041-     [0]=>
+042-     array(7) {
+043-       ["field_name"]=>
+044-       string(5) "file1"
+045-       ["name"]=>
+046-       string(9) "file1.txt"
+047-       ["tmp_name"]=>
+048-       string(%d) "%s"
+049-       ["error"]=>
+050-       int(0)
+051-       ["done"]=>
+052-       bool(true)
+053-       ["start_time"]=>
+054-       int(%d)
+055-       ["bytes_processed"]=>
+056-       int(1)
+057-     }
+058-     [1]=>
+059-     array(7) {
+060-       ["field_name"]=>
+061-       string(5) "file2"
+062-       ["name"]=>
+063-       string(9) "file2.txt"
+064-       ["tmp_name"]=>
+065-       string(%d) "%s"
+066-       ["error"]=>
+067-       int(0)
+068-       ["done"]=>
+069-       bool(true)
+070-       ["start_time"]=>
+071-       int(%d)
+072-       ["bytes_processed"]=>
+073-       int(1)
+074-     }
+075-   }
+076- }
+077- NULL
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_cookie.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpHYGwpp"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpdqUTWp"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_get.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpoLxKRD"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/php4eVxpA"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_get_2.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpPIWly9"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phphliiPZ"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_invalid.phpt
+================================================================================
+string(0) ""
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpQbuJ2v"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpZnKjvf"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+001+ string(0) ""
+002+ bool(true)
+003+ array(2) {
+004+   ["file1"]=>
+005+   array(5) {
+006+     ["name"]=>
+007+     string(9) "file1.txt"
+008+     ["type"]=>
+009+     string(0) ""
+010+     ["tmp_name"]=>
+011+     string(14) "/tmp/phpQbuJ2v"
+012+     ["error"]=>
+013+     int(0)
+014+     ["size"]=>
+015+     int(1)
+016+   }
+017+   ["file2"]=>
+001- Warning: Unknown: The session id is too long or contains illegal characters, valid characters are a-z, A-Z, 0-9 and '-,' in Unknown on line 0
+002- 
+003- Warning: Unknown: Failed to read session data: files (path: ) in Unknown on line 0
+004- 
+005- Warning: Unknown: Failed to write session data (files). Please verify that the current setting of session.save_path is correct () in Unknown on line 0
+006- 
+007- Warning: Unknown: The session id is too long or contains illegal characters, valid characters are a-z, A-Z, 0-9 and '-,' in Unknown on line 0
+008- 
+009- Warning: Unknown: Failed to read session data: files (path: ) in Unknown on line 0
+010- 
+011- Warning: Unknown: Failed to write session data (files). Please verify that the current setting of session.save_path is correct () in Unknown on line 0
+012- string(%d) ""
+013- bool(true)
+014- array(2) {
+015-   ["file1"]=>
+018-     string(9) "file1.txt"
+020+     string(9) "file2.txt"
+028-   ["file2"]=>
+029-   array(5) {
+030+ }
+031+ NULL
+030-     ["name"]=>
+031-     string(9) "file2.txt"
+032-     ["type"]=>
+033-     string(0) ""
+034-     ["tmp_name"]=>
+035-     string(%d) "%s"
+036-     ["error"]=>
+037-     int(0)
+038-     ["size"]=>
+039-     int(1)
+040-   }
+041- }
+042- array(5) {
+043-   ["start_time"]=>
+044-   int(%d)
+045-   ["content_length"]=>
+046-   int(469)
+047-   ["bytes_processed"]=>
+048-   int(469)
+049-   ["done"]=>
+050-   bool(true)
+051-   ["files"]=>
+052-   array(2) {
+053-     [0]=>
+054-     array(7) {
+055-       ["field_name"]=>
+056-       string(5) "file1"
+057-       ["name"]=>
+058-       string(9) "file1.txt"
+059-       ["tmp_name"]=>
+060-       string(%d) "%s"
+061-       ["error"]=>
+062-       int(0)
+063-       ["done"]=>
+064-       bool(true)
+065-       ["start_time"]=>
+066-       int(%d)
+067-       ["bytes_processed"]=>
+068-       int(1)
+069-     }
+070-     [1]=>
+071-     array(7) {
+072-       ["field_name"]=>
+073-       string(5) "file2"
+074-       ["name"]=>
+075-       string(9) "file2.txt"
+076-       ["tmp_name"]=>
+077-       string(%d) "%s"
+078-       ["error"]=>
+079-       int(0)
+080-       ["done"]=>
+081-       bool(true)
+082-       ["start_time"]=>
+083-       int(%d)
+084-       ["bytes_processed"]=>
+085-       int(1)
+086-     }
+087-   }
+088- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_only_cookie.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/php1zD9oz"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpwqSamt"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+================================================================================
+/b/php-7.4.33/ext/session/tests/rfc1867_sid_post.phpt
+================================================================================
+string(13) "rfc1867-tests"
+bool(true)
+array(2) {
+  ["file1"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file1.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/php59oD3V"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+  ["file2"]=>
+  array(5) {
+    ["name"]=>
+    string(9) "file2.txt"
+    ["type"]=>
+    string(0) ""
+    ["tmp_name"]=>
+    string(14) "/tmp/phpRYHsA0"
+    ["error"]=>
+    int(0)
+    ["size"]=>
+    int(1)
+  }
+}
+NULL
+================================================================================
+031+ NULL
+031- array(5) {
+032-   ["start_time"]=>
+033-   int(%d)
+034-   ["content_length"]=>
+035-   int(%d)
+036-   ["bytes_processed"]=>
+037-   int(%d)
+038-   ["done"]=>
+039-   bool(true)
+040-   ["files"]=>
+041-   array(2) {
+042-     [0]=>
+043-     array(7) {
+044-       ["field_name"]=>
+045-       string(5) "file1"
+046-       ["name"]=>
+047-       string(9) "file1.txt"
+048-       ["tmp_name"]=>
+049-       string(%d) "%s"
+050-       ["error"]=>
+051-       int(0)
+052-       ["done"]=>
+053-       bool(true)
+054-       ["start_time"]=>
+055-       int(%d)
+056-       ["bytes_processed"]=>
+057-       int(1)
+058-     }
+059-     [1]=>
+060-     array(7) {
+061-       ["field_name"]=>
+062-       string(5) "file2"
+063-       ["name"]=>
+064-       string(9) "file2.txt"
+065-       ["tmp_name"]=>
+066-       string(%d) "%s"
+067-       ["error"]=>
+068-       int(0)
+069-       ["done"]=>
+070-       bool(true)
+071-       ["start_time"]=>
+072-       int(%d)
+073-       ["bytes_processed"]=>
+074-       int(1)
+075-     }
+076-   }
+077- }
+================================================================================
+
+
+
+
+================================================================================
+BUILD ENVIRONMENT
+================================================================================
+OS:
+Linux - Linux 670147cbbfb0 6.12.76-linuxkit #1 SMP Sat Jul 11 11:18:11 UTC 2026 aarch64
+
+Autoconf:
+
+Bundled Libtool:
+ltmain.sh (GNU libtool) 1.5.26 (1.1220.2.492 2008/01/30 06:40:56)
+
+Copyright (C) 2008  Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+System Libtool:
+N/A
+Compiler:
+N/A
+Bison:
+
+Libraries:
+	linux-vdso.so.1 (0x0000ffffa0ed3000)
+	libpq.so.5 => /usr/lib/aarch64-linux-gnu/libpq.so.5 (0x0000ffffa00f0000)
+	libm.so.6 => /usr/lib/aarch64-linux-gnu/libm.so.6 (0x0000ffffa0050000)
+	libxml2.so.2 => /usr/lib/aarch64-linux-gnu/libxml2.so.2 (0x0000ffff9fe60000)
+	libssl.so.3 => /usr/lib/aarch64-linux-gnu/libssl.so.3 (0x0000ffff9fdb0000)
+	libcrypto.so.3 => /usr/lib/aarch64-linux-gnu/libcrypto.so.3 (0x0000ffff9f9a0000)
+	libsqlite3.so.0 => /usr/lib/aarch64-linux-gnu/libsqlite3.so.0 (0x0000ffff9f840000)
+	libz.so.1 => /usr/lib/aarch64-linux-gnu/libz.so.1 (0x0000ffff9f810000)
+	libcurl.so.4 => /usr/lib/aarch64-linux-gnu/libcurl.so.4 (0x0000ffff9f760000)
+	libonig.so.5 => /usr/lib/aarch64-linux-gnu/libonig.so.5 (0x0000ffff9f6c0000)
+	libc.so.6 => /usr/lib/aarch64-linux-gnu/libc.so.6 (0x0000ffff9f510000)
+	/lib/ld-linux-aarch64.so.1 (0x0000ffffa0e90000)
+	libgssapi_krb5.so.2 => /lib/aarch64-linux-gnu/libgssapi_krb5.so.2 (0x0000ffff9f4b0000)
+	libldap-2.5.so.0 => /lib/aarch64-linux-gnu/libldap-2.5.so.0 (0x0000ffff9f440000)
+	libicuuc.so.70 => /lib/aarch64-linux-gnu/libicuuc.so.70 (0x0000ffff9f230000)
+	liblzma.so.5 => /lib/aarch64-linux-gnu/liblzma.so.5 (0x0000ffff9f1f0000)
+	libnghttp2.so.14 => /lib/aarch64-linux-gnu/libnghttp2.so.14 (0x0000ffff9f1b0000)
+	libidn2.so.0 => /lib/aarch64-linux-gnu/libidn2.so.0 (0x0000ffff9f180000)
+	librtmp.so.1 => /lib/aarch64-linux-gnu/librtmp.so.1 (0x0000ffff9f150000)
+	libssh.so.4 => /lib/aarch64-linux-gnu/libssh.so.4 (0x0000ffff9f0d0000)
+	libpsl.so.5 => /lib/aarch64-linux-gnu/libpsl.so.5 (0x0000ffff9f0a0000)
+	liblber-2.5.so.0 => /lib/aarch64-linux-gnu/liblber-2.5.so.0 (0x0000ffff9f070000)
+	libzstd.so.1 => /lib/aarch64-linux-gnu/libzstd.so.1 (0x0000ffff9efa0000)
+	libbrotlidec.so.1 => /lib/aarch64-linux-gnu/libbrotlidec.so.1 (0x0000ffff9ef80000)
+	libkrb5.so.3 => /lib/aarch64-linux-gnu/libkrb5.so.3 (0x0000ffff9eea0000)
+	libk5crypto.so.3 => /lib/aarch64-linux-gnu/libk5crypto.so.3 (0x0000ffff9ee60000)
+	libcom_err.so.2 => /lib/aarch64-linux-gnu/libcom_err.so.2 (0x0000ffff9ee40000)
+	libkrb5support.so.0 => /lib/aarch64-linux-gnu/libkrb5support.so.0 (0x0000ffff9ee20000)
+	libsasl2.so.2 => /lib/aarch64-linux-gnu/libsasl2.so.2 (0x0000ffff9edf0000)
+	libgnutls.so.30 => /lib/aarch64-linux-gnu/libgnutls.so.30 (0x0000ffff9ebe0000)
+	libicudata.so.70 => /lib/aarch64-linux-gnu/libicudata.so.70 (0x0000ffff9cfb0000)
+	libstdc++.so.6 => /lib/aarch64-linux-gnu/libstdc++.so.6 (0x0000ffff9cd80000)
+	libgcc_s.so.1 => /lib/aarch64-linux-gnu/libgcc_s.so.1 (0x0000ffff9cd50000)
+	libunistring.so.2 => /lib/aarch64-linux-gnu/libunistring.so.2 (0x0000ffff9cb90000)
+	libhogweed.so.6 => /lib/aarch64-linux-gnu/libhogweed.so.6 (0x0000ffff9cb30000)
+	libnettle.so.8 => /lib/aarch64-linux-gnu/libnettle.so.8 (0x0000ffff9cad0000)
+	libgmp.so.10 => /lib/aarch64-linux-gnu/libgmp.so.10 (0x0000ffff9ca40000)
+	libbrotlicommon.so.1 => /lib/aarch64-linux-gnu/libbrotlicommon.so.1 (0x0000ffff9ca00000)
+	libkeyutils.so.1 => /lib/aarch64-linux-gnu/libkeyutils.so.1 (0x0000ffff9c9e0000)
+	libresolv.so.2 => /lib/aarch64-linux-gnu/libresolv.so.2 (0x0000ffff9c9b0000)
+	libp11-kit.so.0 => /lib/aarch64-linux-gnu/libp11-kit.so.0 (0x0000ffff9c860000)
+	libtasn1.so.6 => /lib/aarch64-linux-gnu/libtasn1.so.6 (0x0000ffff9c830000)
+	libffi.so.8 => /lib/aarch64-linux-gnu/libffi.so.8 (0x0000ffff9c810000)
+
+
+
+================================================================================
+PHPINFO
+================================================================================
+phpinfo()
+PHP Version => 7.4.33-oko1
+
+System => Linux 670147cbbfb0 6.12.76-linuxkit #1 SMP Sat Jul 11 11:18:11 UTC 2026 aarch64
+Build Date => Oct 24 2026 11:52:54
+Configure Command =>  './configure'  '--prefix=/opt/oko-php-B' '--disable-phpdbg' '--enable-fpm' '--with-openssl' '--with-curl' '--with-pgsql' '--with-zlib' '--enable-mbstring' '--with-pdo-sqlite' '--with-sqlite3' '--enable-sockets' 'PKG_CONFIG_PATH='
+Server API => Command Line Interface
+Virtual Directory Support => disabled
+Configuration File (php.ini) Path => /opt/oko-php-B/lib
+Loaded Configuration File => (none)
+Scan this dir for additional .ini files => (none)
+Additional .ini files parsed => (none)
+PHP API => 20190902
+PHP Extension => 20190902
+Zend Extension => 320190902
+Zend Extension Build => API320190902,NTS
+PHP Extension Build => API20190902,NTS
+Debug Build => no
+Thread Safety => disabled
+Zend Signal Handling => enabled
+Zend Memory Manager => enabled
+Zend Multibyte Support => provided by mbstring
+IPv6 Support => enabled
+DTrace Support => disabled
+
+Registered PHP Streams => https, ftps, compress.zlib, php, file, glob, data, http, ftp, phar
+Registered Stream Socket Transports => tcp, udp, unix, udg, ssl, tls, tlsv1.0, tlsv1.1, tlsv1.2, tlsv1.3
+Registered Stream Filters => zlib.*, convert.iconv.*, string.rot13, string.toupper, string.tolower, string.strip_tags, convert.*, consumed, dechunk
+
+This program makes use of the Zend Scripting Language Engine:
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+
+
+ _______________________________________________________________________
+
+
+Configuration
+
+Core
+
+PHP Version => 7.4.33-oko1
+
+Directive => Local Value => Master Value
+allow_url_fopen => On => On
+allow_url_include => Off => Off
+arg_separator.input => & => &
+arg_separator.output => & => &
+auto_append_file => no value => no value
+auto_globals_jit => On => On
+auto_prepend_file => no value => no value
+browscap => no value => no value
+default_charset => UTF-8 => UTF-8
+default_mimetype => text/html => text/html
+disable_classes => no value => no value
+disable_functions => no value => no value
+display_errors => STDERR => STDERR
+display_startup_errors => Off => Off
+doc_root => no value => no value
+docref_ext => no value => no value
+docref_root => no value => no value
+enable_dl => On => On
+enable_post_data_reading => On => On
+error_append_string => no value => no value
+error_log => no value => no value
+error_prepend_string => no value => no value
+error_reporting => no value => no value
+expose_php => On => On
+extension_dir => /opt/oko-php-B/lib/php/extensions/no-debug-non-zts-20190902 => /opt/oko-php-B/lib/php/extensions/no-debug-non-zts-20190902
+file_uploads => On => On
+hard_timeout => 2 => 2
+highlight.comment => <font style="color: #FF8000">#FF8000</font> => <font style="color: #FF8000">#FF8000</font>
+highlight.default => <font style="color: #0000BB">#0000BB</font> => <font style="color: #0000BB">#0000BB</font>
+highlight.html => <font style="color: #000000">#000000</font> => <font style="color: #000000">#000000</font>
+highlight.keyword => <font style="color: #007700">#007700</font> => <font style="color: #007700">#007700</font>
+highlight.string => <font style="color: #DD0000">#DD0000</font> => <font style="color: #DD0000">#DD0000</font>
+html_errors => Off => Off
+ignore_repeated_errors => Off => Off
+ignore_repeated_source => Off => Off
+ignore_user_abort => Off => Off
+implicit_flush => On => On
+include_path => .: => .:
+input_encoding => no value => no value
+internal_encoding => no value => no value
+log_errors => Off => Off
+log_errors_max_len => 1024 => 1024
+mail.add_x_header => Off => Off
+mail.force_extra_parameters => no value => no value
+mail.log => no value => no value
+max_execution_time => 0 => 0
+max_file_uploads => 20 => 20
+max_input_nesting_level => 64 => 64
+max_input_time => -1 => -1
+max_input_vars => 1000 => 1000
+max_multipart_body_parts => -1 => -1
+memory_limit => 128M => 128M
+open_basedir => no value => no value
+output_buffering => 0 => 0
+output_encoding => no value => no value
+output_handler => no value => no value
+post_max_size => 8M => 8M
+precision => 14 => 14
+realpath_cache_size => 4096K => 4096K
+realpath_cache_ttl => 120 => 120
+register_argc_argv => On => On
+report_memleaks => On => On
+report_zend_debug => Off => Off
+request_order => no value => no value
+sendmail_from => no value => no value
+sendmail_path => /usr/sbin/sendmail -t -i => /usr/sbin/sendmail -t -i
+serialize_precision => -1 => -1
+short_open_tag => On => On
+SMTP => localhost => localhost
+smtp_port => 25 => 25
+sys_temp_dir => no value => no value
+syslog.facility => LOG_USER => LOG_USER
+syslog.filter => no-ctrl => no-ctrl
+syslog.ident => php => php
+track_errors => Off => Off
+unserialize_callback_func => no value => no value
+upload_max_filesize => 2M => 2M
+upload_tmp_dir => no value => no value
+user_dir => no value => no value
+user_ini.cache_ttl => 300 => 300
+user_ini.filename => .user.ini => .user.ini
+variables_order => EGPCS => EGPCS
+xmlrpc_error_number => 0 => 0
+xmlrpc_errors => Off => Off
+zend.assertions => 1 => 1
+zend.detect_unicode => On => On
+zend.enable_gc => On => On
+zend.exception_ignore_args => Off => Off
+zend.multibyte => Off => Off
+zend.script_encoding => no value => no value
+zend.signal_check => Off => Off
+
+ctype
+
+ctype functions => enabled
+
+curl
+
+cURL support => enabled
+cURL Information => 7.81.0
+Age => 9
+Features
+AsynchDNS => Yes
+CharConv => No
+Debug => No
+GSS-Negotiate => No
+IDN => Yes
+IPv6 => Yes
+krb4 => No
+Largefile => Yes
+libz => Yes
+NTLM => Yes
+NTLMWB => Yes
+SPNEGO => Yes
+SSL => Yes
+SSPI => No
+TLS-SRP => Yes
+HTTP2 => Yes
+GSSAPI => Yes
+KERBEROS5 => Yes
+UNIX_SOCKETS => Yes
+PSL => Yes
+HTTPS_PROXY => Yes
+MULTI_SSL => No
+BROTLI => Yes
+Protocols => dict, file, ftp, ftps, gopher, gophers, http, https, imap, imaps, ldap, ldaps, mqtt, pop3, pop3s, rtmp, rtsp, scp, sftp, smb, smbs, smtp, smtps, telnet, tftp
+Host => aarch64-unknown-linux-gnu
+SSL Version => OpenSSL/3.0.2
+ZLib Version => 1.2.11
+libSSH Version => libssh/0.9.6/openssl/zlib
+
+Directive => Local Value => Master Value
+curl.cainfo => no value => no value
+
+date
+
+date/time support => enabled
+timelib version => 2018.04
+"Olson" Timezone Database Version => 2022.1
+Timezone Database => internal
+Default timezone => UTC
+
+Directive => Local Value => Master Value
+date.default_latitude => 31.7667 => 31.7667
+date.default_longitude => 35.2333 => 35.2333
+date.sunrise_zenith => 90.583333 => 90.583333
+date.sunset_zenith => 90.583333 => 90.583333
+date.timezone => no value => no value
+
+dom
+
+DOM/XML => enabled
+DOM/XML API Version => 20031129
+libxml Version => 2.9.13
+HTML Support => enabled
+XPath Support => enabled
+XPointer Support => enabled
+Schema Support => enabled
+RelaxNG Support => enabled
+
+fileinfo
+
+fileinfo support => enabled
+libmagic => 537
+
+filter
+
+Input Validation and Filtering => enabled
+
+Directive => Local Value => Master Value
+filter.default => unsafe_raw => unsafe_raw
+filter.default_flags => no value => no value
+
+hash
+
+hash support => enabled
+Hashing Engines => md2 md4 md5 sha1 sha224 sha256 sha384 sha512/224 sha512/256 sha512 sha3-224 sha3-256 sha3-384 sha3-512 ripemd128 ripemd160 ripemd256 ripemd320 whirlpool tiger128,3 tiger160,3 tiger192,3 tiger128,4 tiger160,4 tiger192,4 snefru snefru256 gost gost-crypto adler32 crc32 crc32b crc32c fnv132 fnv1a32 fnv164 fnv1a64 joaat haval128,3 haval160,3 haval192,3 haval224,3 haval256,3 haval128,4 haval160,4 haval192,4 haval224,4 haval256,4 haval128,5 haval160,5 haval192,5 haval224,5 haval256,5 
+
+iconv
+
+iconv support => enabled
+iconv implementation => glibc
+iconv library version => 2.35
+
+Directive => Local Value => Master Value
+iconv.input_encoding => no value => no value
+iconv.internal_encoding => no value => no value
+iconv.output_encoding => no value => no value
+
+json
+
+json support => enabled
+
+libxml
+
+libXML support => active
+libXML Compiled Version => 2.9.13
+libXML Loaded Version => 20913
+libXML streams => enabled
+
+mbstring
+
+Multibyte Support => enabled
+Multibyte string engine => libmbfl
+HTTP input encoding translation => disabled
+libmbfl version => 1.3.2
+
+mbstring extension makes use of "streamable kanji code filter and converter", which is distributed under the GNU Lesser General Public License version 2.1.
+
+Multibyte (japanese) regex support => enabled
+Multibyte regex (oniguruma) version => 6.9.7
+
+Directive => Local Value => Master Value
+mbstring.detect_order => no value => no value
+mbstring.encoding_translation => Off => Off
+mbstring.func_overload => 0 => 0
+mbstring.http_input => no value => no value
+mbstring.http_output => no value => no value
+mbstring.http_output_conv_mimetypes => ^(text/|application/xhtml\+xml) => ^(text/|application/xhtml\+xml)
+mbstring.internal_encoding => no value => no value
+mbstring.language => neutral => neutral
+mbstring.regex_retry_limit => 1000000 => 1000000
+mbstring.regex_stack_limit => 100000 => 100000
+mbstring.strict_detection => Off => Off
+mbstring.substitute_character => no value => no value
+
+openssl
+
+OpenSSL support => enabled
+OpenSSL Library Version => OpenSSL 3.0.2 15 Mar 2022
+OpenSSL Header Version => OpenSSL 3.0.2 15 Mar 2022
+Openssl default config => /usr/lib/ssl/openssl.cnf
+
+Directive => Local Value => Master Value
+openssl.cafile => no value => no value
+openssl.capath => no value => no value
+
+pcre
+
+PCRE (Perl Compatible Regular Expressions) Support => enabled
+PCRE Library Version => 10.35 2020-05-09
+PCRE Unicode Version => 13.0.0
+PCRE JIT Support => enabled
+PCRE JIT Target => ARM-64 64bit (little endian + unaligned)
+
+Directive => Local Value => Master Value
+pcre.backtrack_limit => 1000000 => 1000000
+pcre.jit => 1 => 1
+pcre.recursion_limit => 100000 => 100000
+
+PDO
+
+PDO support => enabled
+PDO drivers => sqlite
+
+pdo_sqlite
+
+PDO Driver for SQLite 3.x => enabled
+SQLite Library => 3.37.2
+
+pgsql
+
+PostgreSQL Support => enabled
+PostgreSQL(libpq) Version => 14.24 (Ubuntu 14.24-0ubuntu0.22.04.1)
+PostgreSQL(libpq)  => PostgreSQL 14.24 (Ubuntu 14.24-0ubuntu0.22.04.1) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0, 64-bit
+Multibyte character support => enabled
+SSL support => enabled
+Active Persistent Links => 0
+Active Links => 0
+
+Directive => Local Value => Master Value
+pgsql.allow_persistent => On => On
+pgsql.auto_reset_persistent => Off => Off
+pgsql.ignore_notice => Off => Off
+pgsql.log_notice => Off => Off
+pgsql.max_links => Unlimited => Unlimited
+pgsql.max_persistent => Unlimited => Unlimited
+
+Phar
+
+Phar: PHP Archive support => enabled
+Phar API version => 1.1.1
+Phar-based phar archives => enabled
+Tar-based phar archives => enabled
+ZIP-based phar archives => enabled
+gzip compression => enabled
+bzip2 compression => disabled (install ext/bz2)
+Native OpenSSL support => enabled
+
+
+Phar based on pear/PHP_Archive, original concept by Davey Shafik.
+Phar fully realized by Gregory Beaver and Marcus Boerger.
+Portions of tar implementation Copyright (c) 2003-2009 Tim Kientzle.
+Directive => Local Value => Master Value
+phar.cache_list => no value => no value
+phar.readonly => On => On
+phar.require_hash => On => On
+
+posix
+
+POSIX support => enabled
+
+Reflection
+
+Reflection => enabled
+
+session
+
+Session Support => enabled
+Registered save handlers => files user 
+Registered serializer handlers => php_serialize php php_binary 
+
+Directive => Local Value => Master Value
+session.auto_start => Off => Off
+session.cache_expire => 180 => 180
+session.cache_limiter => nocache => nocache
+session.cookie_domain => no value => no value
+session.cookie_httponly => 0 => 0
+session.cookie_lifetime => 0 => 0
+session.cookie_path => / => /
+session.cookie_samesite => no value => no value
+session.cookie_secure => 0 => 0
+session.gc_divisor => 100 => 100
+session.gc_maxlifetime => 1440 => 1440
+session.gc_probability => 1 => 1
+session.lazy_write => On => On
+session.name => PHPSESSID => PHPSESSID
+session.referer_check => no value => no value
+session.save_handler => files => files
+session.save_path => no value => no value
+session.serialize_handler => php => php
+session.sid_bits_per_character => 4 => 4
+session.sid_length => 32 => 32
+session.upload_progress.cleanup => On => On
+session.upload_progress.enabled => On => On
+session.upload_progress.freq => 1% => 1%
+session.upload_progress.min_freq => 1 => 1
+session.upload_progress.name => PHP_SESSION_UPLOAD_PROGRESS => PHP_SESSION_UPLOAD_PROGRESS
+session.upload_progress.prefix => upload_progress_ => upload_progress_
+session.use_cookies => 1 => 1
+session.use_only_cookies => 1 => 1
+session.use_strict_mode => 0 => 0
+session.use_trans_sid => 0 => 0
+
+SimpleXML
+
+SimpleXML support => enabled
+Schema support => enabled
+
+sockets
+
+Sockets Support => enabled
+
+SPL
+
+SPL support => enabled
+Interfaces => OuterIterator, RecursiveIterator, SeekableIterator, SplObserver, SplSubject
+Classes => AppendIterator, ArrayIterator, ArrayObject, BadFunctionCallException, BadMethodCallException, CachingIterator, CallbackFilterIterator, DirectoryIterator, DomainException, EmptyIterator, FilesystemIterator, FilterIterator, GlobIterator, InfiniteIterator, InvalidArgumentException, IteratorIterator, LengthException, LimitIterator, LogicException, MultipleIterator, NoRewindIterator, OutOfBoundsException, OutOfRangeException, OverflowException, ParentIterator, RangeException, RecursiveArrayIterator, RecursiveCachingIterator, RecursiveCallbackFilterIterator, RecursiveDirectoryIterator, RecursiveFilterIterator, RecursiveIteratorIterator, RecursiveRegexIterator, RecursiveTreeIterator, RegexIterator, RuntimeException, SplDoublyLinkedList, SplFileInfo, SplFileObject, SplFixedArray, SplHeap, SplMinHeap, SplMaxHeap, SplObjectStorage, SplPriorityQueue, SplQueue, SplStack, SplTempFileObject, UnderflowException, UnexpectedValueException
+
+sqlite3
+
+SQLite3 support => enabled
+SQLite Library => 3.37.2
+
+Directive => Local Value => Master Value
+sqlite3.defensive => 1 => 1
+sqlite3.extension_dir => no value => no value
+
+standard
+
+Dynamic Library Support => enabled
+Path to sendmail => /usr/sbin/sendmail -t -i
+
+Directive => Local Value => Master Value
+assert.active => 1 => 1
+assert.bail => 0 => 0
+assert.callback => no value => no value
+assert.exception => 0 => 0
+assert.quiet_eval => 0 => 0
+assert.warning => 1 => 1
+auto_detect_line_endings => 0 => 0
+default_socket_timeout => 60 => 60
+from => no value => no value
+session.trans_sid_hosts => no value => no value
+session.trans_sid_tags => a=href,area=href,frame=src,form= => a=href,area=href,frame=src,form=
+unserialize_max_depth => 4096 => 4096
+url_rewriter.hosts => no value => no value
+url_rewriter.tags => form= => form=
+user_agent => no value => no value
+
+tokenizer
+
+Tokenizer Support => enabled
+
+xml
+
+XML Support => active
+XML Namespace Support => active
+libxml2 Version => 2.9.13
+
+xmlreader
+
+XMLReader => enabled
+
+xmlwriter
+
+XMLWriter => enabled
+
+zlib
+
+ZLib Support => enabled
+Stream Wrapper => compress.zlib://
+Stream Filter => zlib.inflate, zlib.deflate
+Compiled Version => 1.2.11
+Linked Version => 1.2.11
+
+Directive => Local Value => Master Value
+zlib.output_compression => Off => Off
+zlib.output_compression_level => -1 => -1
+zlib.output_handler => no value => no value
+
+Additional Modules
+
+Module Name
+
+Environment
+
+Variable => Value
+SSH_CLIENT => deleted
+HOSTNAME => 670147cbbfb0
+SHLVL => 1
+HOME => /root
+OLDPWD => /b
+REPORT_EXIT_STATUS => 1
+SSH_TTY => deleted
+TEST_PHP_EXECUTABLE => /b/php-7.4.33/sapi/cli/php
+_ => /usr/bin/timeout
+PATH => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+DEBIAN_FRONTEND => noninteractive
+SSH_AUTH_SOCK => deleted
+NO_INTERACTION => 1
+PWD => /b/php-7.4.33
+ROUTE => B
+SSH_CONNECTION => deleted
+
+PHP Variables
+
+Variable => Value
+$_SERVER['SSH_CLIENT'] => deleted
+$_SERVER['HOSTNAME'] => 670147cbbfb0
+$_SERVER['SHLVL'] => 1
+$_SERVER['HOME'] => /root
+$_SERVER['OLDPWD'] => /b
+$_SERVER['REPORT_EXIT_STATUS'] => 1
+$_SERVER['SSH_TTY'] => deleted
+$_SERVER['TEST_PHP_EXECUTABLE'] => /b/php-7.4.33/sapi/cli/php
+$_SERVER['_'] => /usr/bin/timeout
+$_SERVER['PATH'] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+$_SERVER['DEBIAN_FRONTEND'] => noninteractive
+$_SERVER['SSH_AUTH_SOCK'] => deleted
+$_SERVER['NO_INTERACTION'] => 1
+$_SERVER['PWD'] => /b/php-7.4.33
+$_SERVER['ROUTE'] => B
+$_SERVER['SSH_CONNECTION'] => deleted
+$_SERVER['PHP_SELF'] => 
+$_SERVER['SCRIPT_NAME'] => 
+$_SERVER['SCRIPT_FILENAME'] => 
+$_SERVER['PATH_TRANSLATED'] => 
+$_SERVER['DOCUMENT_ROOT'] => 
+$_SERVER['REQUEST_TIME_FLOAT'] => 1792842905.7063
+$_SERVER['REQUEST_TIME'] => 1792842905
+$_SERVER['argv'] => Array
+(
+)
+
+$_SERVER['argc'] => 0
+$_ENV['SSH_CLIENT'] => deleted
+$_ENV['HOSTNAME'] => 670147cbbfb0
+$_ENV['SHLVL'] => 1
+$_ENV['HOME'] => /root
+$_ENV['OLDPWD'] => /b
+$_ENV['REPORT_EXIT_STATUS'] => 1
+$_ENV['SSH_TTY'] => deleted
+$_ENV['TEST_PHP_EXECUTABLE'] => /b/php-7.4.33/sapi/cli/php
+$_ENV['_'] => /usr/bin/timeout
+$_ENV['PATH'] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+$_ENV['DEBIAN_FRONTEND'] => noninteractive
+$_ENV['SSH_AUTH_SOCK'] => deleted
+$_ENV['NO_INTERACTION'] => 1
+$_ENV['PWD'] => /b/php-7.4.33
+$_ENV['ROUTE'] => B
+$_ENV['SSH_CONNECTION'] => deleted
+
+PHP License
+This program is free software; you can redistribute it and/or modify
+it under the terms of the PHP License as published by the PHP Group
+and included in the distribution in the file:  LICENSE
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+If you did not receive a copy of the PHP license, or have any
+questions about PHP licensing, please contact license@php.net.

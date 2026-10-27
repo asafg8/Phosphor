@@ -1,0 +1,2 @@
+route A executable: 3 defined OpenSSL dyn-syms (SSL_CTX_new FUNC GLOBAL DEFAULT 13)
+route A3 executable: 0 defined; SSL_CTX_new@OPENSSL_1_1_0 UND

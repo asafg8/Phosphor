@@ -1,0 +1,15 @@
+{
+    "php": "7.4.33-phosphor1",
+    "openssl_text": "OpenSSL 3.0.2 15 Mar 2022",
+    "curl_ssl": "OpenSSL/3.0.2",
+    "aes_roundtrip": true,
+    "rsa_sign_verify": true,
+    "openssl_errors": [
+        "error:12000079:random number generator::Cannot open file",
+        "error:0480006C:PEM routines::no start line"
+    ],
+    "curl_https": "200 ",
+    "curl_https2": "200 ",
+    "php_stream_tls": "ok",
+    "aes_after": true
+}

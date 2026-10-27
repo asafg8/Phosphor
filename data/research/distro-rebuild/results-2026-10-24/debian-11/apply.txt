@@ -1,0 +1,17 @@
+fuzz=0: FAILS
+  main/main.c: Reversed (or previously applied) patch detected!  Skipping patch.
+  main/rfc1867.c: Hunk #2 FAILED at 445.
+  main/rfc1867.c: Hunk #4 FAILED at 554.
+  main/rfc1867.c: Hunk #5 FAILED at 702.
+  main/rfc1867.c: Hunk #6 FAILED at 723.
+  main/rfc1867.c: Hunk #7 FAILED at 807.
+  main/rfc1867.c: 5 out of 7 hunks FAILED
+fuzz=2: FAILS
+  main/main.c: Reversed (or previously applied) patch detected!  Skipping patch.
+  main/rfc1867.c: Hunk #2 FAILED at 445.
+  main/rfc1867.c: Hunk #4 FAILED at 554.
+  main/rfc1867.c: Hunk #5 FAILED at 702.
+  main/rfc1867.c: Hunk #6 succeeded at 729 with fuzz 2 (offset 6 lines).
+  main/rfc1867.c: Hunk #7 FAILED at 812.
+  main/rfc1867.c: 4 out of 7 hunks FAILED
+0164-Avoid-state-corruption-via-bailout.patch fuzz=0: APPLIES

@@ -1,0 +1,9 @@
+binary=/usr/local/bin/php
+  libpq.so.5 => /usr/lib/aarch64-linux-gnu/libpq.so.5
+  libssl.so.1.1 => /usr/local/openssl-1.1/lib/libssl.so.1.1
+  libcrypto.so.1.1 => /usr/local/openssl-1.1/lib/libcrypto.so.1.1
+  libcurl.so.4 => /usr/lib/aarch64-linux-gnu/libcurl.so.4
+  libssl.so.3 => /lib/aarch64-linux-gnu/libssl.so.3
+  libcrypto.so.3 => /lib/aarch64-linux-gnu/libcrypto.so.3
+  OPENSSL_VERSION_TEXT=OpenSSL 1.1.1w  11 Sep 2023
+  curl ssl_version=OpenSSL/3.0.2

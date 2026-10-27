@@ -1,0 +1,6 @@
+
+# Secure DNS Telemetry (not enabled in build by default)
+-include /usr/lib/php/php-common.mk
+DEB_CFLAGS_MAINT_APPEND += \
+	-DTELEMETRY_PACKAGE='\"$(DEB_SOURCE)\"' \
+	-DTELEMETRY_VERSION='\"$(DEB_VERSION)\"'

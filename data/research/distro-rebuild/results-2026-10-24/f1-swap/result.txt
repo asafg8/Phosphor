@@ -1,0 +1,7 @@
+before: 247794
+cache_originals_ms=4539 files=7 bytes=3797970
+swap_ms=4441 version_pkg=7.4.33-1+deb11u12+phosphor1
+held: 7
+cli after swap: 7.4.33
+rollback_ms=7647 version_pkg=7.4.33-1+deb11u12
+service: active

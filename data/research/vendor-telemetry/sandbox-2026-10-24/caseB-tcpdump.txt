@@ -1,0 +1,8 @@
+tcpdump: data link type LINUX_SLL2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+16:03:19.617546 lo    In  IP 127.0.0.1.51028 > 127.0.0.1.53: 15844 [1au] TXT? utr0kKDBbOMMFn1JLReS3gHrIyJ-Qj0s_RYoowI10kM.kOAfRNIMLNoyBXZ7cDzsUrT2BHZRpxf1.ZZdhoTZ7id2sysE09_hLZfbf2pKiXrYGQVd9AF3XGBlkA6Mr608HL2HgRcP34kV.7WAGSWDa87pYEKPcgla0hyPmdqjcb4zFH_cctfLhnVbiOHogUrEgQkbuXviPh5g.nQhdzPEhPnMEQ-6Va0ecBpXQ.telemetry.sury.org. (277)
+
+1 packet captured
+2 packets received by filter
+0 packets dropped by kernel

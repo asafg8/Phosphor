@@ -1,0 +1,27 @@
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+16:03:10.189917 IP 172.31.250.2.60524 > 172.31.250.53.53: 64946 [1au] TXT? mz74ssHzpaCMMOTRabJDymMu2aa4vQN3EHu_4MksSUA.uNBqJ4lEMchDdX8W81EiGoJEd_1Ju2ay.gfOtAt10xbC5w3XDpBDbhniZLmitg2-lHf0s--2W6M7YIYh8yrCX6ScA5vkVQT9.5k22OWQrJR59z8QXzrnJKVp1ZPEuBnZYojs8s5weJ3APIF0KSuuWoI9EyfONcdP.gVU77mJC0HuTs818gDQ8D1_Q.telemetry.sury.org. (277)
+	0x0000:  4500 0131 1ea1 4000 4011 cea3 ac1f fa02  E..1..@.@.......
+	0x0010:  ac1f fa35 ec6c 0035 011d 4da6 fdb2 0000  ...5.l.5..M.....
+	0x0020:  0001 0000 0000 0001 2b6d 7a37 3473 7348  ........+mz74ssH
+	0x0030:  7a70 6143 4d4d 4f54 5261 624a 4479 6d4d  zpaCMMOTRabJDymM
+	0x0040:  7532 6161 3476 514e 3345 4875 5f34 4d6b  u2aa4vQN3EHu_4Mk
+	0x0050:  7353 5541 2075 4e42 714a 346c 454d 6368  sSUA.uNBqJ4lEMch
+	0x0060:  4464 5838 5738 3145 6947 6f4a 4564 5f31  DdX8W81EiGoJEd_1
+	0x0070:  4a75 3261 793f 6766 4f74 4174 3130 7862  Ju2ay?gfOtAt10xb
+	0x0080:  4335 7733 5844 7042 4462 686e 695a 4c6d  C5w3XDpBDbhniZLm
+	0x0090:  6974 6732 2d6c 4866 3073 2d2d 3257 364d  itg2-lHf0s--2W6M
+	0x00a0:  3759 4959 6838 7972 4358 3653 6341 3576  7YIYh8yrCX6ScA5v
+	0x00b0:  6b56 5154 393f 356b 3232 4f57 5172 4a52  kVQT9?5k22OWQrJR
+	0x00c0:  3539 7a38 5158 7a72 6e4a 4b56 7031 5a50  59z8QXzrnJKVp1ZP
+	0x00d0:  4575 426e 5a59 6f6a 7338 7335 7765 4a33  EuBnZYojs8s5weJ3
+	0x00e0:  4150 4946 304b 5375 7557 6f49 3945 7966  APIF0KSuuWoI9Eyf
+	0x00f0:  4f4e 6364 5018 6756 5537 376d 4a43 3048  ONcdP.gVU77mJC0H
+	0x0100:  7554 7338 3138 6744 5138 4431 5f51 0974  uTs818gDQ8D1_Q.t
+	0x0110:  656c 656d 6574 7279 0473 7572 7903 6f72  elemetry.sury.or
+	0x0120:  6700 0010 0001 0000 2904 d000 0000 0000  g.......).......
+	0x0130:  00                                       .
+
+1 packet captured
+1 packet received by filter
+0 packets dropped by kernel

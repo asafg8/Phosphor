@@ -1,0 +1,11 @@
+tcpdump: data link type LINUX_SLL2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+16:03:35.417313 lo    In  IP 127.0.0.11.53 > 127.0.0.1.53583: 60067 ServFail- 0/0/0 (36)
+16:03:35.437114 lo    In  IP 127.0.0.11.53 > 127.0.0.1.53583: 47266 ServFail- 0/0/0 (36)
+16:03:35.453594 lo    In  IP 127.0.0.11.53 > 127.0.0.1.53583: 47266 ServFail- 0/0/0 (36)
+16:03:35.460049 lo    In  IP 127.0.0.11.53 > 127.0.0.1.53583: 60067 ServFail- 0/0/0 (36)
+
+4 packets captured
+8 packets received by filter
+0 packets dropped by kernel

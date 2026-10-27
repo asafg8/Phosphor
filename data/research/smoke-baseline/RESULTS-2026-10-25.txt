@@ -1,0 +1,14 @@
+Smoke baseline A/B, lab fixture (i) ns=cto (Debian 11, 2 CPU, cgroup memory.max 2 GB), 2026-10-25.
+vanilla = fixture's own php.net 7.4.33 /usr/local/php74/bin/php (built from the tarball at image build, configure line X)
+patched = agent build of the same tarball + cve-diff + 0048 + 0051 + version line, configure line X replayed into /opt/phosphor/php/...
+Same .phpt files (from the patched tree; the patchset touches neither test), same container, same cgroup.
+
+run-tests -n --offline -s <summary> Zend/tests/bug55509.phpt tests/lang/bug45392.phpt
+  vanilla 7.4.33       : FAIL Zend/tests/bug55509.phpt ; PASS tests/lang/bug45392.phpt
+  patched 7.4.33-phosphor1  : FAIL Zend/tests/bug55509.phpt ; FAIL tests/lang/bug45392.phpt
+
+bug55509 (both fail): output "1 2 3 Killed / Termsig=9" - the >2 GB allocation is OOM-killed by the 2 GB cgroup. Environment -> known-flaky.
+bug45392 (patched only): diff "002+" - an extra blank line before "Fatal error: Allowed memory size ...": 712e60f's
+  zend_mm_safe_error_ex writes "\nFatal error: %s in %s on line %d\n" to stderr and _exit()s (FC-3).
+  Real behaviour change from our patch -> expected-fail/php2shell-7.4.txt, reason "php2shell patch changes memory-limit fatal behaviour".
+Also observed in the e2e runs on (i), (f3), (f): exactly these two failures beyond the existing lists.

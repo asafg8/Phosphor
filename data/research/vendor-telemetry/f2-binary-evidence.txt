@@ -1,0 +1,30 @@
+### dpkg -S /usr/lib/php/php-common.mk
+php-common: /usr/lib/php/php-common.mk
+### dpkg-query php-common php7.4-fpm php7.4-cli
+php-common	2:101~+ubuntu22.04.1+deb.sury.org+1
+php7.4-cli	1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1
+php7.4-fpm	1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1
+### apt-cache policy php7.4-fpm (origin)
+php7.4-fpm:
+  Installed: 1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1
+  Candidate: 1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1
+  Version table:
+ *** 1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1 100
+        100 /var/lib/dpkg/status
+### grep -n -i telemetry /usr/lib/php/php-common.mk
+2-
+3:# Secure DNS Telemetry
+4-DEB_CFLAGS_MAINT_APPEND += \
+5:	-DTELEMETRY_HOST='\"telemetry.sury.org\"' \
+6:	-DTELEMETRY_PORT='\"53\"' \
+7:	-DTELEMETRY_PK='\"Wui6lKD3puA0A22fzuyzTL3hfB5jbbv9k_A6D1f0ME4\"'
+### sha256sum binaries
+136ec00719db09646c58e0ba0c4b68453d8c5cb284254b84c389a701c3a14ee1  /usr/sbin/php-fpm7.4
+52737e09586748d033e649cf3eb7db80e5e62c1c52319c157abfdbb4a4d264b1  /usr/bin/php7.4
+### grep -a -o host/key in /usr/sbin/php-fpm7.4
+      1 telemetry.sury.org
+      1 Wui6lKD3puA0A22fzuyzTL3hfB5jbbv9k_A6D1f0ME4
+### same grep in /usr/bin/php7.4 (cli)
+0
+### ldd php-fpm7.4 | grep sodium
+	libsodium.so.23 => /lib/aarch64-linux-gnu/libsodium.so.23 (0x0000ffff99d50000)

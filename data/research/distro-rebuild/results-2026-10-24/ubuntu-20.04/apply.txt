@@ -1,0 +1,61 @@
+fuzz=0: FAILS
+  main/main.c: Reversed (or previously applied) patch detected!  Skipping patch.
+  main/rfc1867.c: Hunk #5 FAILED at 708.
+  main/rfc1867.c: Hunk #6 FAILED at 729.
+  main/rfc1867.c: Hunk #7 FAILED at 813.
+  main/rfc1867.c: 3 out of 7 hunks FAILED
+fuzz=2: FAILS
+  main/main.c: Reversed (or previously applied) patch detected!  Skipping patch.
+  main/rfc1867.c: Hunk #5 FAILED at 708.
+  main/rfc1867.c: Hunk #6 succeeded at 735 with fuzz 2 (offset 6 lines).
+  main/rfc1867.c: Hunk #7 succeeded at 836 with fuzz 2 (offset 18 lines).
+  main/rfc1867.c: 1 out of 7 hunks FAILED
+0164-Avoid-state-corruption-via-bailout.patch fuzz=0: FAILS
+  Zend/zend_alloc.c: Hunk #6 succeeded at 2644 (offset -1 lines).
+  Zend/zend_alloc.c: Hunk #7 succeeded at 2656 (offset -1 lines).
+  Zend/zend_alloc.c: Hunk #8 succeeded at 2670 (offset -1 lines).
+  Zend/zend_alloc.c: Hunk #9 succeeded at 2995 (offset -7 lines).
+  Zend/zend_execute_API.c: Hunk #1 succeeded at 336 (offset -1 lines).
+  Zend/zend_execute_API.c: Hunk #2 succeeded at 367 (offset -1 lines).
+  Zend/zend_vm_def.h: Hunk #3 succeeded at 3226 (offset 13 lines).
+  Zend/zend_vm_def.h: Hunk #4 succeeded at 3236 (offset 13 lines).
+  Zend/zend_vm_execute.h: Hunk #1 succeeded at 5589 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #2 succeeded at 5599 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #3 succeeded at 7455 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #4 succeeded at 7465 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #5 succeeded at 7870 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #6 succeeded at 7879 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #7 succeeded at 9925 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #8 succeeded at 9935 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #9 succeeded at 10340 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #10 succeeded at 10349 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #11 succeeded at 13910 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #12 succeeded at 13920 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #13 succeeded at 14669 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #14 succeeded at 14678 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #15 succeeded at 15344 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #16 succeeded at 15353 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #17 succeeded at 16101 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #18 succeeded at 16111 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #19 succeeded at 17040 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #20 succeeded at 17049 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #21 succeeded at 17404 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #22 succeeded at 17414 (offset -42 lines).
+  Zend/zend_vm_execute.h: Hunk #23 succeeded at 38593 (offset 194 lines).
+  Zend/zend_vm_execute.h: Hunk #24 succeeded at 38602 (offset 194 lines).
+  Zend/zend_vm_execute.h: Hunk #25 succeeded at 41026 (offset 245 lines).
+  Zend/zend_vm_execute.h: Hunk #26 succeeded at 41035 (offset 245 lines).
+  Zend/zend_vm_execute.h: Hunk #27 succeeded at 42151 (offset 245 lines).
+  Zend/zend_vm_execute.h: Hunk #28 succeeded at 42161 (offset 245 lines).
+  Zend/zend_vm_execute.h: Hunk #29 succeeded at 44491 (offset 296 lines).
+  Zend/zend_vm_execute.h: Hunk #30 succeeded at 44501 (offset 296 lines).
+  Zend/zend_vm_execute.h: Hunk #31 succeeded at 47230 (offset 304 lines).
+  Zend/zend_vm_execute.h: Hunk #32 succeeded at 47239 (offset 304 lines).
+  Zend/zend_vm_execute.h: Hunk #33 succeeded at 49696 (offset 356 lines).
+  Zend/zend_vm_execute.h: Hunk #34 succeeded at 49706 (offset 356 lines).
+  ext/session/session.c: Hunk #1 succeeded at 3172 (offset -2 lines).
+  main/main.c: Hunk #1 succeeded at 1914 (offset -47 lines).
+  main/main.c: Hunk #2 succeeded at 1964 (offset -51 lines).
+  main/rfc1867.c: Hunk #2 FAILED at 445.
+  main/rfc1867.c: Hunk #4 FAILED at 554.
+  main/rfc1867.c: 2 out of 4 hunks FAILED
