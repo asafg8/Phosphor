@@ -129,7 +129,9 @@ func runCommand(name string, cmd command, args []string, stdout io.Writer) int {
 	}
 	if r.Error == nil {
 		before := snapshot(out)
+		rt.Progress = progress
 		r.ExitCode = work(out, progress)
+		rt.Progress = nil
 		r.Documents = written(out, before)
 		r.Summary = summarize(name, out, r.Documents, r.ExitCode)
 		r.Next = next(name, r.ExitCode, out)

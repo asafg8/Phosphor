@@ -199,6 +199,7 @@ func (s *state) runPreflight(k *cand) {
 		rts = append(rts, c.SwapRuntimeArg{RuntimeID: id, Action: s.plan[id].Action, Runtime: s.runtime(id)})
 	}
 	args := c.PreflightArgs{Prefix: k.build.Prefix, NewVersion: k.build.VersionString, Host: s.fp.Host, Runtimes: rts}
+	fmt.Fprintf(s.out, "verify: preflight of %s against the live config of %d runtime(s)\n", k.build.VersionString, len(rts))
 	code := stage.Run("preflight", k.dir, map[string]any{"preflight": args}, nil)
 	var pf c.Preflight
 	if readJSON(filepath.Join(k.dir, "preflight.json"), &pf) != nil || code != 0 && code != 2 {
