@@ -1,0 +1,22 @@
+[
+  {"name": "a", "base": "http://a", "urls": ["/", "/?p=1", "/phosphor-app/", "/?p=2", "/about.php"], "legacy_fatal": true, "on": false},
+  {"name": "b", "base": "http://b", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "b2", "base": "http://b2", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "c", "base": "http://c", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "d", "base": "http://d", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "f", "base": "http://f", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "f3", "base": "http://f3", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "g", "base": "http://g", "urls": ["/", "/?p=1", "/about.php", "/_phosphor_lab/gd", "/?p=2"], "legacy_fatal": true, "on": false},
+  {"name": "h", "base": "http://h", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "i", "base": "http://i", "urls": ["/", "/?p=1", "/phosphor-app/", "/?p=2", "/about.php"], "legacy_fatal": true, "on": false},
+  {"name": "i2", "base": "http://i2", "urls": ["/", "/?p=1", "/phosphor-app/", "/?p=2", "/about.php"], "legacy_fatal": true, "on": false},
+  {"name": "i3", "base": "http://i3", "urls": ["/", "/?p=1", "/phosphor-app/", "/?p=2", "/about.php"], "legacy_fatal": true, "on": false},
+  {"name": "i4", "base": "http://i4", "urls": ["/", "/?p=1", "/phosphor-app/", "/?p=2", "/about.php"], "legacy_fatal": true, "on": false},
+  {"name": "j", "base": "http://j", "urls": ["/", "/?p=1", "/about.php", "/_phosphor_lab/gd", "/?p=2"], "legacy_fatal": true, "on": false},
+  {"name": "k", "base": "http://k", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "k2", "base": "http://k2", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "l", "base": "http://l", "urls": ["/", "/?p=1", "/phosphor-app/", "/?p=2", "/about.php"], "legacy_fatal": true, "on": false},
+  {"name": "m", "base": "http://m", "urls": ["/", "/?p=1", "/about.php", "/?p=2", "/?p=3"], "legacy_fatal": true, "on": false},
+  {"name": "n", "base": "http://n", "urls": ["/"], "legacy_fatal": false, "on": false},
+  {"name": "d12", "base": "http://d12", "urls": ["/", "/?p=1", "/about.php", "/?p=2"], "legacy_fatal": true, "on": false}
+]

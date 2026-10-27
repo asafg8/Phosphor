@@ -1,0 +1,13 @@
+# custom-built php-fpm unit (fixtures i, f, f3). __PREFIX__ / __DESC__ replaced at image build.
+[Unit]
+Description=__DESC__
+After=network.target
+
+[Service]
+Type=notify
+PIDFile=/run/__NAME__.pid
+ExecStart=__PREFIX__/sbin/php-fpm --nodaemonize --fpm-config __PREFIX__/etc/php-fpm.conf --pid /run/__NAME__.pid
+ExecReload=/bin/kill -USR2 $MAINPID
+
+[Install]
+WantedBy=multi-user.target

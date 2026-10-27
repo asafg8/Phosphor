@@ -1,0 +1,5 @@
+# /etc/apt/preferences.d/99phosphor-hide-fix — fixture d12 NOFIX=1: the fixed php8.2 8.2.35-1~deb12u1 from
+# bookworm-security is never a candidate (like (h)'s excludepkgs), so no distro fix is visible → upstream build path
+Package: php8.2*
+Pin: version 8.2.35*
+Pin-Priority: -1

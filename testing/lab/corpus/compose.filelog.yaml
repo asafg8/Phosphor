@@ -1,0 +1,16 @@
+# Overlay: VM-style logging. The official images symlink /var/log/apache2/{access,error,other_vhosts_access}.log to
+# /dev/stdout|stderr, so there is no on-disk request history. Mounting a named
+# volume over /var/log/apache2 hides the symlinks: Apache writes real files, and the history survives a recreate
+# (e.g. the compose.phosphor.yaml label overlay). Also mounts the seed hook dir and the lab kit's fault reader.
+#   docker compose -f compose.yaml -f compose.filelog.yaml [-f compose.phosphor.yaml] --profile c001 up -d c001
+services:
+  c001:
+    volumes: [ "c001-logs:/var/log/apache2", "./seed:/corpus-seed:ro", "../docker/kit/faults.php:/opt/phosphor-lab-kit/faults.php:ro" ]
+  c002:
+    volumes: [ "c002-logs:/var/log/apache2", "./seed:/corpus-seed:ro", "../docker/kit/faults.php:/opt/phosphor-lab-kit/faults.php:ro" ]
+  c003:
+    volumes: [ "c003-logs:/var/log/apache2", "./seed:/corpus-seed:ro", "../docker/kit/faults.php:/opt/phosphor-lab-kit/faults.php:ro" ]
+volumes:
+  c001-logs: { name: phosphor-corpus-c001-logs }
+  c002-logs: { name: phosphor-corpus-c002-logs }
+  c003-logs: { name: phosphor-corpus-c003-logs }

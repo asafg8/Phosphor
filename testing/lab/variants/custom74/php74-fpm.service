@@ -1,0 +1,13 @@
+# custom PHP 7.4.33 (/usr/local, private shared OpenSSL 1.1.1w — fixture (f)'s build) on k2: variant CUSTOM74=1
+[Unit]
+Description=PHP 7.4 FastCGI Process Manager (custom /usr/local)
+After=network.target
+
+[Service]
+Type=notify
+PIDFile=/run/php74-fpm.pid
+ExecStart=/usr/local/sbin/php-fpm --nodaemonize --fpm-config /usr/local/etc/php-fpm.conf --pid /run/php74-fpm.pid
+ExecReload=/bin/kill -USR2 $MAINPID
+
+[Install]
+WantedBy=multi-user.target

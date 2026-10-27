@@ -1,0 +1,12 @@
+a2720602caee8ac8d4d3d8ae60cbf3b383b6f1f3f3807774fa54e524c8592b18  php5.6-cli_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+f1c5ca1ab9b7cc56a02c3514aab7c00063528054300cb62ba125351a05eecbbd  php5.6-cli_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_arm64.deb
+3f19e39c57522f2e792eb6a9531f515dfd36eec4b74610912bd004244cdc02f5  php5.6-common_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+b3aadbd8efd590a28152491878c27ce739a093c85c39bfd03b78f6c13fc00aea  php5.6-common_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_arm64.deb
+61e13eb3f30621017448763880d287e93503ab92ac8366f5c7c922435d685e28  php5.6-fpm_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+79ce3548f0a1aa57929fb8360344f6f9c3eb796fa399080a984a633af6a0cab6  php5.6-fpm_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_arm64.deb
+146b0723ed0f8c65af032e5009454f8ef4f288e5bb700be9165539886ab1e869  php5.6-json_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+3f5537d8621313bfeadf857413c3e356506500f653269d1aaa1a5a0ade164bdc  php5.6-json_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_arm64.deb
+3020a93c0dcc0714c6a88957f2aa0e80e9c252abe7aa9b89ac99941a7c2a3299  php5.6-opcache_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+f8888a0ab146fca6a3f9883b3483fc882e128e70874e1c93640b1aee76ddec8f  php5.6-opcache_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_arm64.deb
+94c2056bca1cd2fc4acb13fe4f9342948740904c76c31553d4f1ee20670ae18b  php5.6-readline_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_amd64.deb
+b8a82f52ca512eb7a983e0fa209b2e05ce898be64354ef795e09975dcd9ee727  php5.6-readline_5.6.40-103+ubuntu22.04.1+deb.sury.org+1_arm64.deb

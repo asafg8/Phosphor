@@ -1,0 +1,22 @@
+# phosphor-lab fixture table. Read by testing/lab/bin/lab and by the e2e harness.
+# letter  idx  kind     build_from  batches (compose profiles)
+n         0    vm       n           core core-1
+a         1    vm       a           core core-1 b4 b4b
+b         2    vm       b           core core-2 b4 b4a
+b2        3    vm       b2          b4 b4a
+c         4    vm       c           b5
+d         5    vm       d           b4 b4b
+f         11   vm       f           core core-2 b3 b3a
+f3        12   vm       f3          core core-2 b3 b3a
+g         13   vm       g           b4 b4a
+h         14   vm       h           b4 b4a
+i         15   vm       i           core core-1 b2
+i2        16   vm       i           b2
+i3        17   vm       i           b2
+i4        18   vm       i           b3 b3b
+j         19   vm       j           core core-1 b2
+k         20   vm       k           b3 b3a
+k2        21   vm       k2          b3 b3b
+l         22   vm       l           b3 b3b
+m         23   vm       m           b4 b4b
+d12       24   vm       n           b4 b4b

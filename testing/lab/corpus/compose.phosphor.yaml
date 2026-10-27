@@ -1,0 +1,12 @@
+# Overlay: make corpus apps visible to phosphor ONLY while you deliberately run it against them.
+#   docker compose -f compose.yaml -f compose.phosphor.yaml --profile c001 up -d c001
+#   eval "$(PHOSPHOR_LAB_NS=corpus ../bin/lab env)"; ./bin/phosphor discover --include-label phosphor.lab.ns=corpus --include-label phosphor.lab.fx=c001 …
+# Adds phosphor.lab.ns=corpus (lab namespaces) + the phosphor.lab.* fixture labels. Recreate from compose.yaml
+# alone to take the labels off again.
+services:
+  c001:
+    labels: { phosphor.lab.ns: corpus, phosphor.lab.kind: vm, phosphor.lab.fx: c001, phosphor.lab.exposure: internet }
+  c002:
+    labels: { phosphor.lab.ns: corpus, phosphor.lab.kind: vm, phosphor.lab.fx: c002, phosphor.lab.exposure: internal }
+  c003:
+    labels: { phosphor.lab.ns: corpus, phosphor.lab.kind: vm, phosphor.lab.fx: c003, phosphor.lab.exposure: internet }

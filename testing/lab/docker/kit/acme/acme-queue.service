@@ -1,0 +1,10 @@
+[Unit]
+Description=acme queue consumer (php cli worker)
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/php /srv/acme/bin/queue.php
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,32 @@
+# kind name version url  (fetched by bin/fetch.sh into .cache/corpus/<kind>/<name>-<version>.<ext>)
+# Tools
+tool wp-cli 2.11.0 https://github.com/wp-cli/wp-cli/releases/download/v2.11.0/wp-cli-2.11.0.phar
+# C-001 WordPress 5.9 era plugin set (versions current in mid-2022, the last set that supports WP 5.9 + PHP 7.4)
+wp woocommerce 6.5.1 https://downloads.wordpress.org/plugin/woocommerce.6.5.1.zip
+wp contact-form-7 5.6 https://downloads.wordpress.org/plugin/contact-form-7.5.6.zip
+wp elementor 3.6.5 https://downloads.wordpress.org/plugin/elementor.3.6.5.zip
+wp wordpress-seo 19.0 https://downloads.wordpress.org/plugin/wordpress-seo.19.0.zip
+wp akismet 4.2.4 https://downloads.wordpress.org/plugin/akismet.4.2.4.zip
+wp wordfence 7.5.10 https://downloads.wordpress.org/plugin/wordfence.7.5.10.zip
+wp wpforms-lite 1.7.4.2 https://downloads.wordpress.org/plugin/wpforms-lite.1.7.4.2.zip
+wp classic-editor 1.6.2 https://downloads.wordpress.org/plugin/classic-editor.1.6.2.zip
+wp updraftplus 1.22.12 https://downloads.wordpress.org/plugin/updraftplus.1.22.12.zip
+wp wp-file-manager 8.0.6 https://downloads.wordpress.org/plugin/wp-file-manager.zip  # author ships trunk only; no versioned zip. SHA256SUMS is the pin
+wp all-in-one-wp-migration 7.62 https://downloads.wordpress.org/plugin/all-in-one-wp-migration.7.62.zip
+wp jetpack 10.9 https://downloads.wordpress.org/plugin/jetpack.10.9.zip
+wp litespeed-cache 4.6 https://downloads.wordpress.org/plugin/litespeed-cache.4.6.zip
+wp duplicator 1.4.6 https://downloads.wordpress.org/plugin/duplicator.1.4.6.zip
+# C-003 Drupal 7 contrib set (most-installed D7 modules, final 7.x releases)
+d7 ctools 7.x-1.21 https://ftp.drupal.org/files/projects/ctools-7.x-1.21.tar.gz
+d7 views 7.x-3.29 https://ftp.drupal.org/files/projects/views-7.x-3.29.tar.gz
+d7 token 7.x-1.9 https://ftp.drupal.org/files/projects/token-7.x-1.9.tar.gz
+d7 pathauto 7.x-1.3 https://ftp.drupal.org/files/projects/pathauto-7.x-1.3.tar.gz
+d7 entity 7.x-1.11 https://ftp.drupal.org/files/projects/entity-7.x-1.11.tar.gz
+d7 libraries 7.x-2.5 https://ftp.drupal.org/files/projects/libraries-7.x-2.5.tar.gz
+d7 date 7.x-2.14 https://ftp.drupal.org/files/projects/date-7.x-2.14.tar.gz
+d7 webform 7.x-4.26 https://ftp.drupal.org/files/projects/webform-7.x-4.26.tar.gz
+d7 imce 7.x-1.11 https://ftp.drupal.org/files/projects/imce-7.x-1.11.tar.gz
+d7 jquery_update 7.x-2.7 https://ftp.drupal.org/files/projects/jquery_update-7.x-2.7.tar.gz
+d7 admin_menu 7.x-3.0-rc7 https://ftp.drupal.org/files/projects/admin_menu-7.x-3.0-rc7.tar.gz
+d7 features 7.x-2.15 https://ftp.drupal.org/files/projects/features-7.x-2.15.tar.gz
+d7 google_analytics 7.x-2.6 https://ftp.drupal.org/files/projects/google_analytics-7.x-2.6.tar.gz

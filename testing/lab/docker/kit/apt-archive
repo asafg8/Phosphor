@@ -1,0 +1,12 @@
+#!/bin/sh
+# apt-archive <suite> <apt-get args…>: apt via archive.debian.org through a temporary sources file, leaving the
+# stock sources in /etc/apt untouched so the agent's EOL repo fallback is exercised for real.
+set -e
+suite=$1; shift
+L=/tmp/phosphor-archive.list
+printf 'deb http://archive.debian.org/debian %s main\ndeb http://archive.debian.org/debian-security %s-security main\n' "$suite" "$suite" > $L
+O="-o Dir::Etc::sourcelist=$L -o Dir::Etc::sourceparts=- -o Acquire::Check-Valid-Until=false"
+export DEBIAN_FRONTEND=noninteractive
+apt-get $O update -qq
+apt-get $O -y --no-install-recommends "$@"
+rm -rf /var/lib/apt/lists/* $L

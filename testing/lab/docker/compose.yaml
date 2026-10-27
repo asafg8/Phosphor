@@ -1,0 +1,597 @@
+# phosphor local lab. Driven by testing/lab/bin/lab — do not `docker compose up` by hand:
+# the helper sets the namespace (PHOSPHOR_LAB_NS → project phosphor-<ns>, containers phosphor-<ns>-<x>, network phosphor-<ns>), the
+# per-namespace ports (--env-file .cache/lab/<ns>/compose.env) and the PHOSPHOR_LAB_MEM sizing. Fixture table: fixtures.tsv.
+# Profiles = batches: core core-1 core-2 b2 b3 b3a b3b b4 b4a b4b b5 all.
+# Labels phosphor.lab.php.* / os / repo_* / pecl / openssl are the fixture's pinned facts: tests read them (lab label <x> <key>)
+# instead of hard-coding versions. Product code must never read them (only kind/exposure are inputs).
+# VM-like fixture images are built by testing/lab/bin/lab (docker build, tagged phosphor-lab/<x>:v3 and phosphor-lab/<x>:<id8>); each
+# namespace pins the content tag it came up with (PHOSPHOR_LAB_IMG_<x>), so a rebuild reaches a namespace only on its next `up`.
+
+x-systemd: &systemd
+  privileged: true
+  cgroup: host
+  volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:rw
+  tmpfs:
+    - /run
+    - /run/lock
+  stop_signal: SIGRTMIN+3
+  stop_grace_period: 10s
+  networks: [lab]
+  extra_hosts: ["host.docker.internal:host-gateway"]
+
+x-php-health: &php-health
+  test: ["CMD-SHELL", "curl -fsS -A phosphor-lab-health http://localhost/_phosphor_lab/version >/dev/null"]
+  interval: 3s
+  timeout: 5s
+  retries: 100
+  start_period: 10s
+
+networks:
+  lab:
+    name: phosphor-${PHOSPHOR_LAB_NS:?run via testing/lab/bin/lab}
+
+
+services:
+  loadgen:
+    build: {context: loadgen}
+    image: phosphor-lab/loadgen:v3
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-loadgen
+    volumes: ["./loadgen/targets.json:/etc/loadgen/targets.json:ro"]
+    ports: ["${PHOSPHOR_LAB_LOADGEN_PORT}:8099"]
+    networks: [lab]
+    mem_limit: ${PHOSPHOR_LAB_INFRA_MEM}
+    labels: {phosphor.lab.ns: "${PHOSPHOR_LAB_NS}", phosphor.lab.infra: loadgen}
+
+  n:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_n:-phosphor-lab/n:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-n
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-n
+    profiles: [core, core-1, all]
+    ports: ["${PHOSPHOR_LAB_PORT_n}:80"]
+    mem_limit: ${PHOSPHOR_LAB_N_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_N_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "n"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "nginx static site, no PHP (false positive)"
+      phosphor.lab.os: "debian:12"
+      phosphor.lab.php.version: "none"
+      phosphor.lab.init: "systemd"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost/ >/dev/null"]
+      interval: 3s
+      retries: 60
+
+
+  d12:
+    # Debian 12 + Debian's packaged php8.2-fpm/cli 8.2.32-1~deb12u1 (bookworm main), mirroring the Moodle EC2.
+    # No image of its own: runs (n)'s Debian 12 image; testing/lab/bin/lab provisions PHP at `up`/`fixture-reset` from bookworm.
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_n:-phosphor-lab/n:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-d12
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-d12
+    profiles: [b4, b4b, all]
+    ports: ["${PHOSPHOR_LAB_PORT_d12}:80"]
+    mem_limit: ${PHOSPHOR_LAB_DISTRO_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_DISTRO_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "d12"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "Debian 12 + packaged php8.2-fpm/cli 8.2.32 (Moodle-style EC2), no sqlite, pdo shared"
+      phosphor.lab.os: "debian:12"
+      phosphor.lab.php.version: "8.2.32"
+      phosphor.lab.php.pkg: "8.2.32-1~deb12u1"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.php.fpm_unit: "php8.2-fpm.service"
+      phosphor.lab.repo.fixed: "8.2.35-1~deb12u1 (bookworm-security)"
+      phosphor.lab.init: "systemd"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -A phosphor-lab-health http://localhost/ >/dev/null"]
+      interval: 3s
+      retries: 100
+
+  a:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_a:-phosphor-lab/a:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-a
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-a
+    profiles: [core, core-1, b4, b4b, all]
+    ports: ["${PHOSPHOR_LAB_PORT_a}:80"]
+    # distro-source build target (build peaks ~2.1 GB RSS): 3 GB at 24g, 1.5 GB at 8g (→ blocked:
+    # insufficient-memory there, documented). 1 GB memory-floor repro: `lab fixture-reset a MEM=1g`
+    mem_limit: ${PHOSPHOR_LAB_DISTRO_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_DISTRO_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "a"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internet"
+      phosphor.lab.emulates: "Debian 11 distro php7.4-fpm + nginx + WordPress + phosphor-app ($$_FILES)"
+      phosphor.lab.os: "debian:11"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.pkg: "7.4.33-1+deb11u12"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.php.fpm_unit: "php7.4-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.apt: "stock bullseye sources"
+    healthcheck: *php-health
+
+  b:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_b:-phosphor-lab/b:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-b
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-b
+    profiles: [core, core-2, b4, b4a, all]
+    ports: ["${PHOSPHOR_LAB_PORT_b}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "b"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "Alma 8 module php:7.4 pinned -6, httpd prefork mod_php"
+      phosphor.lab.os: "almalinux:8"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.pkg: "php-7.4.33-6.module_el8.10.0+4266+b824362a"
+      phosphor.lab.php.sapis: "mod_php,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.fixed: "7.4.33-8 (excluded)"
+      phosphor.lab.repo.excludes: "php*-7.4.33-8*"
+    healthcheck: *php-health
+
+  b2:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_b2:-phosphor-lab/b2:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-b2
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-b2
+    profiles: [b4, b4a, all]
+    ports: ["${PHOSPHOR_LAB_PORT_b2}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "b2"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "Alma 9 module php:8.1 older build, fixed build offered by repo (P2)"
+      phosphor.lab.os: "almalinux:9"
+      phosphor.lab.php.version: "8.1.32"
+      phosphor.lab.php.pkg: "php-fpm-8.1.32-1.module_el9.5.0+156+9f1cd3fd"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.php.fpm_unit: "php-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.fixed: "8.1.32-1.module_el9.8.0+326+528679fc.alma.1"
+    healthcheck: *php-health
+
+  c:
+    networks: [lab]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_c:-phosphor-lab/c:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-c
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-c
+    profiles: [b5, all]
+    ports: ["${PHOSPHOR_LAB_PORT_c}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "c"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internet"
+      phosphor.lab.emulates: "legacy PHP 5.6 custom /usr/local build, supervisord PID 1, legacy app"
+      phosphor.lab.os: "php:5.6-fpm (debian:9)"
+      phosphor.lab.php.version: "5.6.40"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "custom"
+      phosphor.lab.init: "supervisord"
+    healthcheck: *php-health
+
+  d:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_d:-phosphor-lab/d:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-d
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-d
+    profiles: [b4, b4b, all]
+    ports: ["${PHOSPHOR_LAB_PORT_d}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "d"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "AL2023 php8.1-fpm + PECL imagick/redis third-party .so"
+      phosphor.lab.os: "amazonlinux:2023"
+      phosphor.lab.php.version: "8.1.34"
+      phosphor.lab.php.pkg: "8.1.34-1.amzn2023.0.1"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.php.pecl: "imagick-3.7.0,redis-5.3.7"
+      phosphor.lab.php.fpm_unit: "php-fpm.service"
+      phosphor.lab.init: "systemd"
+    healthcheck: *php-health
+
+  f:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_f:-phosphor-lab/f:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-f
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-f
+    profiles: [core, core-2, b3, b3a, all]
+    ports: ["${PHOSPHOR_LAB_PORT_f}:80"]
+    mem_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "f"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internet"
+      phosphor.lab.emulates: "custom 7.4.33 in /usr/local on a private shared OpenSSL 1.1.1w (rpath) + system libcurl/libpq"
+      phosphor.lab.os: "ubuntu:22.04"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "custom"
+      phosphor.lab.php.prefix: "/usr/local"
+      phosphor.lab.php.openssl: "private-shared 1.1.1w /usr/local/openssl-1.1"
+      phosphor.lab.php.fpm_unit: "php-fpm.service"
+      phosphor.lab.init: "systemd"
+    healthcheck: *php-health
+
+  f3:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_f3:-phosphor-lab/f3:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-f3
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-f3
+    profiles: [core, core-2, b3, b3a, all]
+    ports: ["${PHOSPHOR_LAB_PORT_f3}:80"]
+    mem_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "f3"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "custom 7.4.33 in /usr/local on system OpenSSL 3 + compat patches 0048/0051"
+      phosphor.lab.os: "ubuntu:22.04"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "custom"
+      phosphor.lab.php.prefix: "/usr/local"
+      phosphor.lab.php.openssl: "system 3.0.2"
+      phosphor.lab.php.fpm_unit: "php-fpm.service"
+      phosphor.lab.init: "systemd"
+    healthcheck: *php-health
+
+  g:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_g:-phosphor-lab/g:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-g
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-g
+    profiles: [b4, b4a, all]
+    ports: ["${PHOSPHOR_LAB_PORT_g}:80"]
+    # distro-source build target (build peaks ~2.1 GB RSS): 3 GB at 24g, 1.5 GB at 8g (→ blocked:
+    # insufficient-memory there, documented). 1 GB memory-floor repro: `lab fixture-reset g MEM=1g`
+    mem_limit: ${PHOSPHOR_LAB_DISTRO_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_DISTRO_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "g"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "Debian 11 apache2 + libapache2-mod-php7.4 distro"
+      phosphor.lab.os: "debian:11"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.pkg: "7.4.33-1+deb11u12"
+      phosphor.lab.php.sapis: "mod_php,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.apt: "stock bullseye sources"
+    healthcheck: *php-health
+
+  h:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_h:-phosphor-lab/h:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-h
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-h
+    profiles: [b4, b4a, all]
+    ports: ["${PHOSPHOR_LAB_PORT_h}:80"]
+    mem_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "h"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "AL2023 php8.2-fpm pinned pre-fix (8.2.35 excluded) + PECL redis + redis6"
+      phosphor.lab.os: "amazonlinux:2023"
+      phosphor.lab.php.version: "8.2.34"
+      phosphor.lab.php.pkg: "8.2.34-1.amzn2023.0.1"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.php.pecl: "redis-5.3.7"
+      phosphor.lab.php.fpm_unit: "php-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.fixed: "8.2.35-1.amzn2023.0.1 (excluded)"
+      phosphor.lab.repo.excludes: "php8.2*-8.2.35*"
+    healthcheck: *php-health
+
+  i:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_i:-phosphor-lab/i:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-i
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-i
+    profiles: [core, core-1, b2, all]
+    ports: ["${PHOSPHOR_LAB_PORT_i}:80"]
+    mem_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "i"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internet"
+      phosphor.lab.emulates: "custom vanilla 7.4.33 in /usr/local/php74 (fpm Type=notify) + nginx + WordPress + phosphor-app + cron/systemd/shebang consumers"
+      phosphor.lab.os: "debian:11"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "custom"
+      phosphor.lab.php.prefix: "/usr/local/php74"
+      phosphor.lab.php.openssl: "system 1.1.1w"
+      phosphor.lab.php.pecl: "redis-5.3.7"
+      phosphor.lab.php.fpm_unit: "php74-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.apt: "stock bullseye sources"
+    healthcheck: *php-health
+
+  i2:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_i:-phosphor-lab/i:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-i2
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-i2
+    profiles: [b2, all]
+    ports: ["${PHOSPHOR_LAB_PORT_i2}:80"]
+    mem_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "i2"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internet"
+      phosphor.lab.emulates: "custom vanilla 7.4.33 in /usr/local/php74 (fpm Type=notify) + nginx + WordPress + phosphor-app + cron/systemd/shebang consumers"
+      phosphor.lab.os: "debian:11"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "custom"
+      phosphor.lab.php.prefix: "/usr/local/php74"
+      phosphor.lab.php.openssl: "system 1.1.1w"
+      phosphor.lab.php.pecl: "redis-5.3.7"
+      phosphor.lab.php.fpm_unit: "php74-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.apt: "stock bullseye sources"
+    healthcheck: *php-health
+
+  i3:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_i:-phosphor-lab/i:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-i3
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-i3
+    profiles: [b2, all]
+    ports: ["${PHOSPHOR_LAB_PORT_i3}:80"]
+    mem_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "i3"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internet"
+      phosphor.lab.emulates: "custom vanilla 7.4.33 in /usr/local/php74 (fpm Type=notify) + nginx + WordPress + phosphor-app + cron/systemd/shebang consumers"
+      phosphor.lab.os: "debian:11"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "custom"
+      phosphor.lab.php.prefix: "/usr/local/php74"
+      phosphor.lab.php.openssl: "system 1.1.1w"
+      phosphor.lab.php.pecl: "redis-5.3.7"
+      phosphor.lab.php.fpm_unit: "php74-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.apt: "stock bullseye sources"
+    healthcheck: *php-health
+
+  i4:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_i:-phosphor-lab/i:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-i4
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-i4
+    profiles: [b3, b3b, all]
+    ports: ["${PHOSPHOR_LAB_PORT_i4}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    tmpfs: [/run, /run/lock, "/opt:size=1g,noexec"]
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "i4"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.emulates: "as (i) with a 1 GB noexec tmpfs /opt (low disk), no exposure label"
+      phosphor.lab.os: "debian:11"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "custom"
+      phosphor.lab.php.prefix: "/usr/local/php74"
+      phosphor.lab.php.openssl: "system 1.1.1w"
+      phosphor.lab.php.pecl: "redis-5.3.7"
+      phosphor.lab.php.fpm_unit: "php74-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.apt: "stock bullseye sources"
+    healthcheck: *php-health
+
+  j:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_j:-phosphor-lab/j:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-j
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-j
+    profiles: [core, core-1, b2, all]
+    ports: ["${PHOSPHOR_LAB_PORT_j}:80"]
+    mem_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_BUILD_MEM}
+    cpus: ${PHOSPHOR_LAB_BUILD_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "j"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "custom 7.4.33 libphp7.so (apxs) under /usr/local/php74-apache, Debian apache2 prefork a2enmod php7-custom, no $$_FILES"
+      phosphor.lab.os: "debian:11"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.sapis: "mod_php,cli"
+      phosphor.lab.php.provenance: "custom"
+      phosphor.lab.php.prefix: "/usr/local/php74-apache"
+      phosphor.lab.php.openssl: "system 1.1.1w"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.apt: "stock bullseye sources"
+    healthcheck: *php-health
+
+  k:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_k:-phosphor-lab/k:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-k
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-k
+    profiles: [b3, b3a, all]
+    ports: ["${PHOSPHOR_LAB_PORT_k}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "k"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "ondrej php7.4-fpm already carrying the fix"
+      phosphor.lab.os: "ubuntu:22.04"
+      phosphor.lab.php.version: "7.4.33"
+      phosphor.lab.php.pkg: "1:7.4.33-31+ubuntu22.04.1+deb.sury.org+1"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "ondrej"
+      phosphor.lab.php.fpm_unit: "php7.4-fpm.service"
+      phosphor.lab.init: "systemd"
+    healthcheck: *php-health
+
+  k2:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_k2:-phosphor-lab/k2:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-k2
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-k2
+    profiles: [b3, b3b, all]
+    ports: ["${PHOSPHOR_LAB_PORT_k2}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "k2"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "ondrej php5.6-fpm older build, PPA configured with the fixed build (P2)"
+      phosphor.lab.os: "ubuntu:22.04"
+      phosphor.lab.php.version: "5.6.40"
+      phosphor.lab.php.pkg: "5.6.40-103+ubuntu22.04.1+deb.sury.org+1"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "ondrej"
+      phosphor.lab.php.fpm_unit: "php5.6-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.fixed: "5.6.40-105+ubuntu22.04.1+deb.sury.org+1"
+    healthcheck: *php-health
+
+  l:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_l:-phosphor-lab/l:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-l
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-l
+    profiles: [b3, b3b, all]
+    ports: ["${PHOSPHOR_LAB_PORT_l}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "l"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "Ubuntu 20.04 distro php7.4-fpm, not Pro-attached (fix only in ESM, P3)"
+      phosphor.lab.os: "ubuntu:20.04"
+      phosphor.lab.php.version: "7.4.3"
+      phosphor.lab.php.pkg: "7.4.3-4ubuntu2.29"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.php.fpm_unit: "php7.4-fpm.service"
+      phosphor.lab.init: "systemd"
+      phosphor.lab.repo.fixed: "7.4.3-4ubuntu2.29+esm5 (ubuntu-pro)"
+    healthcheck: *php-health
+
+  m:
+    <<: *systemd
+    pull_policy: never
+    image: ${PHOSPHOR_LAB_IMG_m:-phosphor-lab/m:v3}
+    container_name: phosphor-${PHOSPHOR_LAB_NS}-m
+    hostname: phosphor-${PHOSPHOR_LAB_NS}-m
+    profiles: [b4, b4b, all]
+    ports: ["${PHOSPHOR_LAB_PORT_m}:80"]
+    mem_limit: ${PHOSPHOR_LAB_VM_MEM}
+    memswap_limit: ${PHOSPHOR_LAB_VM_MEM}
+    cpus: ${PHOSPHOR_LAB_CPUS}
+    labels:
+      phosphor.lab.ns: "${PHOSPHOR_LAB_NS}"
+      phosphor.lab.fx: "m"
+      phosphor.lab.kind: "vm"
+      phosphor.lab.exposure: "internal"
+      phosphor.lab.emulates: "Rocky 9 module php:8.1, no fixed build (P4)"
+      phosphor.lab.os: "rockylinux:9"
+      phosphor.lab.php.version: "8.1.32"
+      phosphor.lab.php.pkg: "php-fpm-8.1.32-1.module+el9.7.0+40003+454ed3c4"
+      phosphor.lab.php.sapis: "fpm,cli"
+      phosphor.lab.php.provenance: "distro"
+      phosphor.lab.php.fpm_unit: "php-fpm.service"
+      phosphor.lab.init: "systemd"
+    healthcheck: *php-health

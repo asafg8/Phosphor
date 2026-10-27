@@ -1,0 +1,21 @@
+#!/bin/sh
+# fetch-debs <name> <bullseye|host> <pkg…>: DOWNLOAD (not install) the packages plus their missing dependencies into
+# /usr/local/lib/phosphor-lab-kit/debs/<name>/, so a fixture variant (e.g. PHPREDIS=1) can install them later offline and
+# the default fixture stays honest (nothing installed). bullseye = archive.debian.org temp sources; host = the
+# fixture's own configured sources (e.g. ondrej on k2).
+set -e
+name=$1 suite=$2; shift 2
+D=/usr/local/lib/phosphor-lab-kit/debs/$name
+mkdir -p "$D" /tmp/phosphor-fd/partial
+O=""
+if [ "$suite" != host ]; then
+  L=/tmp/phosphor-archive.list
+  printf 'deb http://archive.debian.org/debian %s main\ndeb http://archive.debian.org/debian-security %s-security main\n' "$suite" "$suite" > $L
+  O="-o Dir::Etc::sourcelist=$L -o Dir::Etc::sourceparts=- -o Acquire::Check-Valid-Until=false"
+fi
+export DEBIAN_FRONTEND=noninteractive
+apt-get $O update -qq
+apt-get $O install -y -qq --download-only --no-install-recommends -o Dir::Cache::archives=/tmp/phosphor-fd "$@"
+mv /tmp/phosphor-fd/*.deb "$D/"
+rm -rf /tmp/phosphor-fd /var/lib/apt/lists/* /tmp/phosphor-archive.list
+ls "$D"

@@ -1,0 +1,799 @@
+#!/usr/bin/env bash
+# lab — local lab helper. Used by the e2e harness and by humans; run from anywhere.
+#
+# Namespaces: PHOSPHOR_LAB_NS (default dev) → compose project phosphor-<ns>, containers phosphor-<ns>-<fx>, network phosphor-<ns>,
+# per-namespace host ports (dev keeps the historic ports; qa and others get their own block), so several labs can run
+# at once. State, logs and the generated compose env live in .cache/lab/<ns>/.
+# Fixtures are the letters in testing/lab/docker/fixtures.tsv.
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+cd "$HERE"
+# testing/lab/env.local supplies defaults only: anything the caller already exported wins
+if [ -f testing/lab/env.local ]; then
+  while IFS= read -r line; do
+    case "$line" in
+      export\ *=*) kv=${line#export }; k=${kv%%=*}; [ -n "${!k+x}" ] || export "$kv" ;;
+      unset\ *) unset ${line#unset } ;;
+    esac
+  done < testing/lab/env.local
+fi
+NS=${PHOSPHOR_LAB_NS:-dev}
+[[ "$NS" =~ ^[a-z0-9]{1,12}$ ]] || { echo "lab: PHOSPHOR_LAB_NS must be [a-z0-9]{1,12}" >&2; exit 2; }
+export PHOSPHOR_LAB_NS=$NS
+COMPOSE_YAML=${PHOSPHOR_LAB_COMPOSE:-testing/lab/docker/compose.yaml}
+FXTSV=testing/lab/docker/fixtures.tsv
+STATE=.cache/lab/$NS
+mkdir -p "$STATE"
+
+die() { echo "lab: $*" >&2; exit 1; }
+log() { echo "lab[$NS]: $*" >&2; }
+
+# ---- namespace → ports / sizing ----
+slot() {
+  if [ -n "${PHOSPHOR_LAB_SLOT:-}" ]; then echo "$PHOSPHOR_LAB_SLOT"; return; fi
+  case "$NS" in dev) echo 0 ;; qa) echo 1 ;; corpus) echo 2 ;; *) echo $(( $(printf %s "$NS" | cksum | cut -d' ' -f1) % 29 + 3 )) ;; esac
+}
+# Pinned: slot 0 (dev) keeps the historic ports; slot N ≥ 1 gets the block 20100+200N: fixtures +idx,
+# loadgen +103 (no overlap with slot 0 or with other slots).
+SLOT=$(slot)
+if [ "$SLOT" = 0 ]; then
+  FX_BASE=8100; LOADGEN_PORT=8099
+else
+  FX_BASE=$((20100 + 200 * SLOT)); LOADGEN_PORT=$((FX_BASE + 103))
+fi
+RESULTS=${PHOSPHOR_RESULTS_DIR:-./phosphor-results}
+# the dev default (relative or absolute, e.g. made absolute by the e2e harness) never leaks into another namespace
+case "$RESULTS" in ./phosphor-results|phosphor-results|"$HERE/phosphor-results") [ "$SLOT" != 0 ] && RESULTS=./phosphor-results-$NS ;; esac
+
+fx_rows() { grep -v '^#' "$FXTSV" | awk 'NF'; }
+fx_all() { fx_rows | awk '{print $1}'; }
+fx_field() { fx_rows | awk -v x="$1" -v n="$2" '$1==x{print $n}'; }    # 2 idx, 3 kind, 4 build_from
+fx_batch() { fx_rows | awk -v b="$1" '{for(i=5;i<=NF;i++) if($i==b) print $1}'; }
+
+write_env() {
+  local mem=${PHOSPHOR_LAB_MEM:-24g}
+  local vm build dbuild bcpu svc n infra cpus maxvm
+  case "$mem" in
+    8g) vm=768m; n=512m; build=1536m; dbuild=1536m; bcpu=2.0; svc=384m; infra=128m; cpus=1.0; maxvm=4 ;;
+    24g) vm=1g; n=1g; build=2g; dbuild=3g; bcpu=2.0; svc=512m; infra=256m; cpus=1.0; maxvm=8 ;;
+    *) die "PHOSPHOR_LAB_MEM must be 8g or 24g" ;;
+  esac
+  {
+    echo "PHOSPHOR_LAB_NS=$NS"
+    echo "PHOSPHOR_LAB_LOADGEN_PORT=$LOADGEN_PORT"
+    echo "PHOSPHOR_LAB_VM_MEM=$vm"; echo "PHOSPHOR_LAB_N_MEM=$n"; echo "PHOSPHOR_LAB_BUILD_MEM=$build"; echo "PHOSPHOR_LAB_DISTRO_BUILD_MEM=$dbuild"; echo "PHOSPHOR_LAB_SVC_MEM=$svc"
+    echo "PHOSPHOR_LAB_INFRA_MEM=$infra"; echo "PHOSPHOR_LAB_CPUS=$cpus"; echo "PHOSPHOR_LAB_BUILD_CPUS=$bcpu"
+    fx_rows | while read -r l idx _; do echo "PHOSPHOR_LAB_PORT_$l=$((FX_BASE + idx))"; done
+    # image tags this namespace came up with (set by `up`; absent → phosphor-lab/<x>:v3)
+    if [ -f "$STATE/images.pin" ]; then cat "$STATE/images.pin"; fi
+  } > "$STATE/compose.env"
+  echo "$maxvm" > "$STATE/maxvm"
+}
+write_env
+COMPOSE=(docker compose -p "phosphor-$NS" -f "$COMPOSE_YAML" --env-file "$STATE/compose.env")
+
+# resolve <id>: a fixture letter, or die
+resolve() {
+  fx_all | grep -qx -- "$1" || die "unknown fixture '$1' (letters: $(fx_all | tr '\n' ' '))"
+  echo "$1"
+}
+cname() { echo "phosphor-$NS-$(resolve "$1")"; }
+
+# ---- mutation lock + stable signal (.cache/lab/<ns>/lock.d, .cache/lab/<ns>/state) ----
+LOCK=$STATE/lock.d
+lock_holder() { [ -d "$LOCK" ] && cat "$LOCK/info" 2>/dev/null || true; }
+lock_alive() { local pid; pid=$(awk '{print $1}' "$LOCK/info" 2>/dev/null || true); [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; }
+acquire() {
+  local op=$1
+  if ! mkdir "$LOCK" 2>/dev/null; then
+    if lock_alive; then die "namespace $NS busy: $(lock_holder) (wait: lab wait-stable)"; fi
+    rm -rf "$LOCK"; mkdir "$LOCK" || die "cannot take lock $LOCK"
+  fi
+  echo "$$ $op $(date -u +%FT%TZ)" > "$LOCK/info"
+  set_state "busy:$op"
+  trap 'rc=$?; [ $rc -ne 0 ] && set_state "failed:$OP_NAME"; rm -rf "$LOCK"' EXIT
+  OP_NAME=$op
+}
+set_state() { printf '%s %s\n' "$1" "$(date -u +%FT%TZ)" > "$STATE/state"; }
+
+# ---- infra ----
+build_loadgen() {
+  local arch; arch=$(docker info --format '{{.Architecture}}'); [ "$arch" = "aarch64" ] && arch=arm64; [ "$arch" = "x86_64" ] && arch=amd64
+  CGO_ENABLED=0 GOOS=linux GOARCH=$arch go build -o testing/lab/docker/loadgen/loadgen ./testing/lab/docker/loadgen
+}
+infra_up() {
+  build_loadgen
+  local lg="phosphor-$NS-loadgen"
+  if docker inspect "$lg" >/dev/null 2>&1 && python3 - "$lg" testing/lab/docker/loadgen/targets.json <<'PY'
+import datetime, os, subprocess, sys
+started = subprocess.check_output(["docker", "inspect", "-f", "{{.State.StartedAt}}", sys.argv[1]]).decode().strip()
+t = datetime.datetime.fromisoformat(started[:26].rstrip("Z") + "+00:00").timestamp()
+sys.exit(0 if os.path.getmtime(sys.argv[2]) > t else 1)
+PY
+  then log "targets.json changed: restarting loadgen"; docker restart "$lg" >/dev/null; fi
+  "${COMPOSE[@]}" up -d --build --wait loadgen >"$STATE/infra.log" 2>&1 || { tail -20 "$STATE/infra.log" >&2; die "infra failed to start (log $STATE/infra.log)"; }
+}
+
+# ---- fixtures ----
+# parse "[--batch B] [fx…]" (BATCH env as default) into FXS (letters)
+parse_fx() {
+  FXS=(); local batch=${BATCH:-}
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --batch) batch=$2; shift 2 ;;
+      --batch=*) batch=${1#--batch=}; shift ;;
+      *) FXS+=("$(resolve "$1")"); shift ;;
+    esac
+  done
+  if [ -n "$batch" ]; then
+    batch=$(echo "$batch" | tr 'A-Z' 'a-z')
+    local b; b=$(if [ "$batch" = all ]; then fx_all; else fx_batch "$batch"; fi)
+    [ -n "$b" ] || die "unknown batch '$batch' (core core-1 core-2 b2 b3 b3a b3b b4 b4a b4b b5 all)"
+    while read -r l; do FXS+=("$l"); done <<<"$b"
+  fi
+  return 0
+}
+
+# build_fx <letters…>: build the images behind the letters, one by one (a dead mirror names the failing fixture).
+# VM-like images: docker build → phosphor-lab/<x>:v3 + content tag phosphor-lab/<x>:<id8>; BUILT[<x>] records the content tag.
+BUILT=""
+build_fx() {
+  local done_=" " l bf
+  for l in "$@"; do
+    bf=$(fx_field "$l" 4)
+    case "$done_" in *" $bf "*) continue ;; esac
+    done_="$done_$bf "
+    log "build $bf"
+    local extra=(); [ "$bf" = f3 ] && extra=(--build-context patches=patches)
+    docker build -f "testing/lab/docker/fx/$bf/Dockerfile" ${extra[@]+"${extra[@]}"} -t "phosphor-lab/$bf:v3" testing/lab/docker >"$STATE/build-$bf.log" 2>&1 \
+      || { tail -30 "$STATE/build-$bf.log" >&2; die "fixture $bf failed to build (log $STATE/build-$bf.log)"; }
+    local id; id=$(docker image inspect -f '{{.Id}}' "phosphor-lab/$bf:v3" | sed 's/^sha256://' | cut -c1-8)
+    docker tag "phosphor-lab/$bf:v3" "phosphor-lab/$bf:$id"
+    BUILT="$BUILT $bf=$id"
+  done
+}
+
+# pin_built: record this namespace's image tags (only `up` pins; `build` and other namespaces never move them)
+pin_built() {
+  local kv bf id
+  touch "$STATE/images.pin"
+  for kv in $BUILT; do
+    bf=${kv%%=*}; id=${kv#*=}
+    grep -v "^PHOSPHOR_LAB_IMG_$bf=" "$STATE/images.pin" > "$STATE/images.pin.tmp" || true
+    echo "PHOSPHOR_LAB_IMG_$bf=phosphor-lab/$bf:$id" >> "$STATE/images.pin.tmp"
+    mv "$STATE/images.pin.tmp" "$STATE/images.pin"
+  done
+  write_env
+}
+
+running_fx() { docker ps --filter "label=phosphor.lab.ns=$NS" --filter label=phosphor.lab.fx --format '{{.Label "phosphor.lab.fx"}}'; }
+
+# Lab-wide cap: at most PHOSPHOR_LAB_MAX_NS (4) namespaces with VM-like fixtures up at once.
+# Builders and corpus containers (no phosphor.lab.fx) don't count. A namespace already up may always add fixtures.
+check_ns_cap() {
+  local max=${PHOSPHOR_LAB_MAX_NS:-4}
+  # only lab fixtures count (phosphor.lab.fx is a fixtures.tsv letter): corpus apps and short-lived regress containers don't
+  local letters; letters=" $(fx_all | tr '\n' ' ')"
+  local others; others=$(docker ps --filter label=phosphor.lab.fx --filter label=phosphor.lab.kind=vm --format '{{.Label "phosphor.lab.ns"}} {{.Label "phosphor.lab.fx"}}' \
+    | awk -v L="$letters " 'index(L, " " $2 " ") {print $1}' | sort -u | grep -vx -- "$NS" || true)
+  local n; n=$(printf '%s\n' "$others" | grep -c . || true)
+  if [ "$n" -ge "$max" ] && [ "$FORCE_OWNER" != 1 ]; then
+    die "lab-wide cap: $n other namespaces already have VM-like fixtures up ($(echo $others)); max $max until the gate (each ns: only the batch it needs). lab down one, or lab --force up"
+  fi
+}
+
+# (a)/(g) are 3 GB distro-source build fixtures: at most 2 namespaces may run them at once (24 GB memory budget)
+check_distro_build_cap() {
+  local want=0 l; for l in "$@"; do case "$l" in a|g) want=1 ;; esac; done
+  [ $want = 1 ] || return 0
+  local others; others=$(docker ps --filter label=phosphor.lab.fx --format '{{.Label "phosphor.lab.ns"}} {{.Label "phosphor.lab.fx"}}' \
+    | awk '$2=="a"||$2=="g"{print $1}' | sort -u | grep -vx -- "$NS" || true)
+  local n; n=$(printf '%s\n' "$others" | grep -c . || true)
+  if [ "$n" -ge 2 ] && [ "$FORCE_OWNER" != 1 ]; then
+    die "(a)/(g) already run in $n other namespaces ($(echo $others)); max 2 at once (3 GB each). lab down a g there, or lab --force up"
+  fi
+}
+
+check_vm_cap() {
+  local max; max=$(cat "$STATE/maxvm")
+  local n; n=$( { running_fx; printf '%s\n' "$@"; } | sort -u | while read -r l; do if [ -n "$l" ] && [ "$(fx_field "$l" 3)" = vm ]; then echo "$l"; fi; done | wc -l | tr -d ' ')
+  if [ "$n" -gt "$max" ] && [ "${PHOSPHOR_LAB_FORCE:-0}" != 1 ]; then
+    die "$n VM-like fixtures would be up in $NS (max $max at PHOSPHOR_LAB_MEM=${PHOSPHOR_LAB_MEM:-24g}); lab down first or PHOSPHOR_LAB_FORCE=1"
+  fi
+}
+
+cmd_up() {
+  parse_fx "$@"
+  [ ${#FXS[@]} -gt 0 ] || { FXS=(); while read -r l; do FXS+=("$l"); done < <(fx_batch core); }
+  local stale; stale=$(stale_ports)
+  [ -z "$stale" ] || die "port layout changed under running fixtures: $stale — run lab down first"
+  local l wants_vm=0; for l in "${FXS[@]}"; do if [ "$(fx_field "$l" 3)" = vm ]; then wants_vm=1; fi; done
+  if [ $wants_vm = 1 ]; then check_ns_cap; fi
+  check_distro_build_cap "${FXS[@]}"   # the lab-wide cap counts VM-like namespaces; service-only ups don't add one
+  check_vm_cap "${FXS[@]}"   # before the lock: a refused up must not mark a healthy namespace failed
+  acquire up
+  infra_up
+  build_fx "${FXS[@]}"
+  pin_built
+  log "up ${FXS[*]}"
+  if ! "${COMPOSE[@]}" up -d --wait --no-build "${FXS[@]}" >"$STATE/up.log" 2>&1; then
+    tail -20 "$STATE/up.log" >&2
+    local bad; bad=$(docker ps -a --filter "label=phosphor.lab.ns=$NS" --filter label=phosphor.lab.fx --format '{{.Label "phosphor.lab.fx"}} {{.Status}}' | grep -v '(healthy)' || true)
+    die "fixture(s) not healthy: ${bad:-?} (log $STATE/up.log)"
+  fi
+  # loadgen targets start off; every running fixture of this namespace gets steady load (5 rps)
+  local l
+  for l in "${FXS[@]}"; do   # provisioned fixtures (no image of their own): only when not provisioned yet
+    if [ "$l" = d12 ] && ! docker exec "$(cname d12)" test -e /etc/phosphor-lab/provisioned; then provision_d12 d12 plain; fi
+  done
+  for l in $(running_fx); do cmd_load "$l" on; done
+  set_state stable
+  trap - EXIT; rm -rf "$LOCK"
+  cmd_status
+}
+
+cmd_build() { parse_fx "$@"; [ ${#FXS[@]} -gt 0 ] || die "lab build --batch B | fx…"; acquire build; build_fx "${FXS[@]}"; set_state stable; trap - EXIT; rm -rf "$LOCK"; }
+
+cmd_down() {
+  parse_fx "$@"
+  acquire down
+  if [ ${#FXS[@]} -eq 0 ]; then
+    "${COMPOSE[@]}" --profile all down --remove-orphans
+    docker rm -f "phosphor-$NS-builder" >/dev/null 2>&1 || true
+    local sc; for sc in $(sidecars); do docker rm -f "$sc" >/dev/null 2>&1 || true; done
+    "${COMPOSE[@]}" --profile all down --remove-orphans >/dev/null 2>&1 || true
+    set_state down
+  else
+    local l; for l in "${FXS[@]}"; do cmd_load "$l" off 2>/dev/null || true; done
+    "${COMPOSE[@]}" rm -sf "${FXS[@]}"
+    set_state stable
+  fi
+  trap - EXIT; rm -rf "$LOCK"
+}
+cmd_reset() { acquire reset; docker rm -f "phosphor-$NS-builder" >/dev/null 2>&1 || true; "${COMPOSE[@]}" --profile all down -v --remove-orphans; set_state down; trap - EXIT; rm -rf "$LOCK"; }
+
+# status [--stable|--json]: fixture table for the namespace; --stable exits 0 only when no up/down/build is running in
+# this namespace, the last one succeeded, and every fixture container is healthy.
+# stale_ports: running containers of this namespace whose published port is not the current layout's (the
+# slot→port formula or PHOSPHOR_LAB_SLOT changed under a running namespace)
+stale_ports() {
+  local out="" l c want got
+  for l in $(running_fx); do
+    c=phosphor-$NS-$l; want=$((FX_BASE + $(fx_field "$l" 2)))
+    got=$(docker port "$c" 80/tcp 2>/dev/null | head -1 | sed 's/.*://')
+    [ "$got" = "$want" ] || out="$out ${l}(:${got:-none}!=:${want})"
+  done
+  echo "${out# }"
+}
+
+cmd_status() {
+  local mode=${1:-}
+  local st; st=$(awk '{print $1}' "$STATE/state" 2>/dev/null || echo none)
+  if [ -d "$LOCK" ] && lock_alive; then st="busy:$(awk '{print $2}' "$LOCK/info")"; fi
+  local rows; rows=$(docker ps -a --filter "label=phosphor.lab.ns=$NS" --filter label=phosphor.lab.fx \
+    --format '{{.Label "phosphor.lab.fx"}}|{{.Names}}|{{.Status}}|{{.Label "phosphor.lab.php.version"}}|{{.Image}}' | sort)
+  local unhealthy; unhealthy=$(echo "$rows" | awk -F'|' 'NF && $3 !~ /\(healthy\)/ {print $1}' | tr '\n' ' ')
+  if [ "$mode" = --stable ]; then
+    local stale; stale=$(stale_ports)
+    if [ "$st" = stable ] && [ -n "$rows" ] && [ -z "${unhealthy// }" ] && [ -z "$stale" ]; then echo "stable"; return 0; fi
+    [ -n "$rows" ] || unhealthy="(no fixtures up)"
+    echo "not stable: state=$st${unhealthy:+ unhealthy=$unhealthy}${stale:+ stale-ports=$stale (lab down; lab up)}"; return 1
+  fi
+  if [ "$mode" = --json ]; then
+    echo "$rows" | awk -F'|' -v ns="$NS" -v st="$st" 'BEGIN{printf "{\"ns\":\"%s\",\"state\":\"%s\",\"fixtures\":[", ns, st} NF{if(n++)printf ","; printf "{\"fx\":\"%s\",\"name\":\"%s\",\"status\":\"%s\",\"php\":\"%s\"}", $1,$2,$3,$4} END{print "]}"}'
+    return 0
+  fi
+  local sc; sc=$(sidecars | tr '\n' ' ')
+  [ -n "${sc// }" ] && echo "sidecars (not compose-managed, on phosphor-$NS): $sc"
+  echo "ns=$NS state=$st project=phosphor-$NS loadgen=:$LOADGEN_PORT mem=${PHOSPHOR_LAB_MEM:-24g}"
+  printf '%-4s %-14s %-6s %-26s %-10s %s\n' FX CONTAINER PORT STATUS PHP IMAGE
+  echo "$rows" | while IFS='|' read -r l n s v os; do
+    [ -n "$l" ] || continue
+    printf '%-4s %-14s %-6s %-26s %-10s %s\n' "$l" "$n" "$((FX_BASE + $(fx_field "$l" 2)))" "$s" "$v" "$os"
+  done
+}
+
+cmd_wait_stable() {
+  local t=${1:-1800} i=0
+  until cmd_status --stable >/dev/null; do
+    i=$((i + 5)); [ $i -ge "$t" ] && { cmd_status --stable; return 1; }
+    sleep 5
+  done
+  echo stable
+}
+
+# env: exports for this namespace: its results dir and loadgen
+cmd_env() {
+  cat <<EOF
+export PHOSPHOR_LAB_NS=$NS
+export PHOSPHOR_RESULTS_DIR=$RESULTS
+export PHOSPHOR_LAB_LOADGEN=http://localhost:$LOADGEN_PORT
+EOF
+}
+
+# label <fx> [key]: one pinned fact (key without the phosphor.lab. prefix), or all phosphor.lab.* labels
+cmd_label() {
+  local c; c=$(cname "$1")
+  if [ -n "${2:-}" ]; then docker inspect -f "{{index .Config.Labels \"phosphor.lab.$2\"}}" "$c"
+  else docker inspect -f '{{range $k,$v := .Config.Labels}}{{$k}}={{$v}}{{"\n"}}{{end}}' "$c" | grep '^phosphor\.lab\.'; fi
+}
+
+cmd_ls() {
+  printf '%-4s %-4s %-8s %-10s %s\n' FX PORT KIND BUILD BATCHES
+  fx_rows | while read -r l idx kind bf rest; do printf '%-4s %-4s %-8s %-10s %s\n' "$l" "$((FX_BASE + idx))" "$kind" "$bf" "$rest"; done
+}
+
+# fixture-reset <fx> [KEY=VAL…]: recreate one fixture from its image. Variants: MEM=<size> (compose override); PROGRESS=1 (first-party phosphor-app/progress.php), POOLOVR=1 (fpm pool php_admin_value/php_value
+# overrides), HTACCESS=1 (.htaccess php_flag), FPBREAK=1 (k: pre-fix -30 binaries under the -31 package), MAXCONN=<n>
+# (Debian apache: MaxConnectionsPerChild), PHPREDIS=1 (a/i/k2: packaged php-redis), LOGERRORS=0 (fpm
+# scan-dir ini log_errors=Off), HOSTILEAPT=1 (apt: trusted=yes deb-src + insecure apt.conf, label
+# phosphor.lab.hostile_apt), ACCESSLOG=1 (nginx: combined + rl=$request_length ct="$content_type"), APP=joomla310 (i only: stock Joomla 3.10 as the code root) or APP=legacy74 (phosphor-app/legacy.php with each/create_function/$s{0}), label
+# phosphor.lab.app) — applied inside the fresh container.
+# add_custom74 <fx>: mixed host. Copies fixture (f)'s custom PHP 7.4.33 (/usr/local + its private shared
+# OpenSSL 1.1.1w; Ubuntu 22.04 like k2) from the f image this namespace uses into the fixture, installs the three
+# runtime libs k2 lacks from its own jammy sources, and runs it as php74-fpm.service behind nginx at /php74/.
+# No image change: the build is reused from f's image layer.
+add_custom74() {
+  local fx=$1 c img t; c=$(cname "$fx")
+  img=$( { grep '^PHOSPHOR_LAB_IMG_f=' "$STATE/images.pin" 2>/dev/null || true; } | cut -d= -f2); img=${img:-phosphor-lab/f:v3}
+  docker image inspect "$img" >/dev/null 2>&1 || die "CUSTOM74 needs the (f) image ($img): lab build f"
+  t=$(docker create "$img")
+  docker cp "$t:/usr/local/." - | docker exec -i "$c" sh -c 'mkdir -p /tmp/phosphor-f && tar -xf - -C /tmp/phosphor-f'
+  docker rm -f "$t" >/dev/null
+  docker exec "$c" sh -c 'set -e; cd /tmp/phosphor-f
+    mkdir -p /usr/local/bin /usr/local/sbin /usr/local/lib /usr/local/etc /usr/local/include
+    cp -a bin/php bin/phpize bin/php-config bin/phar.phar /usr/local/bin/ 2>/dev/null || cp -a bin/php bin/phpize bin/php-config /usr/local/bin/
+    cp -a sbin/php-fpm /usr/local/sbin/ && cp -a lib/php /usr/local/lib/ && cp -a include/php /usr/local/include/
+    cp -a etc/php-fpm.conf etc/php-fpm.d etc/php.ini etc/conf.d /usr/local/etc/ && cp -a openssl-1.1 /usr/local/
+    mkdir -p /usr/local/var/log /usr/local/var/run
+    cd / && rm -rf /tmp/phosphor-f
+    sed -i "s#^listen = .*#listen = /run/php74-fpm.sock#; s#^;listen.owner = .*#listen.owner = www-data#; s#^;listen.group = .*#listen.group = www-data#" /usr/local/etc/php-fpm.d/www.conf
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get install -y -qq --no-install-recommends libonig5 libpq5 libsqlite3-0 >/dev/null 2>&1 || { apt-get update -qq && apt-get install -y -qq --no-install-recommends libonig5 libpq5 libsqlite3-0 >/dev/null; }
+    ! ldd /usr/local/sbin/php-fpm | grep -q "not found"'
+  docker cp testing/lab/variants/custom74/php74-fpm.service "$c:/etc/systemd/system/php74-fpm.service" >/dev/null
+  docker exec "$c" mkdir -p /var/www/php74
+  docker cp testing/lab/variants/custom74/app/. "$c:/var/www/php74/" >/dev/null
+  docker cp testing/lab/variants/custom74/nginx-location.conf "$c:/tmp/phosphor74.loc" >/dev/null
+  docker exec "$c" sh -c 'set -e; chown -R www-data:www-data /var/www/php74
+    f=/etc/nginx/sites-available/default; grep -q "location ^~ /php74/" $f || sed -i "/^    location \/ {/e cat /tmp/phosphor74.loc" $f; rm -f /tmp/phosphor74.loc
+    systemctl daemon-reload && systemctl enable --now php74-fpm >/dev/null 2>&1 && nginx -t 2>/dev/null && systemctl reload nginx'
+  cmd_load "$fx" add=/php74/ 2>/dev/null || true; cmd_load "$fx" add=/php74/?p=1 2>/dev/null || true
+}
+
+# add_phpfpm <fx> <version>: PHP <version> from the official php:<version>-fpm-bookworm image (docker-library build in
+# /usr/local; Debian 12 + OpenSSL 3 like (n)) installed on (n) the way a customer's own build sits on a VM: php.ini-production,
+# docker-only fpm configs dropped, pool on /run/php-fpm.sock, php-fpm.service (Type=simple: built without fpm-systemd),
+# nginx → fpm, the lab kit + small app, runtime libs from (n)'s own bookworm sources. For 8.4/8.5 build+swap+rollback.
+add_phpfpm() {
+  local fx=$1 ver=$2 c img t id; c=$(cname "$fx"); img=php:$ver-fpm-bookworm
+  docker image inspect "$img" >/dev/null 2>&1 || docker pull -q "$img" >/dev/null || die "PHPFPM: cannot pull $img"
+  t=$(docker create "$img")
+  docker cp "$t:/usr/local/." - | docker exec -i "$c" sh -c 'mkdir -p /tmp/phosphor && tar -xf - -C /tmp/phosphor'
+  docker rm -f "$t" >/dev/null
+  docker exec "$c" sh -c 'set -e; cd /tmp/phosphor
+    mkdir -p /usr/local/bin /usr/local/sbin /usr/local/lib /usr/local/etc /usr/local/include /usr/local/var/log /usr/local/var/run
+    for b in bin/php bin/phpize bin/php-config bin/pear bin/peardev bin/pecl bin/phar bin/phar.phar; do [ -e "$b" ] && cp -a "$b" /usr/local/bin/; done
+    cp -a sbin/php-fpm /usr/local/sbin/ && cp -a lib/php /usr/local/lib/ && cp -a include/php /usr/local/include/
+    cp -a etc/php etc/php-fpm.conf etc/php-fpm.d /usr/local/etc/
+    cd / && rm -rf /tmp/phosphor
+    rm -f /usr/local/etc/php-fpm.d/docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf /usr/local/etc/php/conf.d/docker-fpm.ini
+    cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+    sed -i "s#^;\\?listen = .*#listen = /run/php-fpm.sock#; s#^;listen.owner = .*#listen.owner = www-data#; s#^;listen.group = .*#listen.group = www-data#; s#^user = .*#user = www-data#; s#^group = .*#group = www-data#" /usr/local/etc/php-fpm.d/www.conf
+    export DEBIAN_FRONTEND=noninteractive
+    pk="libargon2-1 libcurl4 libonig5 libsodium23 libsqlite3-0 libxml2 libreadline8 libssl3 zlib1g"
+    apt-get install -y -qq --no-install-recommends $pk >/dev/null 2>&1 || { apt-get update -qq && apt-get install -y -qq --no-install-recommends $pk >/dev/null; }
+    for f in /usr/local/sbin/php-fpm /usr/local/bin/php /usr/local/lib/php/extensions/*/*.so; do
+      if ldd "$f" | grep -q "not found"; then echo "missing libs for $f:" >&2; ldd "$f" | grep "not found" >&2; exit 1; fi
+    done
+    mkdir -p /usr/local/lib/phosphor-lab-kit /etc/phosphor-lab /var/www/html'
+  docker cp testing/lab/docker/kit/kit.php "$c:/usr/local/lib/phosphor-lab-kit/kit.php" >/dev/null
+  docker cp testing/lab/docker/kit/faults.php "$c:/usr/local/lib/phosphor-lab-kit/faults.php" >/dev/null
+  docker cp testing/lab/variants/phpfpm/app/. "$c:/var/www/html/" >/dev/null
+  docker cp testing/lab/variants/phpfpm/php-fpm.service "$c:/etc/systemd/system/php-fpm.service" >/dev/null
+  docker cp testing/lab/variants/phpfpm/nginx-site.conf "$c:/etc/nginx/sites-available/default" >/dev/null
+  id=$(echo "$ver" | awk -F. '{printf "%d%02d%02d", $1, $2, $3}')
+  docker exec "$c" sh -c "set -e; echo $id > /etc/phosphor-lab/base-version-id; rm -f /var/www/html/index.html; chown -R www-data:www-data /var/www/html
+    systemctl daemon-reload && systemctl enable --now php-fpm >/dev/null 2>&1 && nginx -t 2>/dev/null && systemctl reload nginx
+    for i in 1 2 3 4 5 6 7 8 9 10; do curl -fsS http://localhost/_phosphor_lab/version >/dev/null 2>&1 && exit 0; sleep 1; done; exit 1" \
+    || die "PHPFPM: php-fpm $ver did not come up on $fx"
+  cmd_load "$fx" urls=/,/?p=1,/about.php,/?p=2 2>/dev/null || true
+}
+
+# provision_d12 <fx> plain|held|nofix: fixture d12 = (n)'s Debian 12 image + Debian's packaged php8.2-fpm/cli at
+# 8.2.32-1~deb12u1 from bookworm main with the Moodle-EC2 extension set (bcmath curl gd intl mbstring pgsql+pdo_pgsql soap
+# xml zip opcache; pdo shared; NO sqlite), nginx, lab kit + small app. Packages from d12's live bookworm sources.
+#   plain  the fixed 8.2.35-1~deb12u1 (bookworm-security) is the visible candidate, nothing held
+#   held   HELD=1: same, plus apt-mark hold on every php8.2 package
+#   nofix  NOFIX=1: 8.2.35* pinned away (apt preferences -1) → no fixed candidate visible
+provision_d12() {
+  local fx=$1 mode=$2 c V=8.2.32-1~deb12u1; c=$(cname "$fx")
+  local pk="php8.2-fpm php8.2-cli php8.2-common php8.2-opcache php8.2-readline php8.2-bcmath php8.2-curl php8.2-gd php8.2-intl php8.2-mbstring php8.2-pgsql php8.2-soap php8.2-xml php8.2-zip"
+  if [ "$mode" = nofix ]; then docker cp testing/lab/variants/d12/99phosphor-hide-fix "$c:/etc/apt/preferences.d/99phosphor-hide-fix" >/dev/null; fi
+  docker exec "$c" sh -c "set -e; export DEBIAN_FRONTEND=noninteractive; apt-get update -qq
+    apt-get install -y -qq --no-install-recommends $(for p in $pk; do printf '%s=%s ' "$p" "$V"; done) >/dev/null
+    if [ $mode = held ]; then apt-mark hold $pk >/dev/null; fi
+    ! php -m | grep -qiE '^(pdo_sqlite|sqlite3)$'
+    php -m | grep -qx pdo_pgsql
+    mkdir -p /usr/local/lib/phosphor-lab-kit /etc/phosphor-lab /var/www/html" || die "d12: php8.2 packages failed to install"
+  docker cp testing/lab/docker/kit/kit.php "$c:/usr/local/lib/phosphor-lab-kit/kit.php" >/dev/null
+  docker cp testing/lab/docker/kit/faults.php "$c:/usr/local/lib/phosphor-lab-kit/faults.php" >/dev/null
+  docker cp testing/lab/variants/phpfpm/app/. "$c:/var/www/html/" >/dev/null
+  printf 'map $http_user_agent $phosphor_log {\n    "phosphor-lab-health" 0;\n    default 1;\n}\n' | docker exec -i "$c" sh -c 'cat > /etc/nginx/conf.d/00-phosphor-lab-log.conf'
+  sed 's#unix:/run/php-fpm.sock#unix:/run/php/php8.2-fpm.sock#g; s#custom php-fpm#Debian php8.2-fpm#; s#access.log combined;#access.log combined if=$phosphor_log;#' testing/lab/variants/phpfpm/nginx-site.conf \
+    | docker exec -i "$c" sh -c 'cat > /etc/nginx/sites-available/default'
+  docker exec "$c" sh -c "set -e; echo 80232 > /etc/phosphor-lab/base-version-id; rm -f /var/www/html/index.html; chown -R www-data:www-data /var/www/html
+    systemctl enable --now php8.2-fpm >/dev/null 2>&1; systemctl restart php8.2-fpm; nginx -t 2>/dev/null && systemctl reload nginx
+    for i in 1 2 3 4 5 6 7 8 9 10; do curl -fsS http://localhost/_phosphor_lab/version >/dev/null 2>&1 && break; sleep 1; done
+    curl -fsS http://localhost/_phosphor_lab/version >/dev/null; echo $mode > /etc/phosphor-lab/provisioned" || die "d12: php8.2-fpm did not come up"
+  cmd_load "$fx" on 2>/dev/null || true
+}
+
+cmd_fixture_reset() {
+  local fx; fx=$(resolve "$1"); shift || true
+  local files=(-f "$COMPOSE_YAML") post=() drop=() custom74=0 phpfpm="" d12mode=plain
+  for kv in "$@"; do
+    local k=${kv%%=*} v=${kv#*=}
+    local tmp="$STATE/override-$fx-$k.yaml"
+    case "$k" in
+      MEM) printf 'services:\n  %s:\n    mem_limit: %s\n    memswap_limit: %s\n' "$fx" "$v" "$v" > "$tmp"; files+=(-f "$tmp") ;;
+      PROGRESS|POOLOVR|HTACCESS|FPBREAK|ACCESSLOG) [ "$v" = 1 ] && post+=("$k") ;;
+      MAXCONN) post+=("MAXCONN_$v") ;;
+      LOGERRORS) post+=("LOGERRORS_$v") ;;
+      PHPREDIS) [ "$v" = 1 ] && post+=(PHPREDIS) ;;   # packaged php-redis (+ /_phosphor_lab/redis added to this fixture's load)
+      HOSTILEAPT) [ "$v" = 1 ] && { printf 'services:\n  %s:\n    labels:\n      phosphor.lab.hostile_apt: "1"\n' "$fx" > "$tmp"; files+=(-f "$tmp"); post+=(HOSTILEAPT); } ;;
+      APP) printf 'services:\n  %s:\n    labels:\n      phosphor.lab.app: "%s"\n' "$fx" "$v" > "$tmp"; files+=(-f "$tmp")
+           case "$v" in lintfail|deprec82) drop+=("app:$v") ;; *) post+=("APP_$v") ;; esac ;;
+      HELD|NOFIX) [ "$v" = 1 ] || die "$k=1"; [ "$fx" = d12 ] || die "$k is a d12 variant"
+           d12mode=$(echo "$k" | tr 'A-Z' 'a-z')
+           printf 'services:\n  %s:\n    labels:\n      phosphor.lab.d12.mode: "%s"\n' "$fx" "$d12mode" > "$tmp"; files+=(-f "$tmp") ;;
+      PHPFPM) [ "$fx" = n ] || die "PHPFPM=<version> is an (n) variant (Debian 12, OpenSSL 3)"
+           [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "PHPFPM=<x.y.z>, e.g. PHPFPM=8.4.26"
+           # the official docker-library php:<v>-fpm-bookworm build installed as a customer-style /usr/local PHP on (n)
+           printf 'services:\n  %s:\n    labels:\n      phosphor.lab.phpfpm: "%s"\n      phosphor.lab.php.version: "%s"\n      phosphor.lab.php.sapis: "fpm,cli"\n      phosphor.lab.php.prefix: "/usr/local"\n      phosphor.lab.php.provenance: "custom"\n      phosphor.lab.php.fpm_unit: "php-fpm.service"\n      phosphor.lab.php.openssl: "system 3.0"\n' "$fx" "$v" "$v" > "$tmp"
+           files+=(-f "$tmp"); phpfpm=$v ;;
+      CUSTOM74) [ "$v" = 1 ] || die "CUSTOM74=1"; [ "$fx" = k2 ] || die "CUSTOM74 is a k2 variant (mixed host)"
+           # labels describe the SECOND runtime; the first stays ondrej php5.6 (P2, fixed 5.6.40-105 offered)
+           printf 'services:\n  %s:\n    labels:\n      phosphor.lab.custom74: "7.4.33 /usr/local, private shared OpenSSL 1.1.1w (image of f), php74-fpm.service, /php74/"\n' "$fx" > "$tmp"
+           files+=(-f "$tmp"); custom74=1 ;;
+      PLUGIN) case "$v" in blocking82) ;; *) die "PLUGIN=blocking82" ;; esac
+           printf 'services:\n  %s:\n    labels:\n      phosphor.lab.plugin: "%s"\n' "$fx" "$v" > "$tmp"; files+=(-f "$tmp"); drop+=("plugin:$v") ;;
+      *) die "unknown variant $k" ;;
+    esac
+  done
+  local dc=(docker compose -p "phosphor-$NS" "${files[@]}" --env-file "$STATE/compose.env")
+  "${dc[@]}" up -d --force-recreate --no-deps --no-build --wait "$fx" >/dev/null 2>&1 || "${dc[@]}" up -d --force-recreate --no-deps --no-build --wait "$fx"
+  rm -f "$STATE"/override-"$fx"-*.yaml
+  for p in "${post[@]+"${post[@]}"}"; do docker exec -u0 "$(cname "$fx")" /usr/local/lib/phosphor-lab-kit/variants/apply.sh "$p"; done
+  for p in "${post[@]+"${post[@]}"}"; do
+    case "$p" in PHPREDIS) cmd_load "$fx" add=/_phosphor_lab/redis 2>/dev/null || true ;; esac
+  done
+  # static-verify code variants (host files under testing/lab/variants/, copied in; the image is unchanged):
+  #   APP=lintfail   phosphor-app/broken.php: a syntax error on every PHP version (php -l fails on 7.4 and 8.2)
+  #   APP=deprec82   phosphor-app/legacy-encoding.php: only 8.2 DEPRECATIONS (PHPCompatibility 8.2-: 0 errors, 3 warnings)
+  #   PLUGIN=blocking82  wp-content/plugins/phosphor-legacy-gallery/: third-party plugin using each()/create_function()
+  #                      (removed in 8.0 → blocking for 8.2) on a WordPress fixture with clean first-party code
+  local d c; c=$(cname "$fx")
+  for d in "${drop[@]+"${drop[@]}"}"; do
+    local kind=${d%%:*} name=${d#*:} dest
+    dest=$(docker exec "$c" sh -c '. /etc/phosphor-lab/fixture.env; echo "${PHOSPHOR_APP_DIR}|${PHOSPHOR_DOCROOT}"')
+    case "$kind" in
+      app) dest=${dest%%|*}; [ -n "$dest" ] || die "APP=$name needs a fixture with phosphor-app/ (i, a, l)"
+           for f in testing/lab/variants/"$name"/*; do docker cp "$f" "$c:$dest/" >/dev/null; done ;;
+      plugin) dest=${dest#*|}/wp-content/plugins
+           docker exec "$c" test -d "$dest" || die "PLUGIN=$name needs a WordPress fixture (a, i, l)"
+           docker cp testing/lab/variants/"$name"/. "$c:$dest/" >/dev/null ;;
+    esac
+    docker exec "$c" sh -c "chown -R --reference='$dest' '$dest' 2>/dev/null || true"
+  done
+  if [ $custom74 = 1 ]; then add_custom74 "$fx"; fi
+  if [ -n "$phpfpm" ]; then add_phpfpm "$fx" "$phpfpm"; fi
+  if [ "$fx" = d12 ]; then provision_d12 "$fx" "$d12mode"; fi
+}
+
+cmd_sh() {
+  local fx=$1; shift
+  [ "${1:-}" = "--" ] && shift
+  docker exec -u0 "$(cname "$fx")" "$@"
+}
+
+cmd_port() { docker port "$(cname "$1")" 80/tcp | head -1 | sed 's/.*://'; }
+cmd_rid() { echo "docker:$(cname "$1")"; }
+
+cmd_fault() {
+  local fx=$1 op=$2; shift 2
+  local c; c=$(cname "$fx")
+  case "$op" in
+    clear) docker exec -u0 "$c" rm -f /etc/phosphor-lab/faults ;;
+    set)
+      local name=$1; shift
+      local cur; cur=$(docker exec -u0 "$c" sh -c 'cat /etc/phosphor-lab/faults 2>/dev/null || echo "{}"')
+      local val=true
+      if [ $# -gt 0 ]; then
+        val="{}"
+        for kv in "$@"; do val=$(jq -c --arg k "${kv%%=*}" --arg v "${kv#*=}" '. + {($k): ($v|tonumber? // $v)}' <<<"$val"); done
+      fi
+      jq -c --arg n "$name" --argjson v "$val" '. + {($n): $v}' <<<"$cur" | docker exec -i -u0 "$c" sh -c 'mkdir -p /etc/phosphor-lab && cat > /etc/phosphor-lab/faults'
+      ;;
+    *) die "fault set|clear" ;;
+  esac
+  return 0
+}
+
+cmd_load() {
+  local fx; fx=$(resolve "$1"); local arg=$2 q
+  case "$arg" in
+    on|off) q="state=$arg" ;;
+    rps=*) q="$arg" ;;
+    add=*|del=*|post=*|urls=*) q="$arg" ;;
+    nopost) q="nopost=1" ;;
+    *) die "load on|off|rps=N|add=PATH|del=PATH|urls=P1,P2,…|post=PATH|nopost" ;;
+  esac
+  curl -fsS -X POST "http://localhost:$LOADGEN_PORT/fx/$fx?$q" >/dev/null
+}
+
+# builder up [--php V] [--os IMAGE] | sh -- cmd… | repro <php-binary> | down — throwaway build host: a fresh
+# container (default debian:12, stock sources, nothing installed) on the namespace network with the build-fixture
+# limits, the apt-archive fallback and the gh-24488 reproducer. Named phosphor-<ns>-builder, removed on stop (--rm);
+# discoverable as docker:phosphor-<ns>-builder (labels phosphor.lab.kind=vm, phosphor.lab.builder=1, no phosphor.lab.fx).
+cmd_builder() {
+  local op=${1:-}; shift || true
+  local c=phosphor-$NS-builder
+  case "$op" in
+    up)
+      local php="" os=debian:12
+      while [ $# -gt 0 ]; do case "$1" in --php) php=$2; shift 2 ;; --os) os=$2; shift 2 ;; *) die "builder up [--php V] [--os IMAGE]" ;; esac; done
+      docker network inspect "phosphor-$NS" >/dev/null 2>&1 || die "namespace $NS has no network: lab up first"
+      docker rm -f "$c" >/dev/null 2>&1 || true
+      . "$STATE/compose.env"
+      docker run -d --rm --name "$c" --hostname "$c" --network "phosphor-$NS" --add-host host.docker.internal:host-gateway \
+        --memory "$PHOSPHOR_LAB_BUILD_MEM" --memory-swap "$PHOSPHOR_LAB_BUILD_MEM" --cpus "$PHOSPHOR_LAB_BUILD_CPUS" \
+        --label "phosphor.lab.ns=$NS" --label phosphor.lab.kind=vm --label phosphor.lab.builder=1 --label phosphor.lab.exposure=internal \
+        --label "phosphor.lab.os=$os" --label "phosphor.lab.builder.php=$php" \
+        "$os" sleep infinity >/dev/null
+      docker exec "$c" mkdir -p /usr/local/lib/phosphor-lab-kit
+      docker cp testing/lab/docker/kit/apt-archive "$c:/usr/local/bin/apt-archive" >/dev/null
+      docker cp testing/lab/docker/kit/scripts/gh24488-repro.php "$c:/usr/local/lib/phosphor-lab-kit/gh24488-repro.php" >/dev/null
+      echo "docker:$c ($os${php:+, php $php})" ;;
+    sh) [ "${1:-}" = "--" ] && shift; docker exec -u0 "$c" "$@" ;;
+    repro)
+      # repro <php-binary> [container]: runs the gh-24488 reproducer with that binary; exit 0 = "done", 1 = crashed
+      local bin=${1:?php binary path}; local t=${2:-$c}
+      [ "$t" = "$c" ] || t=$(cname "$t")
+      docker cp testing/lab/docker/kit/scripts/gh24488-repro.php "$t:/tmp/gh24488-repro.php" >/dev/null
+      local out rc=0; out=$(docker exec "$t" "$bin" -n /tmp/gh24488-repro.php 2>&1) || rc=$?
+      echo "$out" | tail -2; echo "exit=$rc"
+      if [ $rc -eq 0 ] && echo "$out" | grep -q '^done$'; then echo "gh24488: not reproduced (fixed or unaffected)"; return 0; fi
+      echo "gh24488: REPRODUCED (crash)"; return 1 ;;
+    down) docker rm -f "$c" >/dev/null 2>&1 || true ;;
+    *) die "builder up [--php V] [--os IMAGE] | sh -- cmd… | repro <php-binary> [fx] | down" ;;
+  esac
+}
+
+# flood <fx> [kind=multipart|get] [path=P] [mb=N] [rate=R] [conc=C] [dur=S] | flood <fx> stop | flood <fx> status
+# Exploit-style flood from loadgen (inside the lab network, so it goes through the fixture's own front proxy), on top of
+# normal load (oversized multipart; pm.max_children saturation: kind=get path=/_phosphor_lab/sleep?s=20 conc=…;
+# >5x-baseline multipart 502s: path=/_phosphor_lab/oom74 mb=16 rate=40).
+cmd_flood() {
+  local fx; fx=$(resolve "$1"); shift
+  local u="http://localhost:$LOADGEN_PORT/flood/$fx"
+  case "${1:-}" in
+    stop) curl -fsS -X POST "$u?stop=1" >/dev/null ;;
+    status) curl -fsS "$u"; echo ;;
+    *) local q="" kv; for kv in "$@"; do case "$kv" in kind=*|path=*|mb=*|rate=*|conc=*|dur=*) q="$q&$(printf %s "$kv" | sed 's/?/%3F/g; s/&/%26/g')" ;; *) die "flood: unknown arg $kv" ;; esac; done
+       curl -fsS -X POST "$u?${q#&}" >/dev/null ;;
+  esac
+}
+
+SNAP_SCRIPT='
+set -e
+EX="/proc /sys /dev /run /tmp/phosphor-lab /var/log /var/lib/systemd /var/cache/apt /var/lib/apt/lists /var/lib/dnf /var/cache/dnf"
+args=""
+for e in $EX; do args="$args -path $e -prune -o"; done
+eval "find / $args -type f -print0" 2>/dev/null | xargs -0 sha256sum 2>/dev/null | awk "{h=\$1; \$1=\"\"; sub(/^ /,\"\"); print \"F \" h \" \" \$0}"
+find / -xdev \( -path /proc -o -path /sys -o -path /dev -o -path /run \) -prune -o -type l -printf "L %p -> %l\n" 2>/dev/null | grep -Ev "^L /(var/log|var/lib/systemd|tmp/phosphor-lab)" || true
+if command -v dpkg-query >/dev/null; then dpkg-query -W -f "P \${Package} \${Version}\n"; fi
+if command -v rpm >/dev/null; then rpm -qa --qf "P %{NAME} %{VERSION}-%{RELEASE}\n"; fi
+if command -v apt-mark >/dev/null; then apt-mark showhold | sed "s/^/H /"; fi
+if command -v dnf >/dev/null; then dnf -q versionlock list 2>/dev/null | sed "s/^/H /" || true; fi
+if command -v systemctl >/dev/null && [ -d /run/systemd/system ]; then systemctl list-unit-files --state=enabled --no-legend 2>/dev/null | awk "{print \"U \" \$1}"; fi
+for d in /var/spool/cron/crontabs /var/spool/cron; do [ -d $d ] && for f in $d/*; do [ -f "$f" ] && sed "s|^|C $f |" "$f"; done; done
+exit 0
+'
+cmd_snap() {
+  local fx=$1 out=$2
+  docker exec -i -u0 "$(cname "$fx")" sh -s <<<"$SNAP_SCRIPT" | LC_ALL=C sort -u > "$out"
+}
+
+cmd_snapdiff() {
+  local a=$1 b=$2 t="$STATE/snapdiff.$$"
+  if diff <(cat "$a") <(cat "$b") > "$t"; then rm -f "$t"; return 0; fi
+  awk '/^[<>] F /{print $1, $4}/^[<>] [PHUCL] /{print}' "$t" | sort | uniq
+  rm -f "$t"
+  return 1
+}
+
+# ---- residue check: a verify must leave no residue behind ----
+# residue <fx> save [name] | check [name]: snapshot / compare everything a check, build or swap could leave behind in a fixture:
+#   P  processes (unique command lines; transient cron jobs and the lab's own probes ignored)
+#   T  listening TCP sockets (addr:port from /proc/net/tcp{,6}, loopback included)
+#   C  containers on the namespace network (sidecars), by name
+#   F/L/P/H/U/C host state (lab snap): files, symlinks, packages, holds, enabled units, crontabs — /opt/phosphor/state ignored
+# check prints "+ " (extra) / "- " (missing) lines and exits 1 on any difference.
+RESIDUE_SCRIPT='
+for p in /proc/[0-9]*; do
+  c=$(tr "\000" " " < $p/cmdline 2>/dev/null) || continue
+  [ -n "$c" ] && echo "P ${c% }"
+done
+for f in /proc/net/tcp /proc/net/tcp6; do [ -r $f ] && awk "NR>1 && \$4==\"0A\" {print \"T \" \$2}" $f; done
+exit 0
+'
+residue_collect() {   # residue_collect <fx> <dir>
+  local fx=$1 d=$2 c; c=$(cname "$fx")
+  mkdir -p "$d"
+  docker exec -i -u0 "$c" sh -s <<<"$RESIDUE_SCRIPT" \
+    | grep -vE '^P (sh -s|/bin/sh -c .*acme/bin/worker\.php.*|php /srv/acme/bin/worker\.php|/usr/sbin/CRON -f.*|/usr/sbin/cron -f.*|sleep [0-9]+)$' \
+    | while read -r kind v; do
+        if [ "$kind" = T ]; then   # hex addr:port → readable (v4 little-endian; v6 shown as hex with decimal port)
+          local a=${v%:*} port=$((16#${v#*:}))
+          if [ ${#a} -eq 8 ]; then echo "T $((16#${a:6:2})).$((16#${a:4:2})).$((16#${a:2:2})).$((16#${a:0:2})):$port"; else echo "T [$a]:$port"; fi
+        else echo "$kind $v"; fi
+      done | LC_ALL=C sort -u > "$d/proc"
+  docker network inspect "phosphor-$NS" -f '{{range .Containers}}{{println .Name}}{{end}}' 2>/dev/null | grep . | sed 's/^/C /' | LC_ALL=C sort -u > "$d/ctr"
+  cmd_snap "$fx" "$d/snap.raw"
+  grep -vE '^[FL] ([0-9a-f]+ )?/opt/phosphor/state(/|$)' "$d/snap.raw" > "$d/snap"; rm -f "$d/snap.raw"
+}
+
+cmd_residue() {
+  local fx; fx=$(resolve "${1:?residue <fx> save|check [name]}"); local op=${2:-}; local name=${3:-base}
+  local base="$STATE/residue/$fx-$name"
+  case "$op" in
+    save) rm -rf "$base"; residue_collect "$fx" "$base"; echo "residue baseline $fx/$name: $(wc -l < "$base/proc" | tr -d ' ') proc/ports, $(wc -l < "$base/ctr" | tr -d ' ') containers, $(wc -l < "$base/snap" | tr -d ' ') state lines" ;;
+    check)
+      [ -d "$base" ] || die "no residue baseline $fx/$name (lab residue $fx save $name)"
+      local now="$STATE/residue/$fx-$name.now"; rm -rf "$now"; residue_collect "$fx" "$now"
+      local out=""
+      for k in proc ctr snap; do
+        out="$out$( { diff "$base/$k" "$now/$k" || true; } | awk '/^> /{print "+ " substr($0,3)} /^< /{print "- " substr($0,3)}')
+"
+      done
+      out=$(printf '%s' "$out" | grep . || true)
+      rm -rf "$now"
+      if [ -z "$out" ]; then echo "no residue ($fx vs $name)"; return 0; fi
+      echo "RESIDUE ($fx vs $name):"; echo "$out"; return 1 ;;
+    *) die "residue <fx> save|check [name]" ;;
+  esac
+}
+
+# sidecars: containers on the namespace network that compose did not create (none expected: any is residue)
+sidecars() {
+  docker network inspect "phosphor-$NS" -f '{{range .Containers}}{{println .Name}}{{end}}' 2>/dev/null | grep . | while read -r n; do
+    [ -z "$(docker inspect -f '{{index .Config.Labels "com.docker.compose.project"}}' "$n" 2>/dev/null)" ] && echo "$n"
+  done; return 0
+}
+
+cmd_break_binary() {
+  local fx=$1 path=$2
+  docker exec -u0 "$(cname "$fx")" sh -c "printf '#!/bin/sh\nexit 78\n' > '$path' && chmod 0755 '$path'"
+}
+
+# ---- network faults, applied in the fixture's netns from a sidecar (the fixture's filesystem is never edited) ----
+NETTOOL=phosphor-lab/nettool:v3
+nettool() {
+  docker image inspect "$NETTOOL" >/dev/null 2>&1 || docker build -q -t "$NETTOOL" testing/lab/docker/nettool >/dev/null
+  docker run --rm --net "container:$1" --cap-add NET_ADMIN "$NETTOOL" sh -c "$2"
+}
+# block-host <fx> <host>: REJECT egress from the fixture to every address <host> resolves to (a moved/dead mirror)
+cmd_block_host() {
+  local c; c=$(cname "$1"); local h=$2
+  local ips; ips=$(docker exec "$c" getent ahostsv4 "$h" 2>/dev/null | awk '{print $1}' | sort -u)
+  [ -n "$ips" ] || die "cannot resolve $h from $c"
+  local rules="iptables -N PHOSPHOR-BLOCK 2>/dev/null; iptables -C OUTPUT -j PHOSPHOR-BLOCK 2>/dev/null || iptables -I OUTPUT -j PHOSPHOR-BLOCK;"
+  local ip; for ip in $ips; do rules="$rules iptables -A PHOSPHOR-BLOCK -d $ip -m comment --comment 'phosphor-block $h' -j REJECT;"; done
+  nettool "$c" "$rules"
+  echo "blocked $h ($(echo $ips | tr '\n' ' ')) from $c"
+}
+cmd_unblock_host() {
+  local c; c=$(cname "$1"); local h=${2:-}
+  if [ -z "$h" ]; then nettool "$c" "iptables -F PHOSPHOR-BLOCK 2>/dev/null; true"
+  else nettool "$c" "iptables -S PHOSPHOR-BLOCK 2>/dev/null | grep \"phosphor-block $h\" | sed 's/^-A/-D/' | while read -r r; do eval iptables \$r; done; true"; fi
+}
+# offline <fx>: DROP all egress except loopback, the lab network (loadgen replies) and host.docker.internal
+cmd_offline() {
+  local c; c=$(cname "$1")
+  local gw; gw=$(docker exec "$c" getent ahostsv4 host.docker.internal 2>/dev/null | awk 'NR==1{print $1}')
+  local sub; sub=$(docker network inspect "phosphor-$NS" -f '{{(index .IPAM.Config 0).Subnet}}')
+  nettool "$c" "iptables -N PHOSPHOR-OFFLINE 2>/dev/null; iptables -F PHOSPHOR-OFFLINE; iptables -C OUTPUT -j PHOSPHOR-OFFLINE 2>/dev/null || iptables -I OUTPUT -j PHOSPHOR-OFFLINE;
+    iptables -A PHOSPHOR-OFFLINE -o lo -j RETURN; iptables -A PHOSPHOR-OFFLINE -m state --state ESTABLISHED,RELATED -j RETURN;
+    iptables -A PHOSPHOR-OFFLINE -d $sub -j RETURN; ${gw:+iptables -A PHOSPHOR-OFFLINE -d $gw -j RETURN;} iptables -A PHOSPHOR-OFFLINE -j DROP"
+}
+cmd_online() { nettool "$(cname "$1")" "iptables -F PHOSPHOR-OFFLINE 2>/dev/null; true"; }
+
+
+usage() {
+  cat >&2 <<'EOF'
+usage: lab <cmd>   (namespace: PHOSPHOR_LAB_NS, default dev; sizing: PHOSPHOR_LAB_MEM=24g|8g)
+  up [--batch B] [fx…]      build (cached) + start fixtures, health-gated (default batch core)
+  build [--batch B] [fx…]   build images only
+  down [--batch B] [fx…]    stop fixtures (no args: whole namespace)       reset   down -v
+  status [--stable|--json]  fixture table / stable signal (exit 0 = stable) wait-stable [secs]
+  ls                        fixture table (letters, ports, batches)
+  env                       print exports for this namespace                label <fx> [key]
+  fixture-reset <fx> [MEM=1g|PROGRESS=1|POOLOVR=1|HTACCESS=1|APP=joomla310|APP=legacy74|FPBREAK=1|MAXCONN=50|ACCESSLOG=1|HOSTILEAPT=1|LOGERRORS=0|PHPREDIS=1|APP=lintfail|APP=deprec82|PLUGIN=blocking82|CUSTOM74=1|PHPFPM=<x.y.z>|HELD=1|NOFIX=1 (d12)]
+  sh <fx> -- cmd…   port <fx>   rid <fx>   fault <fx> set|clear   load <fx> on|off|rps=N|…
+  snap <fx> <file>   snapdiff <a> <b>   break-binary <fx> <path>
+  block-host <fx> <host>   unblock-host <fx> [host]   offline <fx>   online <fx>
+  builder up [--php V] [--os IMG] | sh -- cmd | repro <php-bin> [fx] | down
+  residue <fx> save|check [name]   (verify: no extra processes/ports/sidecars/files outside /opt/phosphor/state)
+  flood <fx> [kind=multipart|get] [path=P] [mb=N] [rate=R] [conc=C] [dur=S] | stop | status
+  claim [also-allowed…] / owner   namespace ownership (PHOSPHOR_LAB_OWNER); mutating commands refuse a non-owner; lab --force <cmd>
+batches: core core-1 core-2 b2 b3 b3a b3b b4 b4a b4b b5 all
+EOF
+  exit 2
+}
+
+# ---- namespace ownership: mutating commands only for the owner (never operate on someone else's ns) ----
+# .cache/lab/<ns>/owner holds the owner(s), one per line (first = owner, others = allowed users); callers identify with PHOSPHOR_LAB_OWNER. An unowned
+# namespace is claimed by the first `up`/`claim` that sets PHOSPHOR_LAB_OWNER. Override: `lab --force <cmd>`.
+FORCE_OWNER=${PHOSPHOR_LAB_FORCE_OWNER:-0}
+if [ "${1:-}" = --force ]; then FORCE_OWNER=1; shift; fi
+owner_of() { cat "$STATE/owner" 2>/dev/null | tr '\n' ' ' | sed 's/ $//' || true; }
+guard() {
+  local o; o=$(owner_of)
+  [ -z "$o" ] && return 0
+  grep -qx -- "${PHOSPHOR_LAB_OWNER:-<unset>}" "$STATE/owner" && return 0
+  [ "$FORCE_OWNER" = 1 ] && { log "--force: acting on $NS owned by $o as '${PHOSPHOR_LAB_OWNER:-unset}'"; return 0; }
+  die "namespace $NS is owned by $o (you: PHOSPHOR_LAB_OWNER='${PHOSPHOR_LAB_OWNER:-}'); ask $o, or set PHOSPHOR_LAB_OWNER=$o if you are them (override: lab --force …)"
+}
+auto_claim() { [ -z "$(owner_of)" ] && [ -n "${PHOSPHOR_LAB_OWNER:-}" ] && echo "$PHOSPHOR_LAB_OWNER" > "$STATE/owner"; return 0; }
+cmd_claim() {
+  [ -n "${PHOSPHOR_LAB_OWNER:-}" ] || die "claim: set PHOSPHOR_LAB_OWNER=<your agent name>"
+  local o; o=$(owner_of)
+  if [ -n "$o" ] && ! grep -qx -- "$PHOSPHOR_LAB_OWNER" "$STATE/owner" && [ "$FORCE_OWNER" != 1 ]; then die "namespace $NS is owned by $o"; fi
+  local u; { echo "$PHOSPHOR_LAB_OWNER"; for u in "$@"; do echo "$u"; done; } | awk '!seen[$0]++' > "$STATE/owner.tmp"
+  [ -n "$o" ] && grep -vxF -f "$STATE/owner.tmp" "$STATE/owner" >> "$STATE/owner.tmp" || true
+  mv "$STATE/owner.tmp" "$STATE/owner"; echo "$NS owners: $(owner_of)"
+}
+
+sub=${1:-}; shift || true
+# Docker Desktop is the user's app: lab never runs `docker desktop …`, never quits/restarts it and never
+# changes its resources; if the daemon is down it stops and asks for it to be reported.
+case "$sub" in
+  ""|ls|env|claim|owner|help|-h|--help) ;;
+  *) docker version --format '{{.Server.Version}}' >/dev/null 2>&1 \
+       || die "Docker daemon is not reachable. Do not start or restart Docker Desktop from here; ask whoever runs this machine." ;;
+esac
+case "$sub" in
+  up|build|down|reset|fixture-reset|fault|load|flood|builder|block-host|unblock-host|offline|online|break-binary) guard ;;
+esac
+case "$sub" in up|build) auto_claim ;; esac
+case "$sub" in
+  claim) cmd_claim "$@" ;;
+  owner) echo "${NS}: $(owner_of || true)" ;;
+  up) cmd_up "$@" ;;
+  build) cmd_build "$@" ;;
+  down) cmd_down "$@" ;;
+  reset) cmd_reset ;;
+  status) cmd_status "$@" ;;
+  wait-stable) cmd_wait_stable "$@" ;;
+  ls) cmd_ls ;;
+  env) cmd_env ;;
+  label) cmd_label "$@" ;;
+  fixture-reset) cmd_fixture_reset "$@" ;;
+  sh) cmd_sh "$@" ;;
+  port) cmd_port "$@" ;;
+  rid) cmd_rid "$@" ;;
+  fault) cmd_fault "$@" ;;
+  load) cmd_load "$@" ;;
+  flood) cmd_flood "$@" ;;
+  residue) cmd_residue "$@" ;;
+  builder) cmd_builder "$@" ;;
+  snap) cmd_snap "$@" ;;
+  snapdiff) cmd_snapdiff "$@" ;;
+  break-binary) cmd_break_binary "$@" ;;
+  block-host) cmd_block_host "$@" ;;
+  unblock-host) cmd_unblock_host "$@" ;;
+  offline) cmd_offline "$@" ;;
+  online) cmd_online "$@" ;;
+  *) usage ;;
+esac

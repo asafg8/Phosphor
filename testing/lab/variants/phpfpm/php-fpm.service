@@ -1,0 +1,14 @@
+# PHP-FPM from the official docker-library build (/usr/local, built WITHOUT --with-fpm-systemd → Type=simple),
+# installed on (n) by the PHPFPM=<version> variant: a customer-style custom build on Debian 12 / OpenSSL 3
+[Unit]
+Description=PHP FastCGI Process Manager (custom /usr/local)
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/run/php-fpm.pid
+ExecStart=/usr/local/sbin/php-fpm --nodaemonize --fpm-config /usr/local/etc/php-fpm.conf --pid /run/php-fpm.pid
+ExecReload=/bin/kill -USR2 $MAINPID
+
+[Install]
+WantedBy=multi-user.target

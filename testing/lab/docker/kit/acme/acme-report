@@ -1,0 +1,8 @@
+#!/usr/bin/php
+<?php
+// acme report script (shebang consumer)
+if (in_array('--version', $argv)) {
+    echo PHP_VERSION . "\n";
+    exit(0);
+}
+echo "acme report\n";

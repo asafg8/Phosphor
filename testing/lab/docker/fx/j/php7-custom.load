@@ -1,0 +1,2 @@
+# custom PHP 7.4.33 mod_php (built with apxs, kept under its own prefix)
+LoadModule php7_module /usr/local/php74-apache/modules/libphp7.so

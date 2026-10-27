@@ -1,0 +1,114 @@
+# phosphor corpus lab. Real apps on the images customers run.
+# Up:   docker compose --profile c001 up -d   (then install + smoke)
+# Labels: only phosphor.corpus.* here, so an unscoped `phosphor discover` on the shared daemon never sees the corpus.
+# To run phosphor against it, add the overlay, which adds phosphor.lab.* + phosphor.lab.ns=corpus and
+# the phosphor-lab network, and use PHOSPHOR_LAB_NS=corpus:
+#   docker compose -f compose.yaml -f compose.phosphor.yaml --profile c001 up -d c001     # labels on
+#   docker compose -f compose.yaml --profile c001 up -d c001                         # labels off again
+# Docroots are named volumes (phosphor-corpus-cNNN-html), so recreating a container keeps the installed app.
+name: phosphor-corpus
+
+x-db: &db
+  image: mariadb:10.6
+  environment:
+    MARIADB_ROOT_PASSWORD: corpus-root
+    MARIADB_DATABASE: app
+    MARIADB_USER: app
+    MARIADB_PASSWORD: app-pass
+  mem_limit: 512m
+  cpus: 1.0
+  networks: [phosphor-corpus]
+  healthcheck:
+    test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+    interval: 3s
+    timeout: 5s
+    retries: 60
+
+networks:
+  phosphor-corpus:
+    name: phosphor-corpus
+
+volumes:
+  c001-html: { name: phosphor-corpus-c001-html }
+  c002-html: { name: phosphor-corpus-c002-html }
+  c003-html: { name: phosphor-corpus-c003-html }
+
+services:
+  # C-001 WordPress 5.9 + WooCommerce/CF7/Elementor/... on the official wordpress:5.9-php7.4-apache (PHP 7.4.29)
+  c001-db:
+    <<: *db
+    container_name: phosphor-corpus-c001-db
+    profiles: [c001]
+  c001:
+    image: wordpress:5.9-php7.4-apache
+    container_name: phosphor-corpus-c001
+    profiles: [c001]
+    depends_on: { c001-db: { condition: service_healthy } }
+    environment:
+      WORDPRESS_DB_HOST: c001-db
+      WORDPRESS_DB_USER: app
+      WORDPRESS_DB_PASSWORD: app-pass
+      WORDPRESS_DB_NAME: app
+      WORDPRESS_CONFIG_EXTRA: "define('WP_ENVIRONMENT_TYPE','local'); define('DISABLE_WP_CRON', false);"
+    volumes:
+      - ../../../.cache/corpus:/corpus:ro
+      - c001-html:/var/www/html
+    ports: ["127.0.0.1:18081:80"]
+    mem_limit: 1g
+    cpus: 1.0
+    networks: [phosphor-corpus]
+    labels:
+      phosphor.corpus.fx: c001
+      phosphor.corpus.app: wp59-woo
+      phosphor.corpus.exposure: internet
+
+  # C-002 Joomla 3.10.11 on the official joomla:3.10-php7.4-apache (PHP 7.4.33)
+  c002-db:
+    <<: *db
+    container_name: phosphor-corpus-c002-db
+    profiles: [c002]
+  c002:
+    image: joomla:3.10-php7.4-apache
+    container_name: phosphor-corpus-c002
+    profiles: [c002]
+    depends_on: { c002-db: { condition: service_healthy } }
+    environment:
+      JOOMLA_DB_HOST: c002-db
+      JOOMLA_DB_USER: app
+      JOOMLA_DB_PASSWORD: app-pass
+      JOOMLA_DB_NAME: app
+    volumes:
+      - ../../../.cache/corpus:/corpus:ro
+      - ./c002:/recipe:ro
+      - c002-html:/var/www/html
+    ports: ["127.0.0.1:18082:80"]
+    mem_limit: 1g
+    cpus: 1.0
+    networks: [phosphor-corpus]
+    labels:
+      phosphor.corpus.fx: c002
+      phosphor.corpus.app: joomla310
+      phosphor.corpus.exposure: internal
+
+  # C-003 Drupal 7.92 + top contrib on the official drupal:7-php7.4-apache (PHP 7.4.33)
+  c003-db:
+    <<: *db
+    container_name: phosphor-corpus-c003-db
+    profiles: [c003]
+  c003:
+    image: drupal:7-php7.4-apache
+    container_name: phosphor-corpus-c003
+    profiles: [c003]
+    depends_on: { c003-db: { condition: service_healthy } }
+    volumes:
+      - ../../../.cache/corpus:/corpus:ro
+      - ./c003:/corpus-recipe:ro
+      - c003-html:/var/www/html
+    ports: ["127.0.0.1:18083:80"]
+    mem_limit: 1g
+    cpus: 1.0
+    networks: [phosphor-corpus]
+    labels:
+      phosphor.corpus.fx: c003
+      phosphor.corpus.app: drupal7
+      phosphor.corpus.exposure: internet
