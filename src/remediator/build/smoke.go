@@ -15,9 +15,14 @@ import (
 var SmokeTests = []string{"tests/basic", "tests/lang", "main/tests", "ext/session/tests", "Zend/tests"}
 
 // SmokeArgs is the exact run-tests invocation; php is the built sapi/cli/php. Only test directories that
-// exist in this tree are passed: run-tests aborts on a missing path (7.4.33's tarball has no main/tests).
-func SmokeArgs(php, summary string, extra []string, exists func(string) bool) []string {
+// exist in this tree are passed: run-tests aborts on a missing path (7.4.33's tarball has no main/tests). jobs > 1
+// runs that many run-tests workers (-jN, since 7.4), the build's make -j; tests that declare a CONFLICTS
+// section still run apart.
+func SmokeArgs(php, summary string, jobs int, extra []string, exists func(string) bool) []string {
 	a := []string{"run-tests.php", "-p", php, "-n", "-q", "--offline", "-s", summary}
+	if jobs > 1 {
+		a = append(a, "-j"+strconv.Itoa(jobs))
+	}
 	for _, t := range SmokeTests {
 		if exists == nil || exists(t) {
 			a = append(a, t)

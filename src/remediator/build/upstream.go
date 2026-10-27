@@ -253,13 +253,21 @@ func (j *job) smoke(tree, php, cgi string, keys []string) *c.Error {
 	if cgi != "" {
 		env = append(env, "TEST_PHP_CGI_EXECUTABLE="+cgi)
 	}
-	out, _ := j.r.Heavy(tree, 2*time.Hour, env, php, SmokeArgs(php, summary, j.a.Lab.SmokeExtra, func(t string) bool { return sys.IsDir(filepath.Join(tree, t)) })...)
+	out, _ := j.r.Heavy(tree, 2*time.Hour, env, php, SmokeArgs(php, summary, j.jobs(), j.a.Lab.SmokeExtra, func(t string) bool { return sys.IsDir(filepath.Join(tree, t)) })...)
 	text := SummaryText(sys.ReadString(summary), out)
 	_ = j.x.WriteFile("raw/run-tests-summary.txt", []byte(text))
 	_ = j.x.WriteFile("raw/run-tests.log", []byte(out))
 	sm, err := JudgeSmoke(text, j.a.Smoke, keys)
 	j.doc.Smoke = sm
 	return err
+}
+
+// jobs is the build's parallelism (make -j); 1 before the guardrails ran.
+func (j *job) jobs() int {
+	if j.g == nil {
+		return 1
+	}
+	return j.g.Jobs
 }
 
 var installTargetsRE = regexp.MustCompile(`(?m)^install_targets\s*=\s*(.*)$`)
