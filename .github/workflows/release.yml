@@ -1,0 +1,51 @@
+# release: on a published GitHub release, test and build the tagged commit and attach the Linux binaries (plus
+# SHA256SUMS) to that release.
+name: release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write # upload release assets
+
+jobs:
+  binaries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0 # `git describe --tags` in the Makefile stamps the version
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        # stamp the release's own tag: `git describe` may pick another tag on the same commit
+        run: make build VERSION="$TAG"
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+
+      - name: Check binaries
+        run: |
+          file bin/phosphor-linux-amd64 bin/phosphor-linux-arm64 | tee /dev/stderr | grep -c 'statically linked' | grep -qx 2
+          bin/phosphor version | tee /dev/stderr | grep -q "^${TAG}-"
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+
+      - name: Checksums
+        working-directory: bin
+        run: sha256sum phosphor-linux-amd64 phosphor-linux-arm64 | tee SHA256SUMS
+
+      - name: Attach to the release
+        run: >-
+          gh release upload "$TAG" --clobber
+          bin/phosphor-linux-amd64 bin/phosphor-linux-arm64 bin/SHA256SUMS
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
