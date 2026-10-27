@@ -13,13 +13,17 @@ import (
 
 // Evidence is what a verdict is judged from. Every document is optional.
 type Evidence struct {
-	PlanReasons []c.Reason   // the plan row's reasons (requires-ubuntu-pro, provenance-unknown, …)
-	Scan        *c.Scan      // scan.json: runtime-risk pack, root errors, feature use
-	Readiness   *c.Scan      // readiness.json: PHPCompatibility at the migration target
-	Build       *c.Build     // build.json of the target (cache hit or compiled); blocked builds carry the reason
-	Preflight   *c.Preflight // preflight.json of the target, run without a swap
+	PlanReasons []c.Reason // the plan row's reasons (requires-ubuntu-pro, provenance-unknown, …)
+	Scan        *c.Scan    // scan.json: runtime-risk pack, root errors, feature use
+	Readiness   *c.Scan    // readiness.json: PHPCompatibility at the migration target
+	// ReadinessDoc is where that readiness is, relative to the output dir ("" = readiness.json).
+	ReadinessDoc string
+	Build        *c.Build     // build.json of the target (cache hit or compiled); blocked builds carry the reason
+	Preflight    *c.Preflight // preflight.json of the target, run without a swap
 	// PreflightDoc is where that preflight is, relative to the output dir ("" = preflight.json).
 	PreflightDoc string
+	// NoCodeRoots: the fingerprint knows no code this runtime runs (a CLI no cron or service uses).
+	NoCodeRoots bool
 	// ScanFailed: scan or readiness failed as a tool, so the code was not checked (cant-verify).
 	ScanFailed bool
 	// DepsDeclined: the target needed a build and the operator answered N to installing build deps (or could not be
@@ -236,7 +240,7 @@ func (j *judge) static() {
 			vr.Documents = appendOnce(vr.Documents, "scan.json")
 		}
 		if rd := ev.Readiness; rd != nil && rd.Decision != "" && rd.Decision != c.VerdictClear {
-			j.row(c.VerifyCheck{Check: "readiness", Status: "info", New: string(rd.Decision), Doc: "readiness.json"})
+			j.row(c.VerifyCheck{Check: "readiness", Status: "info", New: string(rd.Decision), Doc: j.ev.readinessDoc()})
 		}
 		j.unreadableRoots("info")
 	}
@@ -259,11 +263,17 @@ func (j *judge) unreadableRoots(status string) bool {
 
 func (j *judge) readiness() {
 	rd := j.ev.Readiness
+	if j.ev.NoCodeRoots {
+		// no code is known to run on this runtime (a CLI no cron or service uses): nothing to scan, nothing to rerun
+		j.add(c.VerifyReview, "no-code-roots", "unblock:none")
+		j.row(c.VerifyCheck{Check: "readiness", Status: "info", Log: "no code roots: nothing to scan"})
+		return
+	}
 	if rd == nil {
 		j.add(c.VerifyReview, "readiness-not-run", "unblock:run-readiness") // cross-minor is never ready without it
 		return
 	}
-	j.vr.Documents = appendOnce(j.vr.Documents, "readiness.json")
+	j.vr.Documents = appendOnce(j.vr.Documents, j.ev.readinessDoc())
 	firstParty := 0
 	for _, f := range rd.TopFindings {
 		if f.Type != "ERROR" {
@@ -272,7 +282,7 @@ func (j *judge) readiness() {
 		if f.FirstParty {
 			firstParty++
 			if firstParty <= maxRows {
-				j.row(c.VerifyCheck{Check: "readiness", Status: "fail", File: f.File, Line: f.Line, Log: f.Source, Doc: "readiness.json"})
+				j.row(c.VerifyCheck{Check: "readiness", Status: "fail", File: f.File, Line: f.Line, Log: f.Source, Doc: j.ev.readinessDoc()})
 			}
 		}
 	}
@@ -589,4 +599,54 @@ func (j *judge) pfDoc() string {
 		return "preflight.json"
 	}
 	return j.ev.PreflightDoc
+}
+
+func (ev Evidence) readinessDoc() string {
+	if ev.ReadinessDoc == "" {
+		return "readiness.json"
+	}
+	return ev.ReadinessDoc
+}
+
+// scoped is sc limited to one runtime's code roots: its roots, findings, runtime-risk hits and feature-use evidence
+// (a feature with no evidence left is unused for this runtime). Counts and the decision stay as the run computed
+// them. A runtime without code roots keeps nothing; nil stays nil.
+func scoped(sc *c.Scan, roots []string) *c.Scan {
+	if sc == nil {
+		return nil
+	}
+	under := func(file string) bool {
+		for _, r := range roots {
+			if file == r || strings.HasPrefix(file, strings.TrimSuffix(r, "/")+"/") {
+				return true
+			}
+		}
+		return false
+	}
+	cp := *sc
+	cp.Roots = keep(sc.Roots, func(r c.ScanRoot) bool { return under(r.Path) })
+	cp.TopFindings = keep(sc.TopFindings, func(f c.Finding) bool { return under(f.File) })
+	cp.RuntimeRisk = keep(sc.RuntimeRisk, func(h c.RiskHit) bool { return under(h.File) })
+	cp.UploadsEvidence = keep(sc.UploadsEvidence, func(e c.FileLine) bool { return under(e.File) })
+	cp.FeatureUse = make([]c.ScanFeatureUse, 0, len(sc.FeatureUse))
+	for _, fu := range sc.FeatureUse {
+		ev := keep(fu.Evidence, func(e c.FeatureEvidence) bool { return under(e.File) })
+		if fu.Verdict == "used" && len(ev) == 0 {
+			fu.Verdict = "unused"
+		}
+		fu.Evidence = ev
+		cp.FeatureUse = append(cp.FeatureUse, fu)
+	}
+	return &cp
+}
+
+// keep is the elements of xs that ok accepts, never nil.
+func keep[T any](xs []T, ok func(T) bool) []T {
+	out := make([]T, 0, len(xs))
+	for _, x := range xs {
+		if ok(x) {
+			out = append(out, x)
+		}
+	}
+	return out
 }

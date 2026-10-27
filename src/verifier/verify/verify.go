@@ -58,7 +58,7 @@ type state struct {
 	fp           c.Fingerprint
 	prim         *c.Runtime
 	scan         *c.Scan
-	readiness    *c.Scan
+	readiness    map[string]*readinessRun // by runtime id; absent = not run for that runtime
 	plan         map[string]c.PlanRuntime
 	decisions    map[string]plan.Decision
 	t            target
@@ -72,7 +72,8 @@ type state struct {
 // Run is `phosphor verify`. Exit 0 every runtime ready or already fixed, 2 some review, 3 some will-break or
 // cant-verify, 1 a stage failed.
 func Run(o Options) int {
-	s := &state{o: o, out: o.Stdout, plan: map[string]c.PlanRuntime{}, decisions: map[string]plan.Decision{}}
+	s := &state{o: o, out: o.Stdout, plan: map[string]c.PlanRuntime{}, decisions: map[string]plan.Decision{},
+		readiness: map[string]*readinessRun{}}
 	if s.out == nil {
 		s.out = io.Discard
 	}
@@ -236,13 +237,52 @@ func (s *state) loadAsset() int {
 	return 0
 }
 
-// runScan runs `scan` (feature-use packs) and, when the primary runtime has a migration target, `readiness` at it.
+// readinessRun is one readiness document: a migration target over a set of code roots.
+type readinessRun struct {
+	doc  *c.Scan
+	path string // relative to the output dir
+}
+
+// readinessGroup is the runtimes that share a migration target: one readiness run covers their code roots.
+type readinessGroup struct {
+	target string
+	ids    []string
+	roots  []scan.Root
+}
+
+// readinessGroups groups the runtimes that have a migration target and code roots by target, in fingerprint
+// order. A runtime without code roots has nothing to scan and gets no readiness.
+func (s *state) readinessGroups() []*readinessGroup {
+	var groups []*readinessGroup
+	byTarget := map[string]*readinessGroup{}
+	for _, fr := range s.fp.Runtimes {
+		target := MigrationTarget(fr.Version, s.o.Target)
+		if target == "" || len(fr.CodeRoots) == 0 {
+			continue
+		}
+		g := byTarget[target]
+		if g == nil {
+			g = &readinessGroup{target: target}
+			byTarget[target] = g
+			groups = append(groups, g)
+		}
+		g.ids = append(g.ids, fr.ID)
+	}
+	for _, g := range groups {
+		g.roots = scan.RootsOf(&s.fp, g.ids)
+	}
+	return groups
+}
+
+// runScan runs `scan` (feature-use packs) over every code root, then `readiness` once per migration target over
+// the code of the runtimes that have it. One target writes readiness.json; several (a host running PHPs of
+// different minors) write readiness-<target>/readiness.json.
 func (s *state) runScan() {
-	target := MigrationTarget(s.prim.Version, s.o.Target)
 	roots := scan.Roots(&s.fp)
 	// the feature-use packs run for every host: known regressions of a same-minor target are judged from them
-	s.scan = s.stage("scan", scan.Args(s.prim, target, roots), nil, "scan.json")
-	if target == "" || s.o.NoReadiness {
+	s.scan = s.stage("scan", s.o.Out, scan.Args(s.prim, MigrationTarget(s.prim.Version, s.o.Target), roots), nil, "scan.json")
+	groups := s.readinessGroups()
+	if len(groups) == 0 || s.o.NoReadiness {
 		return
 	}
 	bundle := s.o.ScanBundle
@@ -268,29 +308,42 @@ func (s *state) runScan() {
 	if budget <= 0 {
 		budget = 600 * time.Second
 	}
-	fmt.Fprintf(s.out, "verify: readiness for PHP %s and later (PHPCompatibility testVersion %s, third-party budget %s)\n", strings.TrimSuffix(target, "-"), target, budget)
-	s.readiness = s.stage("readiness", scan.ReadinessArgs(s.prim, target, roots, sum, budget, false),
-		map[string]string{"scanbundle": bundle}, "readiness.json")
+	for _, g := range groups {
+		dir, path := s.o.Out, "readiness.json"
+		if len(groups) > 1 {
+			sub := "readiness-" + strings.TrimSuffix(g.target, "-")
+			dir, path = filepath.Join(s.o.Out, sub), sub+"/readiness.json"
+		}
+		rt := s.runtime(g.ids[0])
+		fmt.Fprintf(s.out, "verify: readiness for PHP %s and later (PHPCompatibility testVersion %s, third-party budget %s, %d code roots)\n",
+			strings.TrimSuffix(g.target, "-"), g.target, budget, len(g.roots))
+		doc := s.stage("readiness", dir, scan.ReadinessArgs(&rt, g.target, g.roots, sum, budget, false),
+			map[string]string{"scanbundle": bundle}, "readiness.json")
+		for _, id := range g.ids {
+			s.readiness[id] = &readinessRun{doc: doc, path: path}
+		}
+	}
 }
 
-// stage runs scan or readiness locally and reads its document; nil when it failed as a tool, which leaves the code
-// unchecked (scanFailed: cant-verify scan-failed).
-func (s *state) stage(sub string, args map[string]any, gets map[string]string, doc string) *c.Scan {
-	code := stage.Run(sub, s.o.Out, args, gets)
+// stage runs scan or readiness locally into dir and reads its document; nil when it failed as a tool, which leaves
+// the code unchecked (scanFailed: cant-verify scan-failed).
+func (s *state) stage(sub, dir string, args map[string]any, gets map[string]string, doc string) *c.Scan {
+	code := stage.Run(sub, dir, args, gets)
 	var d c.Scan
-	if err := readJSON(filepath.Join(s.o.Out, doc), &d); err != nil || d.Status != "ok" || code == 1 {
+	if err := readJSON(filepath.Join(dir, doc), &d); err != nil || d.Status != "ok" || code == 1 {
 		s.scanFailed = true
 		return nil
 	}
 	return &d
 }
 
-// verdict is the readiness verdict P7 reads (one readiness run covers every runtime of the host); nil = not run.
-func (s *state) verdict() *c.Verdict {
-	if s.readiness == nil {
+// verdictFor is the readiness verdict P7 reads for one runtime; nil = not run for it.
+func (s *state) verdictFor(id string) *c.Verdict {
+	r := s.readiness[id]
+	if r == nil || r.doc == nil {
 		return nil
 	}
-	v := s.readiness.Decision
+	v := r.doc.Decision
 	return &v
 }
 
@@ -299,13 +352,13 @@ func (s *state) runPlan() {
 	progress, shutdown := plan.ScanEvidence(s.scan)
 	p := c.Plan{Schema: c.SchemaPlan, GeneratedAt: time.Now().UTC(), Runtimes: []c.PlanRuntime{}}
 	for _, fr := range s.fp.Runtimes {
-		in := plan.InputFor(&s.fp, fr, s.verdict(), progress, shutdown, s.data)
+		in := plan.InputFor(&s.fp, fr, s.verdictFor(fr.ID), progress, shutdown, s.data)
 		in.TargetOverride = s.o.Target // an explicit newer minor plans that move
 		d := plan.Decide(in)
 		pr := c.PlanRuntime{RuntimeID: fr.ID, SAPI: fr.SAPI, CurrentVersion: fr.Version,
 			TargetVersion: d.Target, Action: d.Action, Risk: d.Risk, Reasons: d.Reasons,
 			Eligible: plan.Eligible(d), Precedence: d.Precedence, Base: d.Base, Requires: d.Requires, Info: d.Info,
-			Readiness: plan.Readiness(fr.Version, s.verdict()), FixSource: d.FixSource, EOL: d.EOL, Data: d.Data}
+			Readiness: plan.Readiness(fr.Version, s.verdictFor(fr.ID)), FixSource: d.FixSource, EOL: d.EOL, Data: d.Data}
 		pr.FixEvidence, _ = d.Data["fix_evidence"].(string)
 		s.plan[fr.ID], s.decisions[fr.ID] = pr, d
 		p.Runtimes = append(p.Runtimes, pr)
@@ -337,7 +390,13 @@ func (s *state) summary() c.Verify {
 		for _, cr := range fr.CodeRoots {
 			vr.CodeRoots = append(vr.CodeRoots, cr.Path)
 		}
-		ev := Evidence{PlanReasons: pr.Reasons, Scan: s.scan, Readiness: s.readiness, ScanFailed: s.scanFailed,
+		var rd *c.Scan
+		var rdPath string
+		if r := s.readiness[fr.ID]; r != nil {
+			rd, rdPath = r.doc, r.path
+		}
+		ev := Evidence{PlanReasons: pr.Reasons, Scan: scoped(s.scan, vr.CodeRoots), Readiness: scoped(rd, vr.CodeRoots),
+			ReadinessDoc: rdPath, NoCodeRoots: len(fr.CodeRoots) == 0, ScanFailed: s.scanFailed,
 			DepsDeclined: s.depsDeclined && pr.Action == c.ActSameMinorBuild, PlanInfo: pr.Info, KnownRegressions: s.known,
 			PlanUnit: dataString(pr, "unit"), PlanCommand: dataString(pr, "command"),
 			PlanHash: Binding(pr, fr)}
