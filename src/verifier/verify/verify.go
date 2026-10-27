@@ -19,6 +19,7 @@ import (
 	"github.com/asafg8/Phosphor/src/internal/assets"
 	"github.com/asafg8/Phosphor/src/internal/pkgver"
 	"github.com/asafg8/Phosphor/src/internal/stage"
+	stagert "github.com/asafg8/Phosphor/src/internal/stage/rt"
 	"github.com/asafg8/Phosphor/src/verifier/advisory"
 	"github.com/asafg8/Phosphor/src/verifier/plan"
 	"github.com/asafg8/Phosphor/src/verifier/preflight" // also registers the `preflight` stage
@@ -280,7 +281,10 @@ func (s *state) readinessGroups() []*readinessGroup {
 func (s *state) runScan() {
 	roots := scan.Roots(&s.fp)
 	// the feature-use packs run for every host: known regressions of a same-minor target are judged from them
+	fmt.Fprintf(s.out, "verify: scanning the code of %d code roots\n", len(roots))
+	start := time.Now()
 	s.scan = s.stage("scan", s.o.Out, scan.Args(s.prim, MigrationTarget(s.prim.Version, s.o.Target), roots), nil, "scan.json")
+	fmt.Fprintf(s.out, "verify: code scan done in %s\n", stagert.Elapsed(time.Since(start)))
 	groups := s.readinessGroups()
 	if len(groups) == 0 || s.o.NoReadiness {
 		return
@@ -314,11 +318,14 @@ func (s *state) runScan() {
 			sub := "readiness-" + strings.TrimSuffix(g.target, "-")
 			dir, path = filepath.Join(s.o.Out, sub), sub+"/readiness.json"
 		}
-		rt := s.runtime(g.ids[0])
+		first := s.runtime(g.ids[0])
+		start := time.Now()
 		fmt.Fprintf(s.out, "verify: readiness for PHP %s and later (PHPCompatibility testVersion %s, third-party budget %s, %d code roots)\n",
 			strings.TrimSuffix(g.target, "-"), g.target, budget, len(g.roots))
-		doc := s.stage("readiness", dir, scan.ReadinessArgs(&rt, g.target, g.roots, sum, budget, false),
+		doc := s.stage("readiness", dir, scan.ReadinessArgs(&first, g.target, g.roots, sum, budget, false),
 			map[string]string{"scanbundle": bundle}, "readiness.json")
+		fmt.Fprintf(s.out, "verify: readiness for PHP %s done in %s\n", strings.TrimSuffix(g.target, "-"),
+			stagert.Elapsed(time.Since(start)))
 		for _, id := range g.ids {
 			s.readiness[id] = &readinessRun{doc: doc, path: path}
 		}
