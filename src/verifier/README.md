@@ -90,7 +90,8 @@ On a y it calls the remediator's build (`src/remediator/build`):
    strips it).
 4. Installs the build dependencies and records exactly what it added.
 5. Unpacks the source and applies the patches from `patches/`.
-6. Runs configure and make inside systemd-run limits, then a smoke subset of PHP's own tests. Known-flaky tests and
+6. Runs configure and make inside systemd-run limits, then a smoke subset of PHP's own tests (run-tests with the
+   same number of workers as `make -j`). Known-flaky tests and
    the failures stock PHP also has (`data/expected-fail`) are ignored.
 7. Installs into a side prefix, `/opt/phosphor/php/<version>-<shape>`, and rebuilds third-party extensions from
    `pecl.lock`.

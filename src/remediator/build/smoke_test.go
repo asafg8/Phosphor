@@ -95,14 +95,24 @@ func TestU13_Truncated(t *testing.T) {
 }
 
 func TestU13_SmokeArgs(t *testing.T) {
-	a := strings.Join(SmokeArgs("/b/sapi/cli/php", "/s/summary.txt", []string{"x.phpt"}, nil), " ")
+	a := strings.Join(SmokeArgs("/b/sapi/cli/php", "/s/summary.txt", 1, []string{"x.phpt"}, nil), " ")
 	if !strings.Contains(a, "-p /b/sapi/cli/php -n -q --offline -s /s/summary.txt") || !strings.HasSuffix(a, "Zend/tests x.phpt") {
 		t.Fatal(a)
 	}
 }
 
+// The smoke runs as many run-tests workers as the build's make -j; one worker passes no -j.
+func TestSmokeArgsJobs(t *testing.T) {
+	if a := strings.Join(SmokeArgs("p", "s", 2, nil, nil), " "); !strings.Contains(a, " -j2 ") {
+		t.Fatal(a)
+	}
+	if a := strings.Join(SmokeArgs("p", "s", 1, nil, nil), " "); strings.Contains(a, " -j") {
+		t.Fatal(a)
+	}
+}
+
 func TestU13_SmokeArgsSkipsMissingDirs(t *testing.T) {
-	a := strings.Join(SmokeArgs("p", "s", nil, func(d string) bool { return d != "main/tests" }), " ")
+	a := strings.Join(SmokeArgs("p", "s", 1, nil, func(d string) bool { return d != "main/tests" }), " ")
 	if strings.Contains(a, "main/tests") || !strings.Contains(a, "ext/session/tests") {
 		t.Fatal(a)
 	}
